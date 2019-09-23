@@ -4,14 +4,14 @@ Proyecto para la asignatura Infraestructura Virtual (19-20).
 
 ## Descripción
 
-Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado. Se utilizará un formulario para enviar el archivo, utilizando el protocolo HTTP para enviar el documento y recibir el PDF compilado.
+Servicio web para compilar documentos LaTeX (.tex) y proveer el PDF generado. El envío del documento latex y la recepción del PDF generado se realizarán mediante el protocolo HTTP.
 
 ## Motivación
 
 A lo largo de la primera mitad del año 2019 he estado ayudando a un compañero de la carrera a redactar su Trabajo Fin de Grado con LaTeX.
 La colaboración era esporádica y esto provocaba que cuando necesitaba mi ayuda para resolver algún problema, el proyecto había avanzado consideradamente y la compilación del mismo solía devolver algún tipo de error, principalmente porque usábamos distribuciones TeX diferentes (MiKTeX y XeLateX) y por la falta de paquetes instalados.
 
-Este microservicio debería ayudar a proveer una plataforma que asegura generar el documento final utilizando la misma distribución TeX y los mismos paquetes.
+Este Servicio web debería ayudar a proveer una plataforma que asegura generar el documento final utilizando la misma distribución TeX y los mismos paquetes.
 
 ## Lenguajes y tecnologías a utilizar
 

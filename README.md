@@ -43,7 +43,7 @@ Dado que mi proyecto necesita un sistema Linux para funcionar, necesito una máq
 A lo largo del desarrollo del proyecto puede que, una vez empiece a utilizar las herramientas seleccionadas, alguna no se ajuste exactamente a mis propósitos, si es así, la nueva herramienta se indicará en la documentación del proyecto.
 
 ## Desarrollo del proyecto
-Inicialmente iba a desarrollar el servicio en PHP debido a que es el lenguaje que utilicé para desarrollar el back-end de otra asignatura y me siento relativamente familiarizado. Durante otro curso desarrollé una pequeña aplicación con node.js y MongoDB y lo disfruté muchísimo. A lo largo del desarrollo del Hito 1 he decidido realizar el servicio con node.js. Aunque conlleve un periodo de aprendizaje y dedicar más horas a contenido no evaluable de la asignatura, me motiva más y creo que eso es importante.
+Inicialmente iba a desarrollar el servicio en PHP debido a que es el lenguaje que utilicé para desarrollar el back-end de otra asignatura y me siento relativamente familiarizado. Durante otro curso desarrollé una pequeña aplicación con node.js y MongoDB y lo disfruté muchísimo. He decidido realizar el servicio con node.js. Aunque conlleve un periodo de aprendizaje y dedicar más horas a contenido no evaluable de la asignatura, me motiva más y creo que eso es importante.
 
 Este apartado trata de conectar los objetivos desde el punto de vista de la infraestructura virtual con los objetivos para desarrollar el servicio. Para ver los objetivos del proyecto están declarados como [Milestones](https://github.com/victorperalta93/IV-Proyecto/milestones).
 

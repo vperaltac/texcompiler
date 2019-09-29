@@ -17,10 +17,10 @@ Este Servicio web debería ayudar a proveer una plataforma que asegura generar e
 ### Lenguaje de programación y entorno de desarrollo
 El proyecto se desarrollará en [Node.js](https://nodejs.org/es/).
 Creo firmemente en utilizar un framework solo cuando las ventajas son claramente favorables. En muchas ocasiones se opta por elegir un framework para simplificar cierta tarea sin tener en cuenta la pérdida de rendimiento inherente.
-Por tanto, en principio este servicio se desarrollará con puro Node.js y solo utilizaré un framework si su utilidad me convence. Express es un candidato, pero necesito investigar más a fondo antes de tomar esta decisión.
+Por tanto, en principio este servicio se desarrollará con puro Node.js y solo utilizaré un framework si su utilidad me convence. [Express](https://expressjs.com/es/) es un candidato, pero necesito investigar más a fondo antes de tomar esta decisión.
 
 ### Sistema de Logs
-Mantener un sistema de logs es crucial para poder detectar problemas en la ejecución o despliegue del proyecto. Por tanto, como herramienta para administración de logs voy a utilizar Logstash, es una solución de código libre con toda la funcionalidad necesaria para este proyecto.
+Mantener un sistema de logs es crucial para poder detectar problemas en la ejecución o despliegue del proyecto. Por tanto, como herramienta para administración de logs voy a utilizar [Logstash](https://www.elastic.co/products/logstash), es una solución de código libre con toda la funcionalidad necesaria para este proyecto.
 
 ### Aplicaciones externas
 Dado que mi servicio compilará archivos .tex será necesario instalar una distribución TeX, utilizaré [TexLive](https://www.tug.org/texlive/).

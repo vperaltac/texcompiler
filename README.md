@@ -13,6 +13,19 @@ La colaboración era esporádica y esto provocaba que cuando necesitaba mi ayuda
 
 Este Servicio web debería ayudar a proveer una plataforma que asegura generar el documento final utilizando la misma distribución TeX y los mismos paquetes.
 
+## Desarrollo del proyecto
+Inicialmente iba a desarrollar el servicio en PHP debido a que es el lenguaje que utilizé para desarrollar el back-end de otra asignatura y me siento relativamente familiarizado. Durante otro curso desarrollé una pequeña aplicación con node.js y MongoDB y lo disfruté muchisimo. A lo largo del desarrollo del Hito 1 he decidido realizar el servicio con node.js. Aunque conlleve un periodo de aprendizaje y dedicar más horas a contenido no evaluable de la asignatura, me motiva más y creo que eso es importante.
+
+Este apartado indica el desarrollo del proyecto desde el punto de vista de los objetivos de la infraestructura virtual, para ver los objetivos referentes al servicio están declarados como [Milestones](https://github.com/victorperalta93/IV-Proyecto/milestones).
+
+### Paso 1: Desarrollo basado en pruebas
+El desarrollo basado en pruebas invierte completamente el desarrollo de la aplicación con respecto a otras asignaturas, por tanto es importante comenzar el desarrollo del servicio poniendolo en práctica para familiarizarse con el mismo.
+
+Tendremos que utilizar BDD o TDD, añadir integración continua y un gestor de versiones.
+
+### Paso 2: Despliegue en la nube
+Para esto se utilizará una Plataforma como Servicio o PaaS. Ésto nos permitirá la compilación, prueba, implementación, administración y actualización de nuestro servicio a través de la nube.
+
 ## Lenguajes y tecnologías a utilizar
 ### Lenguaje de programación y entorno de desarrollo
 El proyecto se desarrollará en [Node.js](https://nodejs.org/es/).

@@ -26,6 +26,9 @@ Tendremos que utilizar BDD o TDD, añadir integración continua y un gestor de v
 ### Paso 2: Despliegue en la nube
 Para esto se utilizará una Plataforma como Servicio o PaaS. Ésto nos permitirá la compilación, prueba, implementación, administración y actualización de nuestro servicio a través de la nube.
 
+### Paso 3: Creación de un entorno de pruebas para la aplicación usando contenedores
+Nos permitirá probar las aplicaciones en un entorno aislado antes de desplegarlas en producción.
+
 ## Lenguajes y tecnologías a utilizar
 ### Lenguaje de programación y entorno de desarrollo
 El proyecto se desarrollará en [Node.js](https://nodejs.org/es/).

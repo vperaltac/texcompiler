@@ -4,7 +4,7 @@ Proyecto para la asignatura Infraestructura Virtual (19-20).
 
 ## Descripción
 
-Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado mediante comunicación basada en eventos. Este microservicio tiene como objetivo implementarse en un editor LaTeX en línea.
+Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado para un editor de LaTeX en línea. Se implementará utilizando comunicación basada en eventos.
 
 ## Motivación
 

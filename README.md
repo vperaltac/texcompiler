@@ -5,6 +5,7 @@ Proyecto para la asignatura Infraestructura Virtual (19-20).
 ## Descripción
 
 Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado para un editor de LaTeX en línea. Se implementará utilizando comunicación basada en eventos.
+Se pueden ver más detalles sobre la historia del proyecto en la sección de [proyectos](https://github.com/victorperalta93/IV-Proyecto/projects/1) de github. Se actualizará debidamente cada vez que el cliente se ponga en contacto conmigo.
 
 ## Motivación
 

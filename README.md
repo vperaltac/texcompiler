@@ -46,7 +46,7 @@ Este apartado trata de conectar los objetivos desde el punto de vista de la infr
 El desarrollo basado en pruebas invierte completamente el desarrollo de la aplicación con respecto a otras asignaturas, por tanto es importante comenzar el desarrollo del microservicio poniéndolo en práctica para familiarizarse con el mismo.
 
 Tendremos que utilizar BDD o TDD, añadir integración continua y un gestor de versiones.
-Claramente necesito tener comenzado en desarrollo del microservicio para este punto, probablemente será la API REST y pruebas para comprobar que funciona correctamente. Este paso debería darnos la oportunidad de probar la integración continua de [Travis CI](https://travis-ci.org/), el gestor de versiones [nvm](https://github.com/nvm-sh/nvm) y [Mocha](https://mochajs.org/) para el desarrollo basado en tests.
+Claramente necesito tener comenzado en desarrollo del microservicio para este punto, probablemente el sistema de mensajería y pruebas para comprobar que funciona correctamente. Este paso debería darnos la oportunidad de probar la integración continua de [Travis CI](https://travis-ci.org/), el gestor de versiones [nvm](https://github.com/nvm-sh/nvm) y [Mocha](https://mochajs.org/) para el desarrollo basado en tests.
 
 ### Paso 2: Despliegue en la nube
 Para esto se utilizará una Plataforma como Servicio o PaaS. Ésto nos permitirá la compilación, prueba, implementación, administración y actualización de nuestro microservicio a través de la nube.

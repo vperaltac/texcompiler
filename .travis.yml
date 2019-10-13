@@ -1,6 +1,9 @@
+before_install:
+    -tlmgr install
+
 language: node_js
 node_js: 
-  - 10.16.3
-cache:
-  directories:
+    - 10.16.3
+
+directories:
     - "node_modules"

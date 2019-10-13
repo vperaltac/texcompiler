@@ -99,3 +99,31 @@ public
 
 # TernJS port file
 .tern-port
+
+# Visual Studio Code
+.vscode
+
+# LaTeX
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz

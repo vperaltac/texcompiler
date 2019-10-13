@@ -1,5 +1,5 @@
 before_install:
-    -tlmgr install
+    - tlmgr install
 
 language: node_js
 node_js: 

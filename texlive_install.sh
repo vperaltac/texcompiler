@@ -14,3 +14,5 @@ tlmgr install   \
   amsmath
 
 tlmgr update --self --all --no-auto-install
+
+which pdflatex

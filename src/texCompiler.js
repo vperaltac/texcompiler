@@ -6,14 +6,14 @@ function texCompiler(archivo,tex_output){
     // se supone que el archivo está en /doc
     archivo = 'doc/' + archivo
 
-    // comprobar que archivo existe
-    if (!fs.existsSync(archivo)) {
-        return "Archivo no encontrado."
-    }
-
     // comprobar formato del archivo
     if(!archivo.endsWith('.tex')){
         return "Formato incorrecto."
+    }
+
+    // comprobar que archivo existe
+    if (!fs.existsSync(archivo)) {
+        return "Archivo no encontrado."
     }
 
     // compilar archivo

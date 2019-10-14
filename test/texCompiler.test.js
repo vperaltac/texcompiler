@@ -7,12 +7,12 @@ describe('TexCompiler', function(){
         texCompiler.should.exist
     })
 
-    it('Debería informar de que recibe un archivo que no existe',function(){
-        expect(texCompiler('archivo_fantasma.tex',false)).to.equal('Archivo no encontrado.')
-    })
-
     it('Debería informar de que el archivo tiene una extensión errónea',function(){
         expect(texCompiler('ejemplo.tar',false)).to.equal('Formato incorrecto.')
+    })
+
+    it('Debería informar de que recibe un archivo que no existe',function(){
+        expect(texCompiler('archivo_fantasma.tex',false)).to.equal('Archivo no encontrado.')
     })
 
     it('Debería confirmar que la ejecución ha sido correcta.',function(){

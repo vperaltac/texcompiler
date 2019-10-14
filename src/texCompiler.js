@@ -1,3 +1,4 @@
+const execSync = require('child_process').execSync
 const { exec } = require('child_process')
 const fs = require('fs')
 
@@ -16,7 +17,7 @@ function texCompiler(archivo,tex_output){
     }
 
     // compilar archivo
-    exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo, (err, stdout, stderr) => {
+    execSync('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo, (err, stdout, stderr) => {
         if (err) {
             console.log(`${stderr}`);
             return "Error al ejecutar el comando";
@@ -36,7 +37,7 @@ function texCompiler(archivo,tex_output){
         return "Error en compilación. Leer texput.log para más información"
     }
     else
-        return "Error en compilación."
+        return "Error en compilación. " + salida + " no encontrado."
 }
 
 module.exports = texCompiler

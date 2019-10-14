@@ -7,14 +7,12 @@ function texCompiler(archivo,tex_output){
     archivo = 'doc/' + archivo
 
     // comprobar formato del archivo
-    if(!archivo.endsWith('.tex')){
+    if(!archivo.endsWith('.tex'))
         return "Formato incorrecto."
-    }
 
     // comprobar que archivo existe
-    if (!fs.existsSync(archivo)) {
+    if (!fs.existsSync(archivo)) 
         return "Archivo no encontrado."
-    }
 
     // compilar archivo
     execSync('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo, (err, stdout, stderr) => {
@@ -33,9 +31,8 @@ function texCompiler(archivo,tex_output){
     // comprobar archivo de salida
     if(fs.existsSync(salida))
         return "Archivo creado con éxito."
-    else if(fs.existsSync('doc/texput.log')){
+    else if(fs.existsSync('doc/texput.log'))
         return "Error en compilación. Leer texput.log para más información"
-    }
     else
         return "Error en compilación. " + salida + " no encontrado."
 }

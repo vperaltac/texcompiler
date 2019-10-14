@@ -1,4 +1,4 @@
-const should      = require("chai").should()
+require("chai").should()
 const expect      = require("chai").expect
 const texCompiler = require('../src/texCompiler')
 

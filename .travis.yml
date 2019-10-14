@@ -1,5 +1,5 @@
 before_install:
-    - ./texlive_install.sh
+    - sudo ./texlive_install.sh
 
 language: node_js
 node_js: 

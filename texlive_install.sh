@@ -5,6 +5,8 @@ tar -xzf install-tl-unx.tar.gz
 cd install-tl*
 ./install-tl --profile=../texlive.profile
 
+PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH 
+
 tlmgr install   \
   exam          \
   amsfonts      \

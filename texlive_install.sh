@@ -5,7 +5,9 @@ tar -xzf install-tl-unx.tar.gz
 cd install-tl*
 ./install-tl --profile=../texlive.profile
 
-PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH 
+export PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH
+export MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH
 
 tlmgr install   \
   exam          \

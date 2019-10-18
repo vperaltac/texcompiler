@@ -2,6 +2,13 @@ const execSync = require('child_process').execSync
 const { exec } = require('child_process')
 const fs = require('fs')
 
+// Compila un archivo .tex y genera la salida en formato PDF.
+// Se utiliza la distribución __TexLive__ para realizar la compilación.
+// Se utiliza el comando `pdflatex` para generar el archivo PDF de salida
+// directorio de salida por defecto: /doc
+// Entrada de la función:
+//  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
+//  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
 function texCompiler(archivo,tex_output){
     // se supone que el archivo está en /doc
     archivo = 'doc/' + archivo

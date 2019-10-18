@@ -2,6 +2,12 @@ require("chai").should()
 const expect      = require("chai").expect
 const texCompiler = require('../src/texCompiler')
 
+// Tests unitarios para la biblioteca que realiza la compilación LaTeX.
+// Las comprobaciones realizadas hasta el momento son:
+//  * Carga e instanciación de biblioteca
+//  * Manejo de archivos con extensión errónea
+//  * Manejo de archivos no existentes
+//  * Confirmación de ejecución correcta
 describe('TexCompiler', function(){
     it('Debería cargar la biblioteca y poder instanciarse',function(){
         texCompiler.should.exist

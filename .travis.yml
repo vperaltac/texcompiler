@@ -1,8 +1,6 @@
 before_install:
     - sudo ./scripts/texlive_install.sh
     - PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH
-    - MANPATH=/usr/local/texlive/2019/texmf-dist/doc/man:$MANPATH; export MANPATH
-    - INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH; export INFOPATH
 language: node_js
 node_js: 
     - "lts/*"

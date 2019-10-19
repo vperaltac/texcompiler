@@ -31,3 +31,9 @@ Para ejecutar los tests utiliza:
 grunt test
 ```
 De esta forma se ejecutarán los tests con `npm test` y se limpiarán los archivos generados durante el proceso.
+
+## Documentación adicional
+Visita la [web de documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.
+* [Documentación sobre la integración continua](https://victorperalta93.github.io/IV-Proyecto/#/integracion_continua)
+* [Documentación sobre bibliotecas y programas de tests](https://victorperalta93.github.io/IV-Proyecto/#/bibtests)
+* [Documentación del código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/texCompiler.html)

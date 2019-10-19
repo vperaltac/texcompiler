@@ -39,3 +39,27 @@ En el apartado `install` indico que quiero ejecutar la instalación de npm y gen
 >Aunque Travis ejecuta npm automáticamente, lo indico de forma manual porque quiero asegurar que la documentación se genera antes de lanzar los tests y se limpian los archivos generados después.
 
 `after_success` solo se ejecuta si todas las pruebas se han ejecutado correctamente. Si es el caso, TexLive habrá generado archivos que elimino con `grunt clean`.
+
+## Integración continua con CircleCI
+La configuración con CircleCI se realiza ligeramente diferente, es necesario tener un directorio `.circleci` y dentro el archivo `config.yml`. La configuración para mi proyecto es la siguiente:
+
+```
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run: sudo ./scripts/texlive_install.sh
+      - run: npm install
+      - run: sudo npm install -g grunt-cli 
+      - run: grunt doc
+      - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt test
+```
+
+`version` indica la versión de Circle-CI que utilizar.  
+Utilizo la versión 10.16.3 de node, que actualmente es la LTS o Long Term Support.  
+Cada orden de ejecución se indica en `steps` con el parámetro `run`.
+
+Cabe mencionar que he necesitado ejecutar la actualización del PATH y `grunt test` en la misma linea para que detectase `pdflatex`. Imagino que cada linea se ejecuta en una instancia de terminal diferente.

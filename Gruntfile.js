@@ -36,7 +36,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-run');
 
   // Tarea para ejecutar los tests unitarios
-  grunt.registerTask('test', ['run:npm_test']);
+  grunt.registerTask('test', ['run:npm_test','clean']);
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);

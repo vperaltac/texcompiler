@@ -10,7 +10,10 @@ node_js:
 
 install:
     - npm ci
-    - grunt default
+    - grunt doc
+
+after_success:
+    - grunt clean
 
 directories:
     - "node_modules"

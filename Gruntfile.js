@@ -39,5 +39,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['run:npm_test']);
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
-  grunt.registerTask('default', ['docco','run:npm_test','clean']);
+  grunt.registerTask('doc',['docco']);
 };

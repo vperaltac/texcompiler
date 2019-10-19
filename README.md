@@ -1,4 +1,4 @@
-[![Build Status]( https://travis-ci.org/victorperalta93/IV-Proyecto.svg?branch=master)](https://travis-ci.org/victorperalta93/IV-Proyecto)
+[![Build Status](https://travis-ci.org/victorperalta93/IV-Proyecto.svg?branch=master)](https://travis-ci.org/victorperalta93/IV-Proyecto)
 [![CircleCI](https://circleci.com/gh/victorperalta93/IV-Proyecto.svg?style=svg)](https://circleci.com/gh/victorperalta93/IV-Proyecto)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 

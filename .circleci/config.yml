@@ -6,10 +6,7 @@ jobs:
     steps:
       - checkout
       - run: sudo ./scripts/texlive_install.sh
-      - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH
       - run: npm install
       - run: sudo npm install -g grunt-cli 
       - run: grunt doc
-      - run: # run tests
-          name: test
-          command: grunt test
+      - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt test

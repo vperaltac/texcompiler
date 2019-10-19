@@ -5,8 +5,8 @@ before_install:
     - INFOPATH=/usr/local/texlive/2019/texmf-dist/doc/info:$INFOPATH; export INFOPATH
 language: node_js
 node_js: 
-    - 10.16.3
-    - 12
+    - "lts/*"
+    - "node"
 
 install:
     - npm ci

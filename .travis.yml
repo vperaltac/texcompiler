@@ -7,8 +7,13 @@ node_js:
     - "node"
 
 install:
+    - npm install -g codecov
     - npm ci
     - grunt doc
+
+script:
+    - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+    - codecov
 
 after_success:
     - grunt clean

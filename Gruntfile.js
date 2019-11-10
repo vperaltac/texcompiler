@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         }
     },
     
-    clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf'],
+    clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf','doc/*.fdb*','doc/*.fls'],
 
     run: {
       npm_test: {

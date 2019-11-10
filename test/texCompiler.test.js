@@ -1,6 +1,11 @@
-require("chai").should()
-const expect      = require("chai").expect
-const texCompiler = require('../src/texCompiler')
+const chai = require('chai');
+const expect = chai.expect;
+const should = require('chai').should
+const sinonChai = require('sinon-chai');
+const sinon = require('sinon');
+const texCompiler = require('../src/texCompiler');
+
+chai.use(sinonChai);
 
 // Tests unitarios para la biblioteca que realiza la compilación LaTeX.
 // Las comprobaciones realizadas hasta el momento son:
@@ -9,19 +14,31 @@ const texCompiler = require('../src/texCompiler')
 //  * Manejo de archivos no existentes
 //  * Confirmación de ejecución correcta
 describe('TexCompiler', function(){
+    beforeEach(function() {
+        sinon.spy(console, 'log');
+    });
+    
+    afterEach(function() {
+        console.log.restore();
+    });
+
     it('Debería cargar la biblioteca y poder instanciarse',function(){
-        texCompiler.should.exist
+        expect(texCompiler).to.exist
     })
 
     it('Debería informar de que el archivo tiene una extensión errónea',function(){
-        expect(texCompiler('ejemplo.tar',false)).to.equal('Formato incorrecto.')
+        texCompiler('ejemplo.tar',false);
+        expect(console.log.calledWith('Formato incorrecto.')).to.be.true;
     })
 
     it('Debería informar de que recibe un archivo que no existe',function(){
-        expect(texCompiler('archivo_fantasma.tex',false)).to.equal('Archivo no encontrado.')
+        texCompiler('archivo_fantasma.tex',false);
+        expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
     })
 
-    it('Debería confirmar que la ejecución ha sido correcta.',function(){
-        expect(texCompiler('ejemplo.tex',false)).to.equal('Archivo creado con éxito.')
+    it('Debería confirmar que la ejecución ha sido correcta.',function(done){
+        texCompiler('ejemplo.tex',false);
+        done();
+        expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
     })
 })

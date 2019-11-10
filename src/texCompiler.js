@@ -1,6 +1,25 @@
-const execSync = require('child_process').execSync
-const { exec } = require('child_process')
 const fs = require('fs')
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+// Compila un archivo .tex de forma asíncrona
+// esta función devuelve una Promise que debe ser tratada adecuadamente.
+// Entrada de la función:
+//  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
+//  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
+async function compilar(archivo,tex_output){
+    try{
+        const {err, stdout, stderr} = await exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo);
+        if (err) 
+            console.error(stderr);
+    
+        if(tex_output)
+            console.log(stdout);
+    }
+    catch(e){
+        return e;
+    }
+}
 
 // Compila un archivo .tex y genera la salida en formato PDF.
 // Se utiliza la distribución __TexLive__ para realizar la compilación.

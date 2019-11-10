@@ -11,12 +11,9 @@ install:
     - npm ci
     - grunt doc
 
-script:
-    - npm run test
+after_success:
     - npm run report-coverage
     - codecov
-
-after_success:
     - grunt clean
 
 directories:

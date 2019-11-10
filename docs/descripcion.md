@@ -26,7 +26,7 @@ Este microservicio debería ayudar a proveer una plataforma que asegura generar 
 
 * __Sistema de Logs:__ Mantener un sistema de logs es crucial para poder detectar problemas en la ejecución o despliegue del proyecto. Por tanto, como herramienta para administración de logs voy a utilizar [Logstash](https://www.elastic.co/products/logstash), es una solución de código libre con toda la funcionalidad necesaria para este proyecto.
 
-* __Aplicaciones externas:__ Dado que mi microservicio compilará archivos .tex será necesario instalar una distribución TeX, utilizaré [TexLive](https://www.tug.org/texlive/).
+* __Distribuciones:__ Dado que mi microservicio compilará archivos .tex será necesario instalar una distribución TeX, utilizaré [TexLive](https://www.tug.org/texlive/).
 
 * __Bases de datos:__ La utilidad de una base de datos para mi microservicio es baja, aún así si decido utilizar una base de datos será [MongoDB](https://www.mongodb.com/es) por su facilidad de uso, versatilidad y fantástica integración con node.js.
 

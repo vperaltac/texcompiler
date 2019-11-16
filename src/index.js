@@ -14,7 +14,6 @@ app.get('/status',(req,res) =>{
     res.json({status: 'OK'})
 });
 
-
 app.post('/compilar',(req,res) =>{
     if(!req.files)
         return res.status(400).send('No se encontró el archivo fuente.');
@@ -29,7 +28,7 @@ app.post('/compilar',(req,res) =>{
         if (err)
             return res.status(500).send(err);
 
-        res.send('Archivo subido!');
+        res.download(destino);
     });
 });
 

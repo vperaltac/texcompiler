@@ -2,6 +2,8 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const app  = express();
 const texCompiler = require('./texCompiler');
+const mkdirp = require('mkdirp');
+const uniqueFilename = require('unique-filename');
 
 const PORT = process.env.PORT || 5000;
 
@@ -19,8 +21,16 @@ app.post('/compilar',(req,res) =>{
 
     if(!req.files.documento)
         return res.status(400).send("Nombre incorrecto.");
-        
-    res.send(req.files.documento.name);
+
+    let documento = req.files.documento;
+    let destino = uniqueFilename('doc') + ".tex";
+
+    documento.mv(destino, function(err) {
+        if (err)
+            return res.status(500).send(err);
+
+        res.send('Archivo subido!');
+    });
 });
 
 app.listen(PORT, () => console.log(`Servidor iniciado en puerto: ${PORT}`));

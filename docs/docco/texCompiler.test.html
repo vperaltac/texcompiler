@@ -58,9 +58,14 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">require</span>(<span class="hljs-string">"chai"</span>).should()
-<span class="hljs-keyword">const</span> expect      = <span class="hljs-built_in">require</span>(<span class="hljs-string">"chai"</span>).expect
-<span class="hljs-keyword">const</span> texCompiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/texCompiler'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> chai = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chai'</span>);
+<span class="hljs-keyword">const</span> expect = chai.expect;
+<span class="hljs-keyword">const</span> should = <span class="hljs-built_in">require</span>(<span class="hljs-string">'chai'</span>).should
+<span class="hljs-keyword">const</span> sinonChai = <span class="hljs-built_in">require</span>(<span class="hljs-string">'sinon-chai'</span>);
+<span class="hljs-keyword">const</span> sinon = <span class="hljs-built_in">require</span>(<span class="hljs-string">'sinon'</span>);
+<span class="hljs-keyword">const</span> texCompiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/texCompiler'</span>);
+
+chai.use(sinonChai);</pre></div></div>
             
         </li>
         
@@ -83,20 +88,32 @@ Las comprobaciones realizadas hasta el momento son:</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>describe(<span class="hljs-string">'TexCompiler'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    beforeEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        sinon.spy(<span class="hljs-built_in">console</span>, <span class="hljs-string">'log'</span>);
+    });
+    
+    afterEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-built_in">console</span>.log.restore();
+    });
+
     it(<span class="hljs-string">'Debería cargar la biblioteca y poder instanciarse'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-        texCompiler.should.exist
+        expect(texCompiler).to.exist
     })
 
     it(<span class="hljs-string">'Debería informar de que el archivo tiene una extensión errónea'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-        expect(texCompiler(<span class="hljs-string">'ejemplo.tar'</span>,<span class="hljs-literal">false</span>)).to.equal(<span class="hljs-string">'Formato incorrecto.'</span>)
+        texCompiler(<span class="hljs-string">'ejemplo.tar'</span>,<span class="hljs-literal">false</span>);
+        expect(<span class="hljs-built_in">console</span>.log.calledWith(<span class="hljs-string">'Formato incorrecto.'</span>)).to.be.true;
     })
 
     it(<span class="hljs-string">'Debería informar de que recibe un archivo que no existe'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-        expect(texCompiler(<span class="hljs-string">'archivo_fantasma.tex'</span>,<span class="hljs-literal">false</span>)).to.equal(<span class="hljs-string">'Archivo no encontrado.'</span>)
+        texCompiler(<span class="hljs-string">'archivo_fantasma.tex'</span>,<span class="hljs-literal">false</span>);
+        expect(<span class="hljs-built_in">console</span>.log.calledWith(<span class="hljs-string">'Archivo no encontrado.'</span>)).to.be.true;
     })
 
-    it(<span class="hljs-string">'Debería confirmar que la ejecución ha sido correcta.'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-        expect(texCompiler(<span class="hljs-string">'ejemplo.tex'</span>,<span class="hljs-literal">false</span>)).to.equal(<span class="hljs-string">'Archivo creado con éxito.'</span>)
+    it(<span class="hljs-string">'Debería confirmar que la ejecución ha sido correcta.'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+        texCompiler(<span class="hljs-string">'ejemplo.tex'</span>,<span class="hljs-literal">false</span>);
+        done();
+        expect(<span class="hljs-built_in">console</span>.log.calledWith(<span class="hljs-string">'Archivo creado con éxito.'</span>)).to.be.true;
     })
 })</pre></div></div>
             

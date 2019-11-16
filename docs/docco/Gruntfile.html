@@ -86,7 +86,7 @@
         }
     },
     
-    <span class="hljs-attr">clean</span>: [<span class="hljs-string">'doc/*.aux'</span>,<span class="hljs-string">'doc/*.log'</span>,<span class="hljs-string">'doc/*.gz'</span>,<span class="hljs-string">'doc/*.pdf'</span>],
+    <span class="hljs-attr">clean</span>: [<span class="hljs-string">'doc/*.aux'</span>,<span class="hljs-string">'doc/*.log'</span>,<span class="hljs-string">'doc/*.gz'</span>,<span class="hljs-string">'doc/*.pdf'</span>,<span class="hljs-string">'doc/*.fdb*'</span>,<span class="hljs-string">'doc/*.fls'</span>],
 
     <span class="hljs-attr">run</span>: {
       <span class="hljs-attr">npm_test</span>: {
@@ -156,7 +156,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'test'</span>, [<span class="hljs-string">'run:npm_test'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'test'</span>, [<span class="hljs-string">'run:npm_test'</span>,<span class="hljs-string">'clean'</span>]);</pre></div></div>
             
         </li>
         

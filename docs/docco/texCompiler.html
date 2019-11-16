@@ -58,9 +58,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> execSync = <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).execSync
-<span class="hljs-keyword">const</span> { exec } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>)
-<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
+<span class="hljs-keyword">const</span> util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'util'</span>);
+<span class="hljs-keyword">const</span> exec = util.promisify(<span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).exec);</pre></div></div>
             
         </li>
         
@@ -70,6 +70,39 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Compila un archivo .tex de forma asíncrona
+esta función devuelve una Promise que debe ser tratada adecuadamente.
+Entrada de la función:</p>
+<ul>
+<li>archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc</li>
+<li>tex_output: true para mostrar la salida que devuelve <code>pdflatex</code>. false para no mostrarla.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compilar</span>(<span class="hljs-params">archivo,tex_output</span>)</span>{
+    <span class="hljs-keyword">try</span>{
+        <span class="hljs-keyword">const</span> {err, stdout, stderr} = <span class="hljs-keyword">await</span> exec(<span class="hljs-string">'pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc '</span> + archivo);
+        <span class="hljs-keyword">if</span> (err) 
+            <span class="hljs-built_in">console</span>.error(stderr);
+    
+        <span class="hljs-keyword">if</span>(tex_output)
+            <span class="hljs-built_in">console</span>.log(stdout);
+    }
+    <span class="hljs-keyword">catch</span>(e){
+        <span class="hljs-keyword">return</span> e;
+    }
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>Compila un archivo .tex y genera la salida en formato PDF.
 Se utiliza la distribución <strong>TexLive</strong> para realizar la compilación.
@@ -88,11 +121,11 @@ Entrada de la función:</p>
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>se supone que el archivo está en /doc</p>
 
@@ -103,34 +136,20 @@ Entrada de la función:</p>
         </li>
         
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>comprobar formato del archivo</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!archivo.endsWith(<span class="hljs-string">'.tex'</span>))
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Formato incorrecto."</span></pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>comprobar que archivo existe</p>
+              <p>comprobar formato del archivo</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!fs.existsSync(archivo)) 
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Archivo no encontrado."</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!archivo.endsWith(<span class="hljs-string">'.tex'</span>)){
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Formato incorrecto."</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -141,22 +160,14 @@ Entrada de la función:</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>compilar archivo</p>
+              <p>comprobar que archivo existe</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    execSync(<span class="hljs-string">'pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc '</span> + archivo, (err, stdout, stderr) =&gt; {
-        <span class="hljs-keyword">if</span> (err) {
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${stderr}</span>`</span>);
-            <span class="hljs-keyword">return</span> <span class="hljs-string">"Error al ejecutar el comando"</span>;
-        }
-
-        <span class="hljs-keyword">if</span>(tex_output)
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`<span class="hljs-subst">${stdout}</span>`</span>);
-    });
-
-    <span class="hljs-keyword">let</span> nombre = archivo.substring(<span class="hljs-number">0</span>,archivo.length<span class="hljs-number">-4</span>);
-    <span class="hljs-keyword">let</span> salida = nombre + <span class="hljs-string">'.pdf'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!fs.existsSync(archivo)){
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo no encontrado."</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }</pre></div></div>
             
         </li>
         
@@ -167,19 +178,45 @@ Entrada de la función:</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
+              <p>compilar archivo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    compilar(archivo,tex_output)
+    .catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span>{
+        <span class="hljs-built_in">console</span>.error(<span class="hljs-string">"Error en compilación.\n"</span> + e);
+    })
+    .then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> {
+        <span class="hljs-keyword">let</span> nombre = archivo.substring(<span class="hljs-number">0</span>,archivo.length<span class="hljs-number">-4</span>);
+        <span class="hljs-keyword">let</span> salida = nombre + <span class="hljs-string">'.pdf'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
               <p>comprobar archivo de salida</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(fs.existsSync(salida))
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Archivo creado con éxito."</span>
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fs.existsSync(<span class="hljs-string">'doc/texput.log'</span>))
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Error en compilación. Leer texput.log para más información"</span>
-    <span class="hljs-keyword">else</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Error en compilación. "</span> + salida + <span class="hljs-string">" no encontrado."</span>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(fs.existsSync(salida))
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo creado con éxito."</span>);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fs.existsSync(<span class="hljs-string">'doc/texput.log'</span>)){
+            resultado=<span class="hljs-literal">false</span>;
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. Leer texput.log para más información"</span>);
+        }
+        <span class="hljs-keyword">else</span>
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. "</span> + salida + <span class="hljs-string">" no encontrado."</span>);
+    });
 }
 
-<span class="hljs-built_in">module</span>.exports = texCompiler</pre></div></div>
+<span class="hljs-built_in">module</span>.exports = texCompiler
+
+texCompiler(<span class="hljs-string">'ejemplo.tex'</span>,<span class="hljs-literal">false</span>);</pre></div></div>
             
         </li>
         

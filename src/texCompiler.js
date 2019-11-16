@@ -28,7 +28,7 @@ async function compilar(archivo,tex_output){
 // Entrada de la función:
 //  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
-async function texCompiler(archivo,tex_output){
+function texCompiler(archivo,tex_output){
     // se supone que el archivo está en /doc
     archivo = 'doc/' + archivo
 
@@ -66,5 +66,3 @@ async function texCompiler(archivo,tex_output){
 }
 
 module.exports = texCompiler
-
-texCompiler('ejemplo.tex',false);

@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(fileUpload());
 
 app.get('/status',(req,res) =>{
-    res.json({status: 'OK'})
+    res.status(200).json({status: 'OK'})
 });
 
 app.post('/compilar',(req,res) =>{
@@ -59,8 +59,9 @@ app.post('/compilar',(req,res) =>{
                     // esa es la respuesta del servidor, por tanto devolvemos el archivo 
                     // generado por la API REST
                     channel.consume(q.queue, function(msg) {
-                        if (msg.properties.correlationId === correlationId) 
+                        if (msg.properties.correlationId === correlationId){
                             res.download(msg.content.toString());
+                        }
                     }, {
                         noAck: true
                     });

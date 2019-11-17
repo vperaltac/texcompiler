@@ -4,7 +4,7 @@
   "description": "compilador de documentos latex",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha",
+    "test": "nyc mocha test/tests.js",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "start": "nodemon src/index.js"
   },
@@ -40,6 +40,7 @@
     "nodemon": "^1.19.4",
     "pm2": "^4.1.2",
     "sinon": "^7.5.0",
-    "sinon-chai": "^3.3.0"
+    "sinon-chai": "^3.3.0",
+    "supertest": "^4.0.2"
   }
 }

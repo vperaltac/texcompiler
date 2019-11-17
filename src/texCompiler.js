@@ -28,7 +28,7 @@ async function compilar(archivo,tex_output){
 // Entrada de la función:
 //  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
-function texCompiler(archivo,tex_output){
+async function texCompiler(archivo,tex_output){
     // se supone que el archivo está en /doc
     archivo = 'doc/' + archivo
 
@@ -47,7 +47,7 @@ function texCompiler(archivo,tex_output){
     // compilar archivo
     compilar(archivo,tex_output)
     .catch(e =>{
-        console.error("Error en compilación.\n" + e);
+        throw e;
     })
     .then(v => {
         let nombre = archivo.substring(0,archivo.length-4);

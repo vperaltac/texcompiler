@@ -29,9 +29,6 @@ async function compilar(archivo,tex_output){
 //  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
 async function texCompiler(archivo,tex_output){
-    // se supone que el archivo está en /doc
-    archivo = 'doc/' + archivo
-
     // comprobar formato del archivo
     if(!archivo.endsWith('.tex')){
         console.log("Formato incorrecto.");
@@ -40,29 +37,27 @@ async function texCompiler(archivo,tex_output){
 
     // comprobar que archivo existe
     if (!fs.existsSync(archivo)){
-        console.log("Archivo no encontrado.");
+        console.log("Archivo no encontrado: " + archivo);
         return false;
     }
  
     // compilar archivo
-    compilar(archivo,tex_output)
-    .catch(e =>{
-        throw e;
-    })
-    .then(v => {
-        let nombre = archivo.substring(0,archivo.length-4);
-        let salida = nombre + '.pdf';
+    await compilar(archivo,tex_output);
 
-        // comprobar archivo de salida
-        if(fs.existsSync(salida))
-            console.log("Archivo creado con éxito.");
-        else if(fs.existsSync('doc/texput.log')){
-            resultado=false;
-            console.log("Error en compilación. Leer texput.log para más información");
-        }
-        else
-            console.log("Error en compilación. " + salida + " no encontrado.");
-    });
+    let nombre = archivo.substring(0,archivo.length-4);
+    let salida = nombre + '.pdf';
+
+    // comprobar archivo de salida
+    if(fs.existsSync(salida))
+        console.log("Archivo creado con éxito.");
+    else if(fs.existsSync('doc/texput.log')){
+        resultado=false;
+        console.log("Error en compilación. Leer texput.log para más información");
+    }
+    else
+        console.log("Error en compilación. " + salida + " no encontrado.");
+
+    return 0;
 }
 
 module.exports = texCompiler

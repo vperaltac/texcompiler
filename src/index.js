@@ -29,13 +29,13 @@ app.post('/compilar',(req,res) =>{
             return res.status(500).send(err);
 
         amqp.connect('amqp://localhost', function(error0, connection) {
-            if (error0) {
+            if (error0) 
                 throw error0;
-            }
+
             connection.createChannel(function(error1, channel) {
-                if (error1) {
+                if (error1)
                     throw error1;
-                }
+                
                 channel.assertQueue('', {
                     exclusive: true
                 }, function(error2, q) {
@@ -48,8 +48,6 @@ app.post('/compilar',(req,res) =>{
                     channel.consume(q.queue, function(msg) {
                         if (msg.properties.correlationId === correlationId) 
                             res.download(msg.content.toString());
-                        /*connection.close();
-                        process.exit(0);*/                
                     }, {
                         noAck: true
                     });

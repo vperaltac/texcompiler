@@ -22,7 +22,34 @@ module.exports = function(grunt) {
         args: [
           'test'
         ]
+      },
+      pm2_start:{
+        cmd: 'pm2',
+        args: ['start','src/index.js','--name','texCompiler'
+        ]
+      },
+
+      pm2_reload:{
+        cmd: 'pm2',
+        args: [
+          'restart','texCompiler'
+        ]
+      },
+
+      pm2_restart:{
+        cmd: 'pm2',
+        args: [
+          'reload','texCompiler'
+        ]
+      },
+
+      pm2_stop:{
+        cmd: 'pm2',
+        args: [
+          'stop','texCompiler'
+        ]
       }
+
     }
   });
 
@@ -40,4 +67,12 @@ module.exports = function(grunt) {
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);
+
+  grunt.registerTask('start',['run:pm2_start']);
+
+  grunt.registerTask('stop',['run:pm2_stop']);
+
+  grunt.registerTask('reload',['run:pm2_reload']);
+
+  grunt.registerTask('restart',['run:pm2_restart']);
 };

@@ -37,7 +37,7 @@ async function texCompiler(archivo,tex_output){
 
     // comprobar que archivo existe
     if (!fs.existsSync(archivo)){
-        console.log("Archivo no encontrado: " + archivo);
+        console.log("Archivo no encontrado.");
         return false;
     }
  

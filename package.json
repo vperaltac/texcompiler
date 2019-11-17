@@ -4,7 +4,9 @@
   "description": "compilador de documentos latex",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha test/tests.js",
+    "test":"nyc mocha test/tests.js",
+    "int-test":"nyc mocha test/integration.test.js",
+    "unit-test": "nyc mocha test/texCompiler.test.js",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "start": "nodemon src/index.js"
   },

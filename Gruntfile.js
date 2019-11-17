@@ -23,33 +23,33 @@ module.exports = function(grunt) {
           'test'
         ]
       },
+      npm_unit_test: {
+        cmd: 'npm',
+        args: ['run','unit-test']
+      },
+      npm_int_test: {
+        cmd: 'npm',
+        args: ['run','int-test']
+      },
       pm2_start:{
         cmd: 'pm2',
-        args: ['start','src/index.js','--name','texCompiler'
-        ]
+        args: ['start','src/index.js','--name','texCompiler']
       },
 
       pm2_reload:{
         cmd: 'pm2',
-        args: [
-          'restart','texCompiler'
-        ]
+        args: ['restart','texCompiler']
       },
 
       pm2_restart:{
         cmd: 'pm2',
-        args: [
-          'reload','texCompiler'
-        ]
+        args: ['reload','texCompiler']
       },
 
       pm2_stop:{
         cmd: 'pm2',
-        args: [
-          'stop','texCompiler'
-        ]
+        args: ['stop','texCompiler']
       }
-
     }
   });
 
@@ -62,8 +62,15 @@ module.exports = function(grunt) {
   // Carga el plugin para ejecutar comandos de la terminal
   grunt.loadNpmTasks('grunt-run');
 
-  // Tarea para ejecutar los tests unitarios
+  // Tarea para ejecutar todos los tests
   grunt.registerTask('test', ['run:npm_test','clean']);
+
+  // Tarea para ejecutar los tests unitarios
+  grunt.registerTask('unit-test',['run:npm_unit_test','clean'])
+
+  // Tarea para ejecutar los tests de integración
+  grunt.registerTask('int-test',['run:npm_int_test','clean'])
+
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);

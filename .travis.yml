@@ -1,3 +1,5 @@
+script: 'true'
+
 before_install:
     - sudo ./scripts/texlive_install.sh
     - PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH
@@ -6,20 +8,15 @@ node_js:
     - "lts/*"
     - "node"
 
-addons:
-  apt:
-    packages:
-    - rabbitmq-server 
-    
 install:
     - npm install -g codecov
     - npm ci
     - grunt doc
 
 after_success:
+    - grunt unit-test
     - npm run report-coverage
     - codecov
-    - grunt clean
 
 directories:
     - "node_modules"

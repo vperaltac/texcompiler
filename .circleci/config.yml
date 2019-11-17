@@ -1,18 +1,18 @@
 version: 2.1
 orbs:
-	codecov: codecov/codecov@1.0.4
+    codecov: codecov/codecov@1.0.4
 
 jobs:
-	build:
-		docker:
-			- image: circleci/node:10.16.3
-			- image: rabbitmq
+    build:
+        docker:
+        - image: circleci/node:10.16.3
+        - image: rabbitmq
 		steps:
-			- checkout
-			- run: sudo ./scripts/texlive_install.sh
-			- run: npm install
-			- run: sudo npm install -g grunt-cli 
-			- run: grunt doc
-			- run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt test
-			- codecov/upload:
-				file: coverage/*.json
+            - checkout
+            - run: sudo ./scripts/texlive_install.sh
+            - run: npm install
+            - run: sudo npm install -g grunt-cli 
+            - run: grunt doc
+            - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt test
+            - codecov/upload:
+                file: coverage/*.json

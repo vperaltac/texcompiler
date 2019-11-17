@@ -25,8 +25,18 @@
                 </a>
               
                 
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
                 <a class="source" href="texCompiler.html">
                   texCompiler.js
+                </a>
+              
+                
+                <a class="source" href="worker.html">
+                  worker.js
                 </a>
               
                 
@@ -116,7 +126,7 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">texCompiler</span>(<span class="hljs-params">archivo,tex_output</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">texCompiler</span>(<span class="hljs-params">archivo,tex_output</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -126,21 +136,6 @@ Entrada de la función:</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>se supone que el archivo está en /doc</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    archivo = <span class="hljs-string">'doc/'</span> + archivo</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>comprobar formato del archivo</p>
 
@@ -154,11 +149,11 @@ Entrada de la función:</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>comprobar que archivo existe</p>
 
@@ -172,51 +167,47 @@ Entrada de la función:</p>
         </li>
         
         
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>compilar archivo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">await</span> compilar(archivo,tex_output);
+
+    <span class="hljs-keyword">let</span> nombre = archivo.substring(<span class="hljs-number">0</span>,archivo.length<span class="hljs-number">-4</span>);
+    <span class="hljs-keyword">let</span> salida = nombre + <span class="hljs-string">'.pdf'</span>;</pre></div></div>
+            
+        </li>
+        
+        
         <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>compilar archivo</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    compilar(archivo,tex_output)
-    .catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span>{
-        <span class="hljs-built_in">console</span>.error(<span class="hljs-string">"Error en compilación.\n"</span> + e);
-    })
-    .then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> {
-        <span class="hljs-keyword">let</span> nombre = archivo.substring(<span class="hljs-number">0</span>,archivo.length<span class="hljs-number">-4</span>);
-        <span class="hljs-keyword">let</span> salida = nombre + <span class="hljs-string">'.pdf'</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
               <p>comprobar archivo de salida</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(fs.existsSync(salida))
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo creado con éxito."</span>);
-        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fs.existsSync(<span class="hljs-string">'doc/texput.log'</span>)){
-            resultado=<span class="hljs-literal">false</span>;
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. Leer texput.log para más información"</span>);
-        }
-        <span class="hljs-keyword">else</span>
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. "</span> + salida + <span class="hljs-string">" no encontrado."</span>);
-    });
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(fs.existsSync(salida))
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo creado con éxito."</span>);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fs.existsSync(<span class="hljs-string">'doc/texput.log'</span>)){
+        resultado=<span class="hljs-literal">false</span>;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. Leer texput.log para más información"</span>);
+    }
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. "</span> + salida + <span class="hljs-string">" no encontrado."</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 
-<span class="hljs-built_in">module</span>.exports = texCompiler
-
-texCompiler(<span class="hljs-string">'ejemplo.tex'</span>,<span class="hljs-literal">false</span>);</pre></div></div>
+<span class="hljs-built_in">module</span>.exports = texCompiler</pre></div></div>
             
         </li>
         

@@ -6,9 +6,11 @@ node_js:
     - "lts/*"
     - "node"
 
-services:
-  - rabbitmq
-
+addons:
+  apt:
+    packages:
+    - rabbitmq-server 
+    
 install:
     - npm install -g codecov
     - npm ci

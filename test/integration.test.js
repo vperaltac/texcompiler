@@ -3,8 +3,8 @@ const chai    = require('chai');
 const request = require('supertest');
 const expect  = chai.expect;
 
-describe('Express test', function(){
-    it('should return STATUS: OK', function(done){
+describe('Express tests', function(){
+    it('debería devolver Status: OK', function(done){
         request(app)
             .get('/status')
             .end(function(err,res){
@@ -14,7 +14,31 @@ describe('Express test', function(){
             });
     });
 
-    it('should return pdf file compiled', function(done){
+    it('debería avisar si no existe archivo fuente', function(done){
+        request(app)
+            .post('/compilar')
+            .end(function(err, res) {
+                expect(res.statusCode).to.equal(400);
+                expect('Content-Type','text/html');
+                expect(res.text).to.equal('No se encontró el archivo fuente.');
+                done();
+              });
+    });
+
+    it('debería devolver el pdf compilado', function(done){
+        request(app)
+            .post('/compilar')
+            .set('Content-Type','application/x-www-form-urlencoded')
+            .attach('nombre_incorrecto', 'doc/ejemplo.tex')
+            .end(function(err,res){
+                expect(res.statusCode).to.equal(400);
+                expect('Content-Type','text/html');
+                expect(res.text).to.equal('Nombre incorrecto.');
+                done();
+            });
+    });
+
+    it('debería devolver el pdf compilado', function(done){
         request(app)
             .post('/compilar')
             .set('Content-Type','application/x-www-form-urlencoded')
@@ -26,5 +50,5 @@ describe('Express test', function(){
 
                 process.exit(0);
             });
-    })
+    });
 });

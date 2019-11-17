@@ -107,16 +107,28 @@
       },
       <span class="hljs-attr">pm2_start</span>:{
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
-        <span class="hljs-attr">args</span>: [
-          <span class="hljs-string">'start'</span>,
-          <span class="hljs-string">'src/index.js --name texCompiler'</span>
+        <span class="hljs-attr">args</span>: [<span class="hljs-string">'start'</span>,<span class="hljs-string">'src/index.js'</span>,<span class="hljs-string">'--name'</span>,<span class="hljs-string">'texCompiler'</span>
         ]
       },
+
+      <span class="hljs-attr">pm2_reload</span>:{
+        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
+        <span class="hljs-attr">args</span>: [
+          <span class="hljs-string">'restart'</span>,<span class="hljs-string">'texCompiler'</span>
+        ]
+      },
+
+      <span class="hljs-attr">pm2_restart</span>:{
+        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
+        <span class="hljs-attr">args</span>: [
+          <span class="hljs-string">'reload'</span>,<span class="hljs-string">'texCompiler'</span>
+        ]
+      },
+
       <span class="hljs-attr">pm2_stop</span>:{
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
         <span class="hljs-attr">args</span>: [
-          <span class="hljs-string">'stop'</span>,
-          <span class="hljs-string">'all'</span>
+          <span class="hljs-string">'stop'</span>,<span class="hljs-string">'texCompiler'</span>
         ]
       }
 
@@ -198,7 +210,13 @@
             
             <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'doc'</span>,[<span class="hljs-string">'docco'</span>]);
 
-  grunt.registerTask(<span class="hljs-string">'pm2 start'</span>,[<span class="hljs-string">'run:pm2_start'</span>]);
+  grunt.registerTask(<span class="hljs-string">'start'</span>,[<span class="hljs-string">'run:pm2_start'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'stop'</span>,[<span class="hljs-string">'run:pm2_stop'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'reload'</span>,[<span class="hljs-string">'run:pm2_reload'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'restart'</span>,[<span class="hljs-string">'run:pm2_restart'</span>]);
 };</pre></div></div>
             
         </li>

@@ -65,15 +65,33 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <p>La conexión con el servidor RabbitMQ se ha basado en el tutorial que proponen en su web
+titulado: RPC. Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html">https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html</a></p>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
-<span class="hljs-keyword">const</span> fileUpload = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express-fileupload'</span>);
-<span class="hljs-keyword">const</span> app  = express();
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">const</span> express        = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> fileUpload     = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express-fileupload'</span>);
 <span class="hljs-keyword">const</span> uniqueFilename = <span class="hljs-built_in">require</span>(<span class="hljs-string">'unique-filename'</span>);
-<span class="hljs-keyword">const</span> amqp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'amqplib/callback_api'</span>);
-<span class="hljs-keyword">const</span> worker = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./worker'</span>);
+<span class="hljs-keyword">const</span> amqp           = <span class="hljs-built_in">require</span>(<span class="hljs-string">'amqplib/callback_api'</span>);
+<span class="hljs-keyword">const</span> worker         = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./worker'</span>);
+<span class="hljs-keyword">const</span> app            = express();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Nombre de la cola de RabbitMQ</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> queue = <span class="hljs-string">'compiler_queue'</span>;
 
 <span class="hljs-keyword">const</span> PORT = process.env.PORT || <span class="hljs-number">5000</span>;
 
@@ -104,25 +122,81 @@ app.post(<span class="hljs-string">'/compilar'</span>,(req,res) =&gt;{
 
             connection.createChannel(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error1, channel</span>) </span>{
                 <span class="hljs-keyword">if</span> (error1)
-                    <span class="hljs-keyword">throw</span> error1;
-                
-                channel.assertQueue(<span class="hljs-string">''</span>, {
+                    <span class="hljs-keyword">throw</span> error1;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>El primer argumento es un String vacío para que genere un nombre aleatorio para la cola
+De esta forma cada cliente tiene su propia “callback queue”</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                channel.assertQueue(<span class="hljs-string">''</span>, {
                     <span class="hljs-attr">exclusive</span>: <span class="hljs-literal">true</span>
                 }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error2, q</span>) </span>{
                     <span class="hljs-keyword">if</span> (error2) {
                         <span class="hljs-keyword">throw</span> error2;
-                    }
-                    <span class="hljs-keyword">var</span> correlationId = generateUuid();
-                    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Enviando petición de compilar..."</span>);
+                    }</pre></div></div>
+            
+        </li>
         
-                    channel.consume(q.queue, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>este ID asegura que el “worker” sabrá a que cliente debe devolver la petición</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">var</span> correlationId = generateUuid();
+                    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Enviando petición de compilar..."</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>si se recibe un mensaje con el id generado
+esa es la respuesta del servidor, por tanto devolvemos el archivo 
+generado por la API REST</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    channel.consume(q.queue, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{
                         <span class="hljs-keyword">if</span> (msg.properties.correlationId === correlationId) 
                             res.download(msg.content.toString());
                     }, {
                         <span class="hljs-attr">noAck</span>: <span class="hljs-literal">true</span>
-                    });
+                    });</pre></div></div>
+            
+        </li>
         
-                    channel.sendToQueue(<span class="hljs-string">'compiler_queue'</span>,
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>envío por la cola <code>queue</code> del nombre de archivo a compilar</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    channel.sendToQueue(queue,
                         Buffer.from(destino), {
                             <span class="hljs-attr">correlationId</span>: correlationId,
                             <span class="hljs-attr">replyTo</span>: q.queue
@@ -137,10 +211,28 @@ app.post(<span class="hljs-string">'/compilar'</span>,(req,res) =&gt;{
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.random().toString() +
         <span class="hljs-built_in">Math</span>.random().toString() +
         <span class="hljs-built_in">Math</span>.random().toString();
-}
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>TODO: al ser la creación del canal de mensajería de naturaleza asíncrona
+creo que cabe la posibilidad de que Express inicie el servicio
+antes de que amqp haya creado su conexión y por tanto que una petición
+pueda fallar. Esto requiere reorganizar el código de worker.js para
+que trabaje con promesas, algo similar a Texcompiler.js
+y así dar la opción de poder esperar a que se ejecute correctamente. </p>
 
-worker();
-app.listen(PORT, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Servidor iniciado en puerto: <span class="hljs-subst">${PORT}</span>`</span>));
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>worker();
+app.listen(PORT, () =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Servidor iniciado en puerto: <span class="hljs-subst">${PORT}</span>`</span>))
 
 <span class="hljs-built_in">module</span>.exports = app;</pre></div></div>
             

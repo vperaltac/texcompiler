@@ -68,31 +68,131 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-meta">#!/usr/bin/env node</span>
-<span class="hljs-keyword">const</span> amqp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'amqplib/callback_api'</span>);
-<span class="hljs-keyword">const</span> texCompiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./texCompiler'</span>); 
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">#!/usr/bin/env node</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>lado del “servidor” de RabbitMQ
+esta función se ha basado en el tutorial que proponen en la web de RabbitMQ
+titulado: RPC. Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html">https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html</a></p>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">worker</span>(<span class="hljs-params"></span>)</span>{
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>RabbitMQ requiere utilizar el protocolo amqp</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> amqp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'amqplib/callback_api'</span>);
+<span class="hljs-keyword">const</span> texCompiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./texCompiler'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Nombre de la cola de RabbitMQ</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> queue = <span class="hljs-string">'compiler_queue'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Recibe un mensaje a través de la cola ´queue´ para realizar el trabajo de compilación del archivo dado
+El mensaje debe contener el nombre del archivo fuente a compilar.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">worker</span>(<span class="hljs-params"></span>)</span>{
     amqp.connect(<span class="hljs-string">'amqp://localhost'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error0, connection</span>) </span>{
         <span class="hljs-keyword">if</span> (error0)
             <span class="hljs-keyword">throw</span> error0;
 
         connection.createChannel(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error1, channel</span>) </span>{
             <span class="hljs-keyword">if</span> (error1) 
-                <span class="hljs-keyword">throw</span> error1;
-                
-            <span class="hljs-keyword">var</span> queue = <span class="hljs-string">'compiler_queue'</span>;
-            channel.assertQueue(queue, {
+                <span class="hljs-keyword">throw</span> error1;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Esta operación es idempotente, la cola sólo se creará
+si no existe previamente</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            channel.assertQueue(queue, {
                 <span class="hljs-attr">durable</span>: <span class="hljs-literal">false</span>
-            });
-            channel.prefetch(<span class="hljs-number">1</span>);
+            });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Para equilibrar la carga en el server si ejecutamos más de un worker
+hay que activar prefetch</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            channel.prefetch(<span class="hljs-number">1</span>);
+
             channel.consume(queue, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reply</span>(<span class="hljs-params">msg</span>)</span>{
                 <span class="hljs-keyword">let</span> fuente = msg.content.toString();
                 texCompiler(fuente,<span class="hljs-literal">false</span>)
                 .then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span>{
-                    <span class="hljs-keyword">let</span> pdf = fuente.replace(<span class="hljs-string">".tex"</span>, <span class="hljs-string">".pdf"</span>);
+                    <span class="hljs-keyword">let</span> pdf = fuente.replace(<span class="hljs-string">".tex"</span>, <span class="hljs-string">".pdf"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>el campo replyTo almacena la cola anónima generada por el cliente</p>
 
-                    channel.sendToQueue(msg.properties.replyTo,
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                    channel.sendToQueue(msg.properties.replyTo,
                         Buffer.from(pdf.toString()), {
                             <span class="hljs-attr">correlationId</span>: msg.properties.correlationId
                         });

@@ -1,9 +1,15 @@
-const express = require('express');
-const fileUpload = require('express-fileupload');
-const app  = express();
+// La conexión con el servidor RabbitMQ se ha basado en el tutorial que proponen en su web
+// titulado: RPC. Link: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+
+const express        = require('express');
+const fileUpload     = require('express-fileupload');
 const uniqueFilename = require('unique-filename');
-const amqp = require('amqplib/callback_api');
-const worker = require('./worker');
+const amqp           = require('amqplib/callback_api');
+const worker         = require('./worker');
+const app            = express();
+
+// Nombre de la cola de RabbitMQ
+const queue = 'compiler_queue';
 
 const PORT = process.env.PORT || 5000;
 
@@ -36,15 +42,22 @@ app.post('/compilar',(req,res) =>{
                 if (error1)
                     throw error1;
                 
+                // El primer argumento es un String vacío para que genere un nombre aleatorio para la cola
+                // De esta forma cada cliente tiene su propia "callback queue"
                 channel.assertQueue('', {
                     exclusive: true
                 }, function(error2, q) {
                     if (error2) {
                         throw error2;
                     }
+
+                    // este ID asegura que el "worker" sabrá a que cliente debe devolver la petición
                     var correlationId = generateUuid();
                     console.log("Enviando petición de compilar...");
         
+                    // si se recibe un mensaje con el id generado
+                    // esa es la respuesta del servidor, por tanto devolvemos el archivo 
+                    // generado por la API REST
                     channel.consume(q.queue, function(msg) {
                         if (msg.properties.correlationId === correlationId) 
                             res.download(msg.content.toString());
@@ -52,7 +65,8 @@ app.post('/compilar',(req,res) =>{
                         noAck: true
                     });
         
-                    channel.sendToQueue('compiler_queue',
+                    // envío por la cola `queue` del nombre de archivo a compilar
+                    channel.sendToQueue(queue,
                         Buffer.from(destino), {
                             correlationId: correlationId,
                             replyTo: q.queue
@@ -69,7 +83,13 @@ function generateUuid() {
         Math.random().toString();
 }
 
+// TODO: al ser la creación del canal de mensajería de naturaleza asíncrona
+// creo que cabe la posibilidad de que Express inicie el servicio
+// antes de que amqp haya creado su conexión y por tanto que una petición
+// pueda fallar. Esto requiere reorganizar el código de worker.js para
+// que trabaje con promesas, algo similar a Texcompiler.js
+// y así dar la opción de poder esperar a que se ejecute correctamente. 
 worker();
-app.listen(PORT, () => console.log(`Servidor iniciado en puerto: ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor iniciado en puerto: ${PORT}`))
 
 module.exports = app;

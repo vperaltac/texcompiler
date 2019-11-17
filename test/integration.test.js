@@ -25,7 +25,7 @@ describe('Express tests', function(){
               });
     });
 
-    it('debería devolver el pdf compilado', function(done){
+    it('debería avisar si el nombre es incorrecto', function(done){
         request(app)
             .post('/compilar')
             .set('Content-Type','application/x-www-form-urlencoded')

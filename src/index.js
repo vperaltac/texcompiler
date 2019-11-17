@@ -28,40 +28,37 @@ app.post('/compilar',(req,res) =>{
             return res.status(500).send(err);
 
         amqp.connect('amqp:://localhost')
+        .then(connection => connection.createChannel())
+        .then(channel => channel.assertQueue('',{exclusive:true}))
+        .then(q => {
+            let correlationId = generateUuid();
+            console.log("Enviando petición de compilar...");
+
+            channel.consume(q.queue)
+            .then(msg =>{
+                if (msg.properties.correlationId === correlationId) {
+                    res.download(msg.content.toString());
+
+                    /*connection.close();
+                    process.exit(0);*/                
+                }
+            },{ noAck:true });
+
+            channel.sendToQueue('compiler_queue',
+            Buffer.from(destino), {
+                correlationId: correlationId,
+                replyTo: q.queue
+            });
+        })
+        .catch(error2 =>{
+            throw error2;
+        })
+        .catch(error1 =>{
+            throw error1;
+        })        
         .catch(error0 =>{
             throw error0;
-        })
-        .then(connection => connection.createChannel())
-            .catch(error1 =>{
-                throw error1;
-            })
-            .then(channel => channel.assertQueue('',{exclusive:true}))
-                .catch(error2 =>{
-                    throw error2;
-                })
-                .then(q => {
-                    let correlationId = generateUuid();
-                    console.log("Enviando petición de compilar...");
-                    channel.consume(q.queue)
-                    .then(msg =>{
-                        if (msg.properties.correlationId === correlationId) {
-                            res.download(msg.content.toString());
-
-                            console.log(' [.] Got %s', msg.content.toString());
-                            setTimeout(function() {
-                                connection.close();
-                                process.exit(0);
-                            }, 500);
-                        }
-    
-                    },{ noAck:true })
-
-                    channel.sendToQueue('compiler_queue',
-                    Buffer.from(num.toString()), {
-                        correlationId: correlationId,
-                        replyTo: q.queue
-                    });
-                })
+        });
     });
 });
 

@@ -2,10 +2,6 @@
 
 # Herramientas de construcción
 ## Grunt
-He utilizado Grunt para automatizar la generación de documentación de docco, así como realizar los tests desarrollados con Mocha y Chai y realizar una limpieza de los archivos generados durante el testeo. El archivo de configuración de Grunt es el siguiente:
-
-
-## Grunt
 Mi herramienta principal de construcción es [__Grunt__](https://gruntjs.com/).  
 Grunt permite automatizar todo tipo de tareas desde compilación y minificación hasta tests unitarios o de integración.
 La configuración de dicha herramienta se hace a través del archivo `Gruntfile.js`, el cual sigue una configuración similar a `package.json`.

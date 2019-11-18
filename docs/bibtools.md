@@ -1,4 +1,4 @@
-<!-- bibtests.md -->
+<!-- bibtools.md -->
 
 # Bibliotecas y herramientas utilizadas
 Todas las bibliotecas se encuentran listadas en el archivo `package.json`:

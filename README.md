@@ -28,12 +28,27 @@ Para instalar el proyecto basta con ejecutar:
 npm install 
 ```
 
+## Cómo lanzar la aplicación
+```
+grunt start
+```
+
+## Cómo parar la aplicación
+```
+grunt stop
+```
+
 ## Cómo ejecutar los tests
 Para ejecutar los tests utiliza:
 ```
 grunt test
 ```
-De esta forma se ejecutarán los tests con `npm test` y se limpiarán los archivos generados durante el proceso.
+Las pruebas se ejecutan con `npm test` y se elimina automáticamente los archivos generados durante el proceso.
+
+## Buildtool
+```
+buildtool: Gruntfile.js
+```
 
 ## Documentación adicional
 Visita la [web de documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.

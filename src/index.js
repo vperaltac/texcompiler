@@ -36,18 +36,18 @@ app.get('/status',(req,res) =>{
 });
 
 /**
- * @api {post} /compilar Devuelve OK si el servicio está disponible
+ * @api {post} /compilar Compila un archivo en formato TEX a un documento PDF
  * @apiName postCompilar
  * @apiGroup main
  *
- * @apiSuccess {File} PDF compilado
+ * @apiSuccess {File} documento PDF resultado de la compilación
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *
  * @apiError FileNotFound No se encontró el archivo fuente.
  * @apiError WrongName Nombre incorrecto.
  * @apiErrorExample {String} Error-Response:
- *     HTTP/1.1 404 Not Found
+ *     HTTP/1.1 400 Bad Request
  *      String indicando error
  */
 

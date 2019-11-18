@@ -2,7 +2,7 @@
   {
     "type": "post",
     "url": "/compilar",
-    "title": "Devuelve OK si el servicio está disponible",
+    "title": "Compila un archivo en formato TEX a un documento PDF",
     "name": "postCompilar",
     "group": "main",
     "success": {
@@ -12,8 +12,8 @@
             "group": "Success 200",
             "type": "File",
             "optional": false,
-            "field": "PDF",
-            "description": "<p>compilado</p>"
+            "field": "documento",
+            "description": "<p>PDF resultado de la compilación</p>"
           }
         ]
       },
@@ -45,7 +45,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n String indicando error",
+          "content": "HTTP/1.1 400 Bad Request\n String indicando error",
           "type": "String"
         }
       ]

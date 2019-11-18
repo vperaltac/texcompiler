@@ -16,9 +16,40 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(fileUpload());
 
+/**
+ * @api {get} /status Devuelve OK si el servicio está disponible
+ * @apiName getStatus
+ * @apiGroup test
+ *
+ * @apiSuccess {json} Status: OK
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "status": "OK"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ */
 app.get('/status',(req,res) =>{
     res.status(200).json({status: 'OK'})
 });
+
+/**
+ * @api {post} /compilar Devuelve OK si el servicio está disponible
+ * @apiName postCompilar
+ * @apiGroup main
+ *
+ * @apiSuccess {File} PDF compilado
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *
+ * @apiError FileNotFound No se encontró el archivo fuente.
+ * @apiError WrongName Nombre incorrecto.
+ * @apiErrorExample {String} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *      String indicando error
+ */
 
 app.post('/compilar',(req,res) =>{
     if(!req.files)

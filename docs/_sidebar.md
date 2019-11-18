@@ -6,9 +6,10 @@
 * Documentación
   * [Integración continua](integracion_continua.md)
   * [Bibliotecas y herramientas](bibtools.md)
-  * [Información sobre el código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/Gruntfile.html)
   * [Herramientas de construcción](tools_construccion.md)
-  * [Tests unitarios y funcionales](tests.md)
+  * [Tests, rutas y tareas](tests.md)
+  * [API REST](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html)
+  * [Información sobre el código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/Gruntfile.html)
 
 * Otra información
   * [Diario de desarrollo](diario.md)

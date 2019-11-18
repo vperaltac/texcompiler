@@ -31,9 +31,11 @@ Las pruebas se ejecutan con `npm test` y se elimina automáticamente los archivo
 
 ## A donde ir desde aquí
 
-* [Diario de desarrollo](diario.md)
+* [Descripción del proyecto](descripcion.md)
+* [Documentación sobre la herramienta de construcción](tools_construccion.md)
+* [Documentación sobre tests, rutas y tareas](tests.md)
 * [Documentación sobre la integración continua](integracion_continua.md)
 * [Documentación sobre bibliotecas y herramientas utilizadas](bibtools.md)
-* [Documentación sobre la herramienta de construcción](tools_construccion.md)
-* [Documentación sobre tests](tests.md)
+* [Documentación de API REST](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html)
 * [Documentación del código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/Gruntfile.html)
+* [Diario de desarrollo](diario.md)

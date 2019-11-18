@@ -1,61 +1,4 @@
-<!-- _tests.md -->
-# Herramientas de Test utilizadas
-## Chai
-Chai es una biblioteca de aserciones para node. La he utilizado junto a Mocha para realizar tests sobre la biblioteca desarrollada hasta el momento.
-
-## Mocha
-Mocha es un framework de pruebas para node. Junto a chai se convierte en una herramienta muy útil para realizar tests sobre las bibliotecas y clases de nuestro proyecto. Mocha proporciona una sintaxis muy legible y fácil de leer aunque no se esté muy familiarizado con la herramienta.
-
-## Sinon
-Biblioteca muy conocida para hacer mocks en NodeJS. En mi caso, la he utilizado para "espiar" las salidas por la consola y así poder utilizar las mismas en los tests.
-
-## istanbul (nyc)
-El objetivo principal del uso de esta herramienta es generar información sobre la cobertura de código de mi proyecto.
->Aviso: las versiones de esta biblioteca son muy confusas, ya que su versión antigua (deprecated) se llama istanbul. Si quieres utilizarla debes instalar __nyc__.
-
-## Supertest
-Biblioteca para realizar tests a traves de HTTP. Muy útil para hacer tests de integración a la app desarrollada con Express.
-
-## Tests Unitarios
-
-Los tests unitarios del proyecto son los siguientes:
-```
-describe('Tests unitarios para TexCompiler', function(){
-    beforeEach(function() {
-        sinon.spy(console, 'log');
-    });
-    
-    afterEach(function() {
-        console.log.restore();
-    });
-
-    it('Debería cargar la biblioteca y poder instanciarse',function(){
-        expect(texCompiler).to.exist
-    })
-
-    it('Debería informar de que el archivo tiene una extensión errónea',function(){
-        texCompiler('ejemplo.tar',false);
-        expect(console.log.calledWith('Formato incorrecto.')).to.be.true;
-    })
-
-    it('Debería informar de que recibe un archivo que no existe',function(){
-        texCompiler('archivo_fantasma.tex',false);
-        expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
-    })
-
-    it('Debería confirmar que la ejecución ha sido correcta.',function(done){
-        texCompiler('ejemplo.tex',false);
-        done();
-        expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
-    })
-})
-```
-
-Para ejecutar los tests puedes utilizar:
-* Tests unitarios: `grunt unit-test`
-* Tests de integración `grunt int-test`
-
-
+<!-- tests.md -->
 ## Tests de Integración e Historias de Usuario
 Las historias de usuario cubiertas hasta el momento son las siguiente:
 * Dada una cadena de texto devuelve status OK y una lista vacía 
@@ -129,3 +72,107 @@ it('debería devolver el pdf compilado', function(done){
 ```
 
 Para saber más sobre este último test, puedes leer el apartado "Testeando con supertest y RabbitMQ" del [diario de desarrollo](diario.md).
+
+
+## Tests Unitarios
+
+Los tests unitarios del proyecto son los siguientes:
+```
+describe('Tests unitarios para TexCompiler', function(){
+    beforeEach(function() {
+        sinon.spy(console, 'log');
+    });
+    
+    afterEach(function() {
+        console.log.restore();
+    });
+
+    it('Debería cargar la biblioteca y poder instanciarse',function(){
+        expect(texCompiler).to.exist
+    })
+
+    it('Debería informar de que el archivo tiene una extensión errónea',function(){
+        texCompiler('ejemplo.tar',false);
+        expect(console.log.calledWith('Formato incorrecto.')).to.be.true;
+    })
+
+    it('Debería informar de que recibe un archivo que no existe',function(){
+        texCompiler('archivo_fantasma.tex',false);
+        expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
+    })
+
+    it('Debería confirmar que la ejecución ha sido correcta.',function(done){
+        texCompiler('ejemplo.tex',false);
+        done();
+        expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
+    })
+})
+```
+
+Para ejecutar los tests puedes utilizar:
+* Tests unitarios: `grunt unit-test`
+* Tests de integración `grunt int-test`
+
+## Documentación de tareas
+Para implementar el sistema de mensajería he utilizado el patrón _Remote Procedure Call_ o _RPC_. Es perfecto para mi aplicación ya que no solo envía el mensaje si no que recibe una respuesta cuando la tarea ha finalizado.
+La idea principal es que en cada petición se abre un canal anónimo `callback`. Se informa de dicho canal al receptor para que cuando termine la tarea lo utilice para informar de ello.
+
+La tarea principal sigue el siguiente recorrido:
+
+Primero el cliente abre una conexión con `amqp`, crea un canal y crea una cola con nombre aleatorio.
+
+```
+...
+amqp.connect('amqp://localhost', function(error0, connection) {
+    ...
+    connection.createChannel(function(error1, channel) {
+        ...
+        channel.assertQueue('', {
+            exclusive: true
+        }, function(error2, q) {
+            if (error2) {
+                throw error2;
+            }
+        ...
+... 
+```
+A continuación, se envía a través de la cola `compiler_queue` el mensaje.
+
+```
+channel.sendToQueue(queue,
+    Buffer.from(destino), {
+        correlationId: correlationId,
+        replyTo: q.queue
+    });
+
+```
+El servidor (o worker) recibe el mensaje y comienza la compilación del archivo
+```
+channel.consume(queue, function reply(msg){
+    let fuente = msg.content.toString();
+    texCompiler(fuente,false)
+```
+
+Cuando la tarea ha finalizado, se envía la respuesta al canal anónimo que proporcionó el cliente.
+
+```
+channel.sendToQueue(msg.properties.replyTo,
+    Buffer.from(pdf.toString()), {
+        correlationId: msg.properties.correlationId
+    });
+
+channel.ack(msg);
+
+```
+
+Por último, el cliente recibe la respuesta y envía por la API REST el archivo PDF compilado.
+```
+channel.consume(q.queue, function(msg) {
+    if (msg.properties.correlationId === correlationId){
+        res.download(msg.content.toString());
+    }
+}, {
+    noAck: true
+});
+
+```

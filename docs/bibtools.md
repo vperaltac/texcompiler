@@ -52,4 +52,21 @@ Biblioteca que utiliza el estándar [AMQP](https://es.wikipedia.org/wiki/Advance
 
 ## apidoc
 
-Genera documentación sobre una API REST implementada, tiene su sintaxis propia similar a doxygen. Muy útil para ahorrar tiempo en documentación. Se puede ver el resultado de esta operación [aquí]().
+Genera documentación sobre una API REST implementada, tiene su sintaxis propia similar a doxygen. Muy útil para ahorrar tiempo en documentación. Se puede ver el resultado de esta operación [aquí](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html).
+
+# Herramientas de Test utilizadas
+## Chai
+Chai es una biblioteca de aserciones para node. La he utilizado junto a Mocha para realizar tests sobre la biblioteca desarrollada hasta el momento.
+
+## Mocha
+Mocha es un framework de pruebas para node. Junto a chai se convierte en una herramienta muy útil para realizar tests sobre las bibliotecas y clases de nuestro proyecto. Mocha proporciona una sintaxis muy legible y fácil de leer aunque no se esté muy familiarizado con la herramienta.
+
+## Sinon
+Biblioteca muy conocida para hacer mocks en NodeJS. En mi caso, la he utilizado para "espiar" las salidas por la consola y así poder utilizar las mismas en los tests.
+
+## istanbul (nyc)
+El objetivo principal del uso de esta herramienta es generar información sobre la cobertura de código de mi proyecto.
+>Aviso: las versiones de esta biblioteca son muy confusas, ya que su versión antigua (deprecated) se llama istanbul. Si quieres utilizarla debes instalar __nyc__.
+
+## Supertest
+Biblioteca para realizar tests a traves de HTTP. Muy útil para hacer tests de integración a la app desarrollada con Express.

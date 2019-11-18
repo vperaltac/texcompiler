@@ -23,14 +23,22 @@ module.exports = function(grunt) {
           'test'
         ]
       },
+
       npm_unit_test: {
         cmd: 'npm',
         args: ['run','unit-test']
       },
+
       npm_int_test: {
         cmd: 'npm',
         args: ['run','int-test']
       },
+
+      npm_report_coverage:{
+        cmd: 'npm',
+        args: ['run','report-coverage']
+      },
+
       pm2_start:{
         cmd: 'pm2',
         args: ['start','src/index.js','--name','texCompiler']
@@ -85,4 +93,6 @@ module.exports = function(grunt) {
 
   // Tarea para reiniciar el servicio con pm2
   grunt.registerTask('restart',['run:pm2_restart']);
+
+  grunt.registerTask('report-coverage',['run:npm_report_coverage']);
 };

@@ -40,6 +40,16 @@
                 </a>
               
                 
+                <a class="source" href="integration.test.html">
+                  integration.test.js
+                </a>
+              
+                
+                <a class="source" href="tests.html">
+                  tests.js
+                </a>
+              
+                
                 <a class="source" href="texCompiler.test.html">
                   texCompiler.test.js
                 </a>
@@ -99,7 +109,7 @@ app.use(express.json());
 app.use(fileUpload());
 
 app.get(<span class="hljs-string">'/status'</span>,(req,res) =&gt;{
-    res.json({<span class="hljs-attr">status</span>: <span class="hljs-string">'OK'</span>})
+    res.status(<span class="hljs-number">200</span>).json({<span class="hljs-attr">status</span>: <span class="hljs-string">'OK'</span>})
 });
 
 app.post(<span class="hljs-string">'/compilar'</span>,(req,res) =&gt;{
@@ -177,8 +187,9 @@ generado por la API REST</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>                    channel.consume(q.queue, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{
-                        <span class="hljs-keyword">if</span> (msg.properties.correlationId === correlationId) 
+                        <span class="hljs-keyword">if</span> (msg.properties.correlationId === correlationId){
                             res.download(msg.content.toString());
+                        }
                     }, {
                         <span class="hljs-attr">noAck</span>: <span class="hljs-literal">true</span>
                     });</pre></div></div>

@@ -71,15 +71,18 @@ module.exports = function(grunt) {
   // Tarea para ejecutar los tests de integración
   grunt.registerTask('int-test',['run:npm_int_test','clean'])
 
-
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);
 
+  // Tarea para lanzar el servicio con pm2
   grunt.registerTask('start',['run:pm2_start']);
 
+  // Tarea para parar el servicio con pm2
   grunt.registerTask('stop',['run:pm2_stop']);
 
+  // Tarea para recargar el servicio con pm2
   grunt.registerTask('reload',['run:pm2_reload']);
 
+  // Tarea para reiniciar el servicio con pm2
   grunt.registerTask('restart',['run:pm2_restart']);
 };

@@ -15,4 +15,5 @@ jobs:
       - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt int-test
       - run: npm run report-coverage
       - codecov/upload:
-          file: coverage.lcov 
+            file: coverage.lcov 
+            token: 'baf43e83-f8a5-4937-bb36-90d34ba48914'

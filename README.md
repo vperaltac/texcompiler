@@ -54,7 +54,7 @@ buildtool: Gruntfile.js
 Visita la [web de documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.
 
 * [Descripción del proyecto](https://victorperalta93.github.io/IV-Proyecto/#/descripcion)
-* [Documentación sobre la herramienta de construcción]([tools_construccion.md](https://victorperalta93.github.io/IV-Proyecto/#/tools_construccion))
+* [Documentación sobre la herramienta de construcción](https://victorperalta93.github.io/IV-Proyecto/#/tools_construccion)
 * [Documentación sobre tests, rutas y tareas](https://victorperalta93.github.io/IV-Proyecto/#/tests)
 * [Documentación sobre la integración continua](https://victorperalta93.github.io/IV-Proyecto/#/integracion_continua)
 * [Documentación sobre bibliotecas y herramientas utilizadas](https://victorperalta93.github.io/IV-Proyecto/#/bibtools)

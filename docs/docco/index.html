@@ -108,6 +108,38 @@ titulado: RPC. Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-six-ja
 app.use(express.json());
 app.use(fileUpload());
 
+<span class="hljs-comment">/*
+ * Basic Example
+ *
+ * This is a basic example for apiDoc.
+ * Documentation blocks without @api (like this block) will be ignored.
+ */</span>
+
+<span class="hljs-comment">/**
+ * @api {get} /user/:id Get User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "firstname": "John",
+ *       "lastname": "Doe"
+ *     }
+ *
+ * @apiError UserNotFound The &lt;code&gt;id&lt;/code&gt; of the User was not found.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotFound"
+ *     }
+ */</span>
 app.get(<span class="hljs-string">'/status'</span>,(req,res) =&gt;{
     res.status(<span class="hljs-number">200</span>).json({<span class="hljs-attr">status</span>: <span class="hljs-string">'OK'</span>})
 });

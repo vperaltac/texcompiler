@@ -1,6 +1,9 @@
 <!-- tools_construccion.md -->
 
 # Herramientas de construcción
+## Grunt
+He utilizado Grunt para automatizar la generación de documentación de docco, así como realizar los tests desarrollados con Mocha y Chai y realizar una limpieza de los archivos generados durante el testeo. El archivo de configuración de Grunt es el siguiente:
+
 
 ## Grunt
 Mi herramienta principal de construcción es [__Grunt__](https://gruntjs.com/).  
@@ -25,7 +28,7 @@ module.exports = function(grunt) {
         }
         }
     },
-    
+
     clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf','doc/*.fdb*','doc/*.fls'],
 
     run: {
@@ -73,6 +76,16 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.config.set('apidoc', {
+    tex: {
+      src: "src/",
+      dest: "docs/apidoc/"
+    }
+  });
+
+  // Carga el plugin para generar la documentación de la API REST
+  grunt.loadNpmTasks('grunt-apidoc');
+
   // Carga el plugin de grunt para generar documentación con docco
   grunt.loadNpmTasks('grunt-docco');
 
@@ -110,7 +123,7 @@ module.exports = function(grunt) {
 };
 ```
 
-Vamos a enumerar y explicar cada una de las tareas por el orden en que aparecen en el archivo:
+Vamos a enumerar y explicar cada una de las tareas o *tasks* por el orden en que aparecen en el archivo:
 
 * __test__: ejecuta los tests tanto unitarios como de integración del proyecto. Además, ejecuta la orden clean para hacer limpieza de archivos generados durante los tests. Dicha orden se puede ver más abajo.
 * __unit-test__: ejecuta los tests unitarios del proyecto. Esta tarea está pensada para ser ejecuta en integración continua. Al terminar los tests limpia los archivos generados.

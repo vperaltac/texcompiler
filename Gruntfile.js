@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         }
         }
     },
-    
+
     clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf','doc/*.fdb*','doc/*.fls'],
 
     run: {
@@ -60,6 +60,16 @@ module.exports = function(grunt) {
       }
     }
   });
+
+  grunt.config.set('apidoc', {
+    tex: {
+      src: "src/",
+      dest: "docs/apidoc/"
+    }
+  });
+
+  // Carga el plugin para generar la documentación de la API REST
+  grunt.loadNpmTasks('grunt-apidoc');
 
   // Carga el plugin de grunt para generar documentación con docco
   grunt.loadNpmTasks('grunt-docco');

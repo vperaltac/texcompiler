@@ -105,7 +105,14 @@
         }
         }
     },
-    
+
+    <span class="hljs-attr">apidoc</span>: {
+      <span class="hljs-attr">texCompiler</span>: {
+        <span class="hljs-attr">src</span>: <span class="hljs-string">"src/"</span>,
+        <span class="hljs-attr">dest</span>: <span class="hljs-string">"docs/apidoc/"</span>
+      }
+    },
+
     <span class="hljs-attr">clean</span>: [<span class="hljs-string">'doc/*.aux'</span>,<span class="hljs-string">'doc/*.log'</span>,<span class="hljs-string">'doc/*.gz'</span>,<span class="hljs-string">'doc/*.pdf'</span>,<span class="hljs-string">'doc/*.fdb*'</span>,<span class="hljs-string">'doc/*.fls'</span>],
 
     <span class="hljs-attr">run</span>: {
@@ -115,14 +122,22 @@
           <span class="hljs-string">'test'</span>
         ]
       },
+
       <span class="hljs-attr">npm_unit_test</span>: {
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'npm'</span>,
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'run'</span>,<span class="hljs-string">'unit-test'</span>]
       },
+
       <span class="hljs-attr">npm_int_test</span>: {
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'npm'</span>,
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'run'</span>,<span class="hljs-string">'int-test'</span>]
       },
+
+      <span class="hljs-attr">npm_report_coverage</span>:{
+        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'npm'</span>,
+        <span class="hljs-attr">args</span>: [<span class="hljs-string">'run'</span>,<span class="hljs-string">'report-coverage'</span>]
+      },
+
       <span class="hljs-attr">pm2_start</span>:{
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'start'</span>,<span class="hljs-string">'src/index.js'</span>,<span class="hljs-string">'--name'</span>,<span class="hljs-string">'texCompiler'</span>]
@@ -143,6 +158,13 @@
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'stop'</span>,<span class="hljs-string">'texCompiler'</span>]
       }
     }
+  });
+
+  grunt.config.set(<span class="hljs-string">'apidoc'</span>, {
+    <span class="hljs-attr">texCompiler</span>: {
+      <span class="hljs-attr">src</span>: <span class="hljs-string">"src/"</span>,
+      <span class="hljs-attr">dest</span>: <span class="hljs-string">"docs/apidoc/"</span>
+    }
   });</pre></div></div>
             
         </li>
@@ -154,11 +176,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Carga el plugin de grunt para generar documentación con docco</p>
+              <p>Carga el plugin para generar la documentación de la API REST</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-docco'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-apidoc'</span>);</pre></div></div>
             
         </li>
         
@@ -169,11 +191,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Carga el plugin de grunt para eliminar archivos</p>
+              <p>Carga el plugin de grunt para generar documentación con docco</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-clean'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-docco'</span>);</pre></div></div>
             
         </li>
         
@@ -184,11 +206,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Carga el plugin para ejecutar comandos de la terminal</p>
+              <p>Carga el plugin de grunt para eliminar archivos</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-run'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-clean'</span>);</pre></div></div>
             
         </li>
         
@@ -199,11 +221,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Tarea para ejecutar todos los tests</p>
+              <p>Carga el plugin para ejecutar comandos de la terminal</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'test'</span>, [<span class="hljs-string">'run:npm_test'</span>,<span class="hljs-string">'clean'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-run'</span>);</pre></div></div>
             
         </li>
         
@@ -214,11 +236,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Tarea para ejecutar los tests unitarios</p>
+              <p>Tarea para ejecutar todos los tests</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'unit-test'</span>,[<span class="hljs-string">'run:npm_unit_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'test'</span>, [<span class="hljs-string">'run:npm_test'</span>,<span class="hljs-string">'clean'</span>]);</pre></div></div>
             
         </li>
         
@@ -229,11 +251,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Tarea para ejecutar los tests de integración</p>
+              <p>Tarea para ejecutar los tests unitarios</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'int-test'</span>,[<span class="hljs-string">'run:npm_int_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'unit-test'</span>,[<span class="hljs-string">'run:npm_unit_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
             
         </li>
         
@@ -244,11 +266,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados</p>
+              <p>Tarea para ejecutar los tests de integración</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'doc'</span>,[<span class="hljs-string">'docco'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'int-test'</span>,[<span class="hljs-string">'run:npm_int_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
             
         </li>
         
@@ -259,11 +281,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Tarea para lanzar el servicio con pm2</p>
+              <p>Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'start'</span>,[<span class="hljs-string">'run:pm2_start'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'doc'</span>,[<span class="hljs-string">'docco'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'apidoc'</span>,[<span class="hljs-string">'apidoc:texCompiler'</span>]);</pre></div></div>
             
         </li>
         
@@ -274,11 +298,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Tarea para parar el servicio con pm2</p>
+              <p>Tarea para lanzar el servicio con pm2</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'stop'</span>,[<span class="hljs-string">'run:pm2_stop'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'start'</span>,[<span class="hljs-string">'run:pm2_start'</span>]);</pre></div></div>
             
         </li>
         
@@ -289,11 +313,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Tarea para recargar el servicio con pm2</p>
+              <p>Tarea para parar el servicio con pm2</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'reload'</span>,[<span class="hljs-string">'run:pm2_reload'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'stop'</span>,[<span class="hljs-string">'run:pm2_stop'</span>]);</pre></div></div>
             
         </li>
         
@@ -304,11 +328,28 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
+              <p>Tarea para recargar el servicio con pm2</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'reload'</span>,[<span class="hljs-string">'run:pm2_reload'</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
               <p>Tarea para reiniciar el servicio con pm2</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'restart'</span>,[<span class="hljs-string">'run:pm2_restart'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'report-coverage'</span>,[<span class="hljs-string">'run:npm_report_coverage'</span>]);
 };</pre></div></div>
             
         </li>

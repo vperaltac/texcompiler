@@ -3,7 +3,7 @@ const chai    = require('chai');
 const request = require('supertest');
 const expect  = chai.expect;
 
-describe('Express tests', function(){
+describe('Tests de integración', function(){
     it('debería devolver Status: OK', function(done){
         request(app)
             .get('/status')

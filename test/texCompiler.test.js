@@ -13,7 +13,7 @@ chai.use(sinonChai);
 //  * Manejo de archivos con extensión errónea
 //  * Manejo de archivos no existentes
 //  * Confirmación de ejecución correcta
-describe('TexCompiler', function(){
+describe('Tests unitarios para TexCompiler', function(){
     beforeEach(function() {
         sinon.spy(console, 'log');
     });

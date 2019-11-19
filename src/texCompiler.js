@@ -50,10 +50,8 @@ async function texCompiler(archivo,tex_output){
     // comprobar archivo de salida
     if(fs.existsSync(salida))
         console.log("Archivo creado con éxito.");
-    else if(fs.existsSync('doc/texput.log')){
-        resultado=false;
+    else if(fs.existsSync('doc/texput.log'))
         console.log("Error en compilación. Leer texput.log para más información");
-    }
     else
         console.log("Error en compilación. " + salida + " no encontrado.");
 

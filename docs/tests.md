@@ -125,7 +125,7 @@ Para ejecutar los tests puedes utilizar:
 * Tests unitarios: `grunt unit-test`
 * Tests de integración `grunt int-test`
 
-Si quieres saber más sobre los tests unitarios, puedes leer la sección Testeando código asíncrono de mi [diario de desarrollo]((diario.md)).
+Si quieres saber más sobre los tests unitarios, puedes leer la sección Testeando código asíncrono de mi [diario de desarrollo](diario.md).
 
 ## Documentación de tareas
 Para implementar el sistema de mensajería he utilizado el patrón _Remote Procedure Call_ o _RPC_. Es perfecto para mi aplicación ya que no solo envía el mensaje si no que recibe una respuesta cuando la tarea ha finalizado.

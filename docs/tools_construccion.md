@@ -122,8 +122,11 @@ module.exports = function(grunt) {
 Vamos a enumerar y explicar cada una de las tareas o *tasks* por el orden en que aparecen en el archivo:
 
 * __test__: ejecuta los tests tanto unitarios como de integración del proyecto. Además, ejecuta la orden clean para hacer limpieza de archivos generados durante los tests. Dicha orden se puede ver más abajo.
-* __unit-test__: ejecuta los tests unitarios del proyecto. Esta tarea está pensada para ser ejecuta en integración continua. Al terminar los tests limpia los archivos generados.
-* __int-test__: ejecuta los tests de integración del proyecto. Esta tarea está pensada para ser ejecutada en integración continua. Al terminar los tests limpia los archivos generados.
+* __unit-test__: ejecuta los tests unitarios del proyecto. Esta tarea está pensada para ser ejecuta en integración continua. Travis CI se encarga de lanzar estos tests. Al finalizar limpia los archivos generados.
+* __int-test__: ejecuta los tests de integración del proyecto. Esta tarea está pensada para ser ejecutada en integración continua. CircleCI se encarga de lanzar estos tests. Al finalizar limpia los archivos generados.
+
+Para saber más sobre integración continua, puedes dirigirte a [su sección en la documentación](integracion_continua.md).
+
 * __doc__: genera la documentación del proyecto con docco.
 * __start__: arranca el proceso del proyecto mediante la herramienta __PM2__.
 * __stop__: detiene el proceso del proyecto mediante la herramienta __PM2__.

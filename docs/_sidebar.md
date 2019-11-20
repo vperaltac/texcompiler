@@ -1,7 +1,8 @@
 <!-- docs/_sidebar.md -->
 * Inicio
-  * [Guía Rapida](home.md)
+  * [Guía Rápida](home.md)
   * [Descripción detallada](descripcion.md)
+  * [Descripción de la biblioteca desarrollada](descripcion_bib.md)
 
 * Documentación
   * [Integración continua](integracion_continua.md)

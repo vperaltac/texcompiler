@@ -11,17 +11,6 @@ Proyecto para la asignatura Infraestructura Virtual (19-20).
 Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado para un editor de LaTeX en línea. Se implementará utilizando comunicación basada en eventos.
 Se pueden ver más detalles sobre la historia del proyecto en la sección de [proyectos](https://github.com/victorperalta93/IV-Proyecto/projects/1) de GitHub. Se actualizará debidamente cada vez que el cliente se ponga en contacto conmigo.
 
-## Descripción de la biblioteca desarrollada
-La biblioteca desarrollada es [texCompiler.js](src/texCompiler.js).  
-Recibe los siguientes parámetros:
-* `archivo`: archivo con extensión .tex para compilar. Debe estar en el directorio `doc`.
-* `tex_output`: 
-  * `true` para mostrar la salida que devuelve `pdflatex`.  
-  * `false` para no mostrarla.  
-
-La función principal de esta biblioteca es generar una salida en formato `pdf` de un archivo LaTeX. Por ahora esta función se realiza con llamadas síncronas en la terminal de Linux. En el futuro estas llamadas pasarán a ser asíncronas.
-Se trata de la función principal de mi proyecto, el resto del mismo se desarrollará con esta función como eje principal.
-
 ## Instalación
 Para instalar el proyecto basta con ejecutar:
 ```
@@ -45,7 +34,7 @@ grunt test
 ```
 Las pruebas se ejecutan con `npm test` y se elimina automáticamente los archivos generados durante el proceso.
 
-## Buildtool
+## Herramienta de construcción
 ```
 buildtool: Gruntfile.js
 ```

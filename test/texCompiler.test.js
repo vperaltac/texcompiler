@@ -43,7 +43,7 @@ describe('Tests unitarios para TexCompiler', function(){
         expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
     })
 
-    it('Deberia avisar de que hubo un error en compilación.',async() => {
+    it('Deberia lanzar una excepción si hubo un error en compilación.',async() => {
         expect(await texCompiler('doc/ejemplo_error.tex',true)).to.throw;
     })
 

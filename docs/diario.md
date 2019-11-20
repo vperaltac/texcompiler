@@ -32,3 +32,34 @@ it('debería devolver el pdf compilado', function(done){
 });
 ```
 Dicho test comprueba que el servicio web funciona correctamente, enviando un archivo con extensión TEX para ser compilado y recibiendo el PDF resultado. Esta prueba lanza el servicio de RabbitMQ, lo que causaba que los tests nunca terminaban porque el servicio no se cerraba. En los tutoriales que se ofrecen en la web de RabbitMQ se cierra el proceso del cliente (en mi caso ya es en la parte del servidor) una vez acaba la petición. Pero hacer esto provocaba que la aplicación se cerrara antes de que terminaran todos los tests debido a su naturaleza asíncrona. Por tanto, lo solucioné cerrando el proceso cuando terminan todos los tests. No es la forma más elegante, eso está claro, pero fue la única manera que funcionaba correctamente. Probé a cerrar el canal y la conexión que crea `amqp` pero no era suficiente.
+
+## Testeando código asíncrono
+Me gustaría hacer un pequeño resumen de mi proceso de desarrollo de test unitarios para código asíncrono.
+
+Originalmente algunos de mis tests tenían esta pinta:
+
+```
+it('Debería confirmar que la ejecución ha sido correcta.',function(done){
+    texCompiler('ejemplo.tex',false);
+    done();
+    expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
+})
+```
+
+Cómo mi función `texCompiler` era asíncrona, utilizaba `done` para esperar a que terminase y, una vez hecho, realizar el test oportuno. El test era correcto y yo (iluso de mí), pensaba que mi código estaba correctamente testeado.  
+Algunos días después mientras intentaba mejorar la cobertura de mi código realice un test que tenía que fallar a propósito, y me di cuenta de que el test era correcto. Esto pasó porque mi test era __erroneo desde el principio__, parece que no soy el único que ha sufrido esto, lo llaman: ___evergreen_ test__.
+
+El problema principal es que no se analizaba lo que ocurre después de `done()` y por tanto el test salía siempre correcto porque no testeaba nada!
+
+### Async/Await con Mocha
+Llegado a este punto, tenía que buscar una nueva solución para testear mi función asíncrona. Por suerte, Mocha permite utilizar async/await en sus test, haciendo el testeo de este tipo de funciones muy sencillo:
+```
+it('Debería confirmar que la ejecución ha sido correcta.', async() => {
+    const ret = await texCompiler('doc/ejemplo.tex',false);
+    expect(ret).to.equal(true);
+    expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
+})
+```
+La sintaxis es clara, y esta vez sí realiza el test correctamente. Si hay que sacar alguna moraleja de este suceso, es que no viene mal probar que el test falle cuando tiene que fallar, en vez de seguir a otra cosa a la primera de cambio que sea correcto.
+
+El siguiente artículo muestra varias formas de realizar tests cuando se trabaja con promesas: [How to Test Promises with Mocha](https://wietse.loves.engineering/testing-promises-with-mocha-90df8b7d2e35).

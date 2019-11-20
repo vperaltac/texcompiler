@@ -81,10 +81,12 @@ Los tests unitarios del proyecto son los siguientes:
 describe('Tests unitarios para TexCompiler', function(){
     beforeEach(function() {
         sinon.spy(console, 'log');
+        sinon.spy(console, 'error');
     });
     
     afterEach(function() {
         console.log.restore();
+        console.error.restore();
     });
 
     it('Debería cargar la biblioteca y poder instanciarse',function(){
@@ -101,10 +103,20 @@ describe('Tests unitarios para TexCompiler', function(){
         expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
     })
 
-    it('Debería confirmar que la ejecución ha sido correcta.',function(done){
-        texCompiler('ejemplo.tex',false);
-        done();
+    it('Debería confirmar que la ejecución ha sido correcta.', async() => {
+        const ret = await texCompiler('doc/ejemplo.tex',false);
+        expect(ret).to.equal(true);
         expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
+    })
+
+    it('Deberia lanzar una excepción si hubo un error en compilación.',async() => {
+        expect(await texCompiler('doc/ejemplo_error.tex',true)).to.throw;
+    })
+
+    it('Debería mostrar la salida de pdflatex si así se le indica.', async() => {
+        const ret = await texCompiler('doc/ejemplo.tex',true);
+        expect(ret).to.equal(true);
+        expect(console.log.calledWithMatch('This is pdfTeX')).to.be.true;
     })
 })
 ```
@@ -112,6 +124,8 @@ describe('Tests unitarios para TexCompiler', function(){
 Para ejecutar los tests puedes utilizar:
 * Tests unitarios: `grunt unit-test`
 * Tests de integración `grunt int-test`
+
+Si quieres saber más sobre los tests unitarios, puedes leer la sección Testeando código asíncrono de mi [diario de desarrollo]((diario.md)).
 
 ## Documentación de tareas
 Para implementar el sistema de mensajería he utilizado el patrón _Remote Procedure Call_ o _RPC_. Es perfecto para mi aplicación ya que no solo envía el mensaje si no que recibe una respuesta cuando la tarea ha finalizado.

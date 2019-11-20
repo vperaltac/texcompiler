@@ -48,14 +48,18 @@ async function texCompiler(archivo,tex_output){
     let salida = nombre + '.pdf';
 
     // comprobar archivo de salida
-    if(fs.existsSync(salida))
+    if(fs.existsSync(salida)){
         console.log("Archivo creado con éxito.");
-    else if(fs.existsSync('doc/texput.log'))
-        console.log("Error en compilación. Leer texput.log para más información");
-    else
-        console.log("Error en compilación. " + salida + " no encontrado.");
+        return true;
+    }
+    else{
+        if(fs.existsSync(nombre + '.log'))
+            console.log("Error en compilación. Leer .log para más información");
+        else
+            console.log("Error en compilación. " + salida + " no encontrado.");
 
-    return 0;
+        return false;
+    }
 }
 
 module.exports = texCompiler

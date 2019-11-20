@@ -1,6 +1,5 @@
 const chai = require('chai');
 const expect = chai.expect;
-const should = require('chai').should
 const sinonChai = require('sinon-chai');
 const sinon = require('sinon');
 const texCompiler = require('../src/texCompiler');
@@ -36,21 +35,21 @@ describe('Tests unitarios para TexCompiler', function(){
         expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
     })
 
-    it('Debería confirmar que la ejecución ha sido correcta.',function(done){
-        texCompiler('doc/ejemplo.tex',false);
-        done();
+    it('Debería confirmar que la ejecución ha sido correcta.', async() => {
+        const ret = await texCompiler('doc/ejemplo.tex',false);
+        expect(ret).to.equal(true);
         expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
     })
 
-    it('Deberia avisar de que hubo un error en compilación.',function(done){
-        texCompiler('doc/ejemplo_error.tex',false);
-        done();
-        expect(console.log.calledWith('Error en compilación. Leer texput.log para más información')).to.be.true;
+    it('Deberia avisar de que hubo un error en compilación.',async() => {
+        const ret = await texCompiler('doc/ejemplo_error.tex',false);
+        expect(ret).to.equal(false);
+        expect(console.log.calledWith('Error en compilación. Leer .log para más información')).to.be.true;
     })
 
-    it('Debería mostrar la salida de pdflatex si así se le indica.',function(done){
-        texCompiler('doc/ejemplo.tex',false);
-        done();
-        expect(console.log.calledWith('This is pdfTeX')).to.be.true;
+    it('Debería mostrar la salida de pdflatex si así se le indica.', async() => {
+        const ret = await texCompiler('doc/ejemplo.tex',true);
+        expect(ret).to.equal(true);
+        expect(console.log.calledWithMatch('This is pdfTeX')).to.be.true;
     })
 })

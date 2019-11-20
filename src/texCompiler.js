@@ -9,9 +9,7 @@ const exec = util.promisify(require('child_process').exec);
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
 async function compilar(archivo,tex_output){
     try{
-        const {err, stdout, stderr} = await exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo);
-        if (err) 
-            console.error(stderr);
+        const {stdout} = await exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo);
     
         if(tex_output)
             console.log(stdout);
@@ -42,7 +40,12 @@ async function texCompiler(archivo,tex_output){
     }
  
     // compilar archivo
-    await compilar(archivo,tex_output);
+    try{
+        await compilar(archivo,tex_output);
+    }
+    catch(error){
+        throw error;
+    }
 
     let nombre = archivo.substring(0,archivo.length-4);
     let salida = nombre + '.pdf';
@@ -53,11 +56,7 @@ async function texCompiler(archivo,tex_output){
         return true;
     }
     else{
-        if(fs.existsSync(nombre + '.log'))
-            console.log("Error en compilación. Leer .log para más información");
-        else
-            console.log("Error en compilación. " + salida + " no encontrado.");
-
+        console.log("Error en compilación. El PDF no ha sido generado.");
         return false;
     }
 }

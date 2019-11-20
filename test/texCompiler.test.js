@@ -15,10 +15,12 @@ chai.use(sinonChai);
 describe('Tests unitarios para TexCompiler', function(){
     beforeEach(function() {
         sinon.spy(console, 'log');
+        sinon.spy(console, 'error');
     });
     
     afterEach(function() {
         console.log.restore();
+        console.error.restore();
     });
 
     it('Debería cargar la biblioteca y poder instanciarse',function(){
@@ -42,9 +44,7 @@ describe('Tests unitarios para TexCompiler', function(){
     })
 
     it('Deberia avisar de que hubo un error en compilación.',async() => {
-        const ret = await texCompiler('doc/ejemplo_error.tex',false);
-        expect(ret).to.equal(false);
-        expect(console.log.calledWith('Error en compilación. Leer .log para más información')).to.be.true;
+        expect(await texCompiler('doc/ejemplo_error.tex',true)).to.throw;
     })
 
     it('Debería mostrar la salida de pdflatex si así se le indica.', async() => {

@@ -125,7 +125,7 @@ Vamos a enumerar y explicar cada una de las tareas o *tasks* por el orden en que
 * __unit-test__: ejecuta los tests unitarios del proyecto. Esta tarea está pensada para ser ejecuta en integración continua. Travis CI se encarga de lanzar estos tests. Al finalizar limpia los archivos generados.
 * __int-test__: ejecuta los tests de integración del proyecto. Esta tarea está pensada para ser ejecutada en integración continua. CircleCI se encarga de lanzar estos tests. Al finalizar limpia los archivos generados.
 
-Para saber más sobre integración continua, puedes dirigirte a [su sección en la documentación](integracion_continua.md).
+Para saber más sobre integración continua puedes dirigirte a [su sección en la documentación](integracion_continua.md).
 
 * __doc__: genera la documentación del proyecto con docco.
 * __start__: arranca el proceso del proyecto mediante la herramienta __PM2__.
@@ -133,6 +133,8 @@ Para saber más sobre integración continua, puedes dirigirte a [su sección en 
 * __reload__: recarga el proceso del proyecto mediante __PM2__. reload asegura que el servicio esté disponible durante la recarga, aunque para hacer esto tarda un poco más que `restart`.
 * __restart__: mata y reinicia el proceso mediante __PM2__. Es más rápido que reload pero el servicio no estará disponible durante el reinicio.
 * __report-coverage__: Envía la información de cobertura a [codecov](https://codecov.io/). Esta orden la utilizan los sistemas de integración continua del proyecto.
+
+Puedes leer más sobre las herramientas y bibliotecas utilizadas en este proyecto [aquí](bibtools.md).
 
 Cabe mencionar que aunque Grunt sea mi archivo de configuración principal, depende mucho de varias tareas declaradas en `package.json`, dichas tareas se muestran a continuación:
 

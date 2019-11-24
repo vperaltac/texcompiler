@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // lado del "servidor" de RabbitMQ
-// esta función se ha basado en el tutorial que proponen en la web de RabbitMQ
-// titulado: RPC. Link: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+// La conexión con el servidor RabbitMQ se ha basado en Work Queues.
+// Para más información puedes visitar los tutoriales oficiales de RabbitMQ
+// Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
 
 // RabbitMQ requiere utilizar el protocolo amqp
 const amqp = require('amqplib/callback_api');
@@ -43,8 +44,6 @@ function worker(){
                     throw e;
                 });  
             },{
-                // manual acknowledgment mode,
-                // see https://www.rabbitmq.com/confirms.html for details
                 noAck: false
             });
         });

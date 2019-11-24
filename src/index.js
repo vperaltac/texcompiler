@@ -1,5 +1,6 @@
-// La conexión con el servidor RabbitMQ se ha basado en el tutorial que proponen en su web
-// titulado: RPC. Link: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+// La conexión con el servidor RabbitMQ se ha basado en Work Queues.
+// Para más información puedes visitar los tutoriales oficiales de RabbitMQ
+// Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
 
 const express        = require('express');
 const fileUpload     = require('express-fileupload');
@@ -103,12 +104,28 @@ app.get('/listar/:usuario', (req,res) => {
  * @apiName listarTodos
  * @apiGroup listado de archivos en el servidor
  *
+ * @apiParam {String} usuario Nombre de usuario
+ *
  * @apiSuccess {json} todos los archivos de todos los usuarios en el servidor.
  */
 app.get('/listar', (req,res) => {
     let todos = files.listarTodos();
 
     res.send(todos);
+});
+
+/**
+ * @api {get} /pdf/:nombre/:usuario
+ * @apiName getPDF
+ * @apiGroup Main
+ * 
+ * @apiParam {String} nombre Nombre del archivo
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {File} documento PDF solicitado
+ */
+app.get('/pdf/:nombre/:usuario', (req,res) => {
+
 });
 
 /**
@@ -144,14 +161,12 @@ app.delete('/pdf/:nombre/:usuario', (req,res) => {
 });
 
 /**
- * @api {post} /compilar Compila un archivo en formato TEX a un documento PDF
- * @apiName postCompilar
- * @apiGroup main
+ * @api {post} /tex/:usuario Sube un archivo en formato TEX y envía la petición de compilar
+ * @apiName postTex
+ * @apiGroup Main
  *
- * @apiSuccess {File} documento PDF resultado de la compilación
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *
+ * @apiSuccess {String} indica que el archivo se subió correctamente y la compilación comenzará en breve
+ * 
  * @apiError FileNotFound No se encontró el archivo fuente.
  * @apiError WrongName Nombre incorrecto.
  * @apiErrorExample {String} Error-Response:

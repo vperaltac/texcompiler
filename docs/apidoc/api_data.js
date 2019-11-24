@@ -1,5 +1,265 @@
 define({ "api": [
   {
+    "type": "get",
+    "url": "/tex/:nombre/:usuario",
+    "title": "",
+    "name": "getTexFile",
+    "group": "Subida_y_bajada_de_archivos",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nombre",
+            "description": "<p>Nombre del archivo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "File",
+            "optional": false,
+            "field": "archivo",
+            "description": "<p>TEX</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "Subida_y_bajada_de_archivos"
+  },
+  {
+    "type": "delete",
+    "url": "/tex/:nombre/:usuario",
+    "title": "",
+    "name": "eliminarPDF",
+    "group": "eliminar_Archivos",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nombre",
+            "description": "<p>Nombre del archivo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "mensaje",
+            "description": "<p>confirmando que el archivo ha sido eliminado.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "eliminar_Archivos"
+  },
+  {
+    "type": "delete",
+    "url": "/tex/:nombre/:usuario",
+    "title": "",
+    "name": "eliminarTex",
+    "group": "eliminar_Archivos",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nombre",
+            "description": "<p>Nombre del archivo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "mensaje",
+            "description": "<p>confirmando que el archivo ha sido eliminado.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "eliminar_Archivos"
+  },
+  {
+    "type": "get",
+    "url": "/listar/:usuario",
+    "title": "",
+    "name": "listar",
+    "group": "listado_de_archivos_en_el_servidor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "todos",
+            "description": "<p>los archivos del usuario dado en el servidor.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "listado_de_archivos_en_el_servidor"
+  },
+  {
+    "type": "get",
+    "url": "/listar-pdf/:usuario",
+    "title": "",
+    "name": "listarPDF",
+    "group": "listado_de_archivos_en_el_servidor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "archivos",
+            "description": "<p>PDF del usuario dado en el servidor.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "listado_de_archivos_en_el_servidor"
+  },
+  {
+    "type": "get",
+    "url": "/listar-tex/:usuario",
+    "title": "",
+    "name": "listarTex",
+    "group": "listado_de_archivos_en_el_servidor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "archivos",
+            "description": "<p>tex del usuario dado en el servidor.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "listado_de_archivos_en_el_servidor"
+  },
+  {
+    "type": "get",
+    "url": "/listar/:usuario",
+    "title": "",
+    "name": "listarTodos",
+    "group": "listado_de_archivos_en_el_servidor",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "todos",
+            "description": "<p>los archivos de todos los usuarios en el servidor.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "listado_de_archivos_en_el_servidor"
+  },
+  {
     "type": "post",
     "url": "/compilar",
     "title": "Compila un archivo en formato TEX a un documento PDF",

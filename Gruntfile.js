@@ -39,9 +39,14 @@ module.exports = function(grunt) {
         args: ['run','report-coverage']
       },
 
-      pm2_start:{
+      pm2_start_index:{
         cmd: 'pm2',
         args: ['start','src/index.js','--name','texCompiler']
+      },
+
+      pm2_start_worker:{
+        cmd: 'pm2',
+        args: ['start','src/worker.js','--name','worker','-i','4']
       },
 
       pm2_reload:{
@@ -54,9 +59,14 @@ module.exports = function(grunt) {
         args: ['reload','texCompiler']
       },
 
-      pm2_stop:{
+      pm2_stop_index:{
         cmd: 'pm2',
         args: ['stop','texCompiler']
+      },
+
+      pm2_stop_workers:{
+        cmd: 'pm2',
+        args: ['stop','worker']
       }
     }
   });
@@ -93,10 +103,10 @@ module.exports = function(grunt) {
   grunt.registerTask('doc',['docco']);
 
   // Tarea para lanzar el servicio con pm2
-  grunt.registerTask('start',['run:pm2_start']);
+  grunt.registerTask('start',['run:pm2_start_index','run:pm2_start_worker']);
 
   // Tarea para parar el servicio con pm2
-  grunt.registerTask('stop',['run:pm2_stop']);
+  grunt.registerTask('stop',['run:pm2_stop_index','run:pm2_stop_workers']);
 
   // Tarea para recargar el servicio con pm2
   grunt.registerTask('reload',['run:pm2_reload']);

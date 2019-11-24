@@ -32,6 +32,8 @@ function worker(){
             channel.prefetch(1);
 
             channel.consume(queue, function(msg){
+                console.log("mensaje recibido.");
+
                 let datos = JSON.parse(msg.content.toString());
                 texCompiler(datos[0],false)
                 .then(r => {
@@ -49,4 +51,5 @@ function worker(){
     });
 }
 
+worker();
 module.exports = worker

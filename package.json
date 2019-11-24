@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc mocha test/tests.js",
     "int-test": "nyc mocha test/integration.test.js --exit",
-    "unit-test": "nyc mocha test/texCompiler.test.js",
+    "unit-test": "nyc mocha test/texCompiler.test.js --exit",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "start": "nodemon src/index.js"
   },

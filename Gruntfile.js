@@ -14,7 +14,11 @@ module.exports = function(grunt) {
         }
     },
 
-    clean: ['data/nuevo','data/test_user/out/*'],
+    clean:{
+      nuevo: ['data/nuevo'],
+      out: ['data/test_user/out/ejemplo*', '!data/test_user/out/*.pdf'],
+      src: ['data/test_user/src/ejemplo*', '!data/test_user/src/*.tex'],
+    },
 
     copy: {
       src: {

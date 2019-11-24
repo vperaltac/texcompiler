@@ -1,6 +1,97 @@
 [
   {
     "type": "get",
+    "url": "/pdf/:nombre/:usuario",
+    "title": "",
+    "name": "getPDF",
+    "group": "Main",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "nombre",
+            "description": "<p>Nombre del archivo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "File",
+            "optional": false,
+            "field": "documento",
+            "description": "<p>PDF solicitado</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "Main"
+  },
+  {
+    "type": "post",
+    "url": "/tex/:usuario",
+    "title": "Sube un archivo en formato TEX y envía la petición de compilar",
+    "name": "postTex",
+    "group": "Main",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "indica",
+            "description": "<p>que el archivo se subió correctamente y la compilación comenzará en breve</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "FileNotFound",
+            "description": "<p>No se encontró el archivo fuente.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongName",
+            "description": "<p>Nombre incorrecto.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n String indicando error",
+          "type": "String"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/index.js",
+    "groupTitle": "Main"
+  },
+  {
+    "type": "get",
     "url": "/tex/:nombre/:usuario",
     "title": "",
     "name": "getTexFile",
@@ -242,6 +333,19 @@
     "title": "",
     "name": "listarTodos",
     "group": "listado_de_archivos_en_el_servidor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "usuario",
+            "description": "<p>Nombre de usuario</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -258,61 +362,6 @@
     "version": "0.0.0",
     "filename": "src/index.js",
     "groupTitle": "listado_de_archivos_en_el_servidor"
-  },
-  {
-    "type": "post",
-    "url": "/compilar",
-    "title": "Compila un archivo en formato TEX a un documento PDF",
-    "name": "postCompilar",
-    "group": "main",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "File",
-            "optional": false,
-            "field": "documento",
-            "description": "<p>PDF resultado de la compilación</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "FileNotFound",
-            "description": "<p>No se encontró el archivo fuente.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "WrongName",
-            "description": "<p>Nombre incorrecto.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 400 Bad Request\n String indicando error",
-          "type": "String"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "src/index.js",
-    "groupTitle": "main"
   },
   {
     "type": "get",

@@ -125,7 +125,8 @@ app.get('/listar', (req,res) => {
  * @apiSuccess {File} documento PDF solicitado
  */
 app.get('/pdf/:nombre/:usuario', (req,res) => {
-
+    let path = 'data/' + req.params.usuario + '/out/' + req.params.nombre + '.pdf';
+    res.download(path);
 });
 
 /**

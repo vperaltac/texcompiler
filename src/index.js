@@ -6,6 +6,7 @@ const fileUpload     = require('express-fileupload');
 const uniqueFilename = require('unique-filename');
 const amqp           = require('amqplib/callback_api');
 const worker         = require('./worker');
+const getTexPath     = require('./files');
 const app            = express();
 
 // Nombre de la cola de RabbitMQ
@@ -31,8 +32,17 @@ app.use(fileUpload());
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 404 Not Found
  */
-app.get('/status',(req,res) =>{
+app.get('/status',(req,res) => {
     res.status(200).json({status: 'OK'})
+});
+
+app.get('/tex/:nombre/:usuario', async (req,res) => {
+    let path = await getTexPath(req.params.nombre,req.params.usuario);
+
+    if(path === false)
+        res.send("Archivo no encontrado.");
+    else
+        res.download(path);
 });
 
 /**

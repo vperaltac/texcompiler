@@ -1,13 +1,41 @@
 const fs = require('fs')
 
-async function getTexPath(nombre,usuario){
-    let path = 'data/' + usuario + "/src/" + nombre + ".tex";
-    const existe_archivo = fs.existsSync(path);
+module.exports = {
+    getTexPath: function(nombre,usuario) {
+        let path = 'data/' + usuario + "/src/" + nombre + ".tex";
+        const existe_archivo = fs.existsSync(path);
+    
+        if(existe_archivo)
+            return path;
+        else
+            return false;
+    
+    },
 
-    if(existe_archivo)
-        return path;
-    else
-        return false;
+    listarTodos: function(){
+        let usuarios = fs.readdirSync('data');
+
+        let listado = {};
+        for(let i=0 ; i< usuarios.length; i++){
+            listado[usuarios[i]] = this.listarArchivos(usuarios[i],true,true);
+        }
+
+        return listado;
+    },
+
+    listarArchivos: function(usuario,src,out) {
+        let listado = {};
+
+        if(src){
+            let tex = fs.readdirSync('data/' + usuario + "/src/");
+            listado['tex'] = tex;
+        }
+
+        if(out){
+            let pdf = fs.readdirSync('data/' + usuario + "/out/");
+            listado['pdf'] = pdf;
+        }
+    
+        return listado;
+    },
 }
-
-module.exports = getTexPath

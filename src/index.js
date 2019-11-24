@@ -6,7 +6,7 @@ const fileUpload     = require('express-fileupload');
 const uniqueFilename = require('unique-filename');
 const amqp           = require('amqplib/callback_api');
 const worker         = require('./worker');
-const getTexPath     = require('./files');
+const files          = require('./files');
 const app            = express();
 
 // Nombre de la cola de RabbitMQ
@@ -36,13 +36,37 @@ app.get('/status',(req,res) => {
     res.status(200).json({status: 'OK'})
 });
 
-app.get('/tex/:nombre/:usuario', async (req,res) => {
-    let path = await getTexPath(req.params.nombre,req.params.usuario);
+app.get('/tex/:nombre/:usuario',(req,res) => {
+    let path = files.getTexPath(req.params.nombre,req.params.usuario);
 
     if(path === false)
         res.send("Archivo no encontrado.");
     else
         res.download(path);
+});
+
+app.get('/listar-tex/:usuario',(req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,true,false);
+
+    res.status(200).send(listado);
+});
+
+app.get('/listar-pdf/:usuario', (req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,false,true);
+
+    res.status(200).send(listado);
+});
+
+app.get('/listar/:usuario', (req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,true,true);
+    
+    res.status(200).send(listado);
+});
+
+app.get('/listar', (req,res) => {
+    let todos = files.listarTodos();
+
+    res.status(200).send(todos);
 });
 
 /**

@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+const mkdirp = require('mkdirp');
 
 module.exports = {
     getTexPath: function(nombre,usuario) {
@@ -49,5 +50,13 @@ module.exports = {
         let path = 'data/' + usuario + "/out/" + nombre + ".pdf";
 
         fs.unlinkSync(path);
+    },
+    
+    comprobarDirectorio: function(usuario){
+        if (!fs.existsSync('data/' + usuario)) {
+            fs.mkdirSync('data/' + usuario);
+            fs.mkdirSync('data/' + usuario + '/out');
+            fs.mkdirSync('data/' + usuario + '/src');
+        }
     }
 };

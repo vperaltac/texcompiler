@@ -191,6 +191,8 @@ app.post('/tex/:usuario', (req,res) => {
         fuente: destino
     }];
 
+    files.comprobarDirectorio(req.params.usuario);
+
     documento.mv(destino, function(err){
         if(err)
             return res.status(500).send(err);

@@ -48,25 +48,25 @@ app.get('/tex/:nombre/:usuario',(req,res) => {
 app.get('/listar-tex/:usuario',(req,res) => {
     let listado = files.listarArchivos(req.params.usuario,true,false);
 
-    res.status(200).send(listado);
+    res.send(listado);
 });
 
 app.get('/listar-pdf/:usuario', (req,res) => {
     let listado = files.listarArchivos(req.params.usuario,false,true);
 
-    res.status(200).send(listado);
+    res.send(listado);
 });
 
 app.get('/listar/:usuario', (req,res) => {
     let listado = files.listarArchivos(req.params.usuario,true,true);
     
-    res.status(200).send(listado);
+    res.send(listado);
 });
 
 app.get('/listar', (req,res) => {
     let todos = files.listarTodos();
 
-    res.status(200).send(todos);
+    res.send(todos);
 });
 
 app.delete('/tex/:nombre/:usuario', (req,res) => {

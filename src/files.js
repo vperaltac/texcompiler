@@ -38,4 +38,16 @@ module.exports = {
     
         return listado;
     },
-}
+
+    eliminarTex: function(usuario,nombre){
+        let path = 'data/' + usuario + "/src/" + nombre + ".tex";
+
+        fs.unlinkSync(path);
+    },
+
+    eliminarPDF: function(usuario,nombre){
+        let path = 'data/' + usuario + "/out/" + nombre + ".pdf";
+
+        fs.unlinkSync(path);
+    }
+};

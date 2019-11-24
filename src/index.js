@@ -69,6 +69,19 @@ app.get('/listar', (req,res) => {
     res.status(200).send(todos);
 });
 
+app.delete('/tex/:nombre/:usuario', (req,res) => {
+    files.eliminarTex(req.params.nombre,req.params.usuario);
+
+    res.send("Archivo eliminado.");
+});
+
+app.delete('/pdf/:nombre/:usuario', (req,res) => {
+    files.eliminarPDF(req.params.nombre,req.params.usuario);
+
+    res.send("Archivo eliminado.");
+});
+
+
 /**
  * @api {post} /compilar Compila un archivo en formato TEX a un documento PDF
  * @apiName postCompilar

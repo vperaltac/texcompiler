@@ -145,6 +145,51 @@ app.delete('/pdf/:nombre/:usuario', (req,res) => {
     res.send("Archivo eliminado.");
 });
 
+app.post('/tex/:usuario', (req,res) => {
+    if(!req.files)
+        return res.status(400).send('No se encontró el archivo fuente.');
+    
+    if(!req.files.documento)
+        return res.status(400).send('Nombre incorrecto.');
+
+    let documento = req.files.documento;
+    let nombre = req.files.documento.name;
+    let destino = 'data/' + req.params.usuario + "/src/" + nombre;
+
+    var datos = [{
+        nombre: nombre,
+        usuario: req.params.usuario,
+        fuente: destino
+    }];
+
+    documento.mv(destino, function(err){
+        if(err)
+            return res.status(500).send(err);
+        
+        amqp.connect('amqp://localhost', function(error0, connection) {
+            if (error0) 
+                throw error0;
+
+            connection.createChannel(function(error1, channel) {
+                if (error1)
+                    throw error1;
+                
+                console.log("Enviando petición de compilar...");
+                channel.assertQueue(queue, {
+                    durable: true
+                });
+
+                // envío por la cola `queue` del nombre de archivo a compilar
+                channel.sendToQueue(queue, Buffer.from(JSON.stringify(datos)), {
+                    persistent: true
+                });
+
+                res.send("Archivo subido. El PDF se generará en breve.");
+            });
+        });
+    });
+});
+
 /**
  * @api {post} /compilar Compila un archivo en formato TEX a un documento PDF
  * @apiName postCompilar
@@ -160,7 +205,6 @@ app.delete('/pdf/:nombre/:usuario', (req,res) => {
  *     HTTP/1.1 400 Bad Request
  *      String indicando error
  */
-
 app.post('/compilar',(req,res) =>{
     if(!req.files)
         return res.status(400).send('No se encontró el archivo fuente.');

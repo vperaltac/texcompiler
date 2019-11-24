@@ -24,30 +24,26 @@ function worker(){
             // Esta operación es idempotente, la cola sólo se creará
             // si no existe previamente
             channel.assertQueue(queue, {
-                durable: false
+                durable: true
             });
 
             // Para equilibrar la carga en el server si ejecutamos más de un worker
             // hay que activar prefetch
             channel.prefetch(1);
 
-            channel.consume(queue, function reply(msg){
-                let fuente = msg.content.toString();
-                texCompiler(fuente,false)
-                .then(r =>{
-                    let pdf = fuente.replace(".tex", ".pdf");
-
-                    // el campo replyTo almacena la cola anónima generada por el cliente
-                    channel.sendToQueue(msg.properties.replyTo,
-                        Buffer.from(pdf.toString()), {
-                            correlationId: msg.properties.correlationId
-                        });
-            
+            channel.consume(queue, function(msg){
+                let datos = JSON.parse(msg.content.toString());
+                texCompiler(datos[0],false)
+                .then(r => {
                     channel.ack(msg);
                 })
                 .catch(e =>{
                     throw e;
-                });
+                });  
+            },{
+                // manual acknowledgment mode,
+                // see https://www.rabbitmq.com/confirms.html for details
+                noAck: false
             });
         });
     });

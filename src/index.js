@@ -140,7 +140,7 @@ app.get('/pdf/:nombre/:usuario', (req,res) => {
  * @apiSuccess {String} mensaje confirmando que el archivo ha sido eliminado.
  */
 app.delete('/tex/:nombre/:usuario', (req,res) => {
-    files.eliminarTex(req.params.nombre,req.params.usuario);
+    files.eliminarTex(req.params.usuario,req.params.nombre);
 
     res.send("Archivo eliminado.");
 });
@@ -156,9 +156,9 @@ app.delete('/tex/:nombre/:usuario', (req,res) => {
  * @apiSuccess {String} mensaje confirmando que el archivo ha sido eliminado.
  */
 app.delete('/pdf/:nombre/:usuario', (req,res) => {
-    files.eliminarPDF(req.params.nombre,req.params.usuario);
+    files.eliminarPDF(req.params.usuario,req.params.nombre);
 
-    res.send("Archivo eliminado.");
+    res.status(200).send("Archivo eliminado.");
 });
 
 /**
@@ -215,7 +215,7 @@ app.post('/tex/:usuario', (req,res) => {
                     persistent: true
                 });
 
-                res.send("Archivo subido. El PDF se generará en breve.");
+                res.status(200).send("Archivo subido. El PDF se generará en breve.");
             });
         });
     });

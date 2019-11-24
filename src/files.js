@@ -1,5 +1,4 @@
 const fs = require('fs');
-const mkdirp = require('mkdirp');
 
 module.exports = {
     getTexPath: function(nombre,usuario) {

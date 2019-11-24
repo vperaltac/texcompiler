@@ -14,7 +14,18 @@ module.exports = function(grunt) {
         }
     },
 
-    clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf','doc/*.fdb*','doc/*.fls'],
+    clean: ['data/nuevo','data/test_user/out/*'],
+
+    copy: {
+      src: {
+        src: 'data/test_user/src/ejemplo.tex',
+        dest: 'data/test_delete/src/ejemplo.tex',
+      },
+      out: {
+        src: 'data/test_user/out/ejemplo.pdf',
+        dest: 'data/test_delete/out/ejemplo.pdf',
+      }
+    },
 
     run: {
       npm_test: {
@@ -87,6 +98,8 @@ module.exports = function(grunt) {
   // Carga el plugin de grunt para eliminar archivos
   grunt.loadNpmTasks('grunt-contrib-clean');
 
+  grunt.loadNpmTasks('grunt-contrib-copy');
+
   // Carga el plugin para ejecutar comandos de la terminal
   grunt.loadNpmTasks('grunt-run');
 
@@ -97,7 +110,7 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test',['run:npm_unit_test','clean'])
 
   // Tarea para ejecutar los tests de integración
-  grunt.registerTask('int-test',['run:npm_int_test','clean'])
+  grunt.registerTask('int-test',['copy','run:npm_int_test','clean'])
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);

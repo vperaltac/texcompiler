@@ -127,3 +127,9 @@ public
 *.mtc1
 *.out
 *.synctex.gz
+
+# Prevent build artifacts from going into revision control
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env

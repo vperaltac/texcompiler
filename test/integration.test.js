@@ -2,6 +2,8 @@ const app     = require('../src/index');
 const chai    = require('chai');
 const request = require('supertest');
 const expect  = chai.expect;
+const worker  = require('../src/worker');
+worker();
 
 describe('Tests de integración', function(){
     describe('GET', function(){
@@ -22,6 +24,26 @@ describe('Tests de integración', function(){
                 .end(function(err,res){
                     expect(res.statusCode).to.equal(200);
                     expect('Content-Type','application/x-tex');
+                    done();
+                });
+        });
+
+        it('deberia informar si no encuentra el archivo', function(done){
+            request(app)
+                .get('/tex/ejemplo_falso/test_user')
+                .end(function(err,res){
+                    expect(res.text).to.equal('Archivo no encontrado.');
+                    done();
+                });
+        });
+
+        //GET  /pdf/:nombre/:usuario
+        it('deberia devolver el archivo pdf solicitado', function(done){
+            request(app)
+                .get('/pdf/ejemplo/test_user')
+                .end(function(err,res){
+                    expect(res.statusCode).to.equal(200);
+                    expect('Content-Type','application/pdf');
                     done();
                 });
         });

@@ -116,7 +116,7 @@ app.get('/pdf/:nombre/:usuario', (req,res) => {
 });
 
 /**
- * @api {delete} /tex/:nombre/:usuario
+ * @api {delete} /tex/:nombre/:usuario eliminar documento latex
  * @apiName eliminarTex
  * @apiGroup eliminar Archivos
  * 
@@ -132,7 +132,7 @@ app.delete('/tex/:nombre/:usuario', (req,res) => {
 });
 
 /**
- * @api {delete} /tex/:nombre/:usuario
+ * @api {delete} /pdf/:nombre/:usuario eliminar documento pdf
  * @apiName eliminarPDF
  * @apiGroup eliminar Archivos
  * 
@@ -148,7 +148,7 @@ app.delete('/pdf/:nombre/:usuario', (req,res) => {
 });
 
 /**
- * @api {post} /tex/:usuario Sube un archivo en formato TEX y envía la petición de compilar
+ * @api {post} /tex/:usuario subir documento latex
  * @apiName postTex
  * @apiGroup Main
  *

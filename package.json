@@ -8,8 +8,6 @@
     "int-test": "nyc mocha test/integration.test.js --exit",
     "unit-test": "nyc mocha test/texCompiler.test.js --exit",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov",
-    "preinstall": "npm install pm2 -g",
-    "postinstall": "npm install -g grunt-cli",
     "start": "pm2-runtime start ecosystem.config.js --env production"
   },
   "repository": {

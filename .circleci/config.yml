@@ -11,6 +11,7 @@ jobs:
       - run: sudo ./scripts/texlive_install.sh
       - run: npm install
       - run: sudo npm install -g grunt-cli 
+      - run: sudo npm install pm2 -g
       - run: grunt doc
       - run: grunt start-worker
       - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt int-test

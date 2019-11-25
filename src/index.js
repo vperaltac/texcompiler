@@ -2,17 +2,14 @@
 // Para más información puedes visitar los tutoriales oficiales de RabbitMQ
 // Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
 
-const express        = require('express');
-const fileUpload     = require('express-fileupload');
-const amqp           = require('amqplib/callback_api');
-const files          = require('./files');
-const app            = express();
+const express    = require('express');
+const fileUpload = require('express-fileupload');
+const files      = require('./files');
+const app        = express();
+const task       = require('./task');
 
-// Nombre de la cola de RabbitMQ
-const queue = 'compiler_queue';
 
 const PORT = process.env.PORT || 5000;
-const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';
 
 app.use(express.json());
 app.use(fileUpload());
@@ -197,28 +194,9 @@ app.post('/tex/:usuario', (req,res) => {
     documento.mv(destino, function(err){
         if(err)
             return res.status(500).send(err);
-        
-        amqp.connect(RABBIT_URL, function(error0, connection) {
-            if (error0) 
-                throw error0;
 
-            connection.createChannel(function(error1, channel) {
-                if (error1)
-                    throw error1;
-                
-                console.log("Enviando petición de compilar...");
-                channel.assertQueue(queue, {
-                    durable: true
-                });
-
-                // envío por la cola `queue` del nombre de archivo a compilar
-                channel.sendToQueue(queue, Buffer.from(JSON.stringify(datos)), {
-                    persistent: true
-                });
-
-                res.status(200).send("Archivo subido. El PDF se generará en breve.");
-            });
-        });
+        task(datos);
+        res.status(200).send("Archivo subido. El PDF se generará en breve.");
     });
 });
 

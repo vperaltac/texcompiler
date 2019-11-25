@@ -1,6 +1,7 @@
 const fs = require('fs')
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const path = require('path');
 
 // Compila un archivo .tex de forma asíncrona
 // esta función devuelve una Promise que debe ser tratada adecuadamente.
@@ -48,11 +49,24 @@ async function texCompiler(datos,tex_output){
         throw error;
     }
 
-    let nombre = datos.nombre.substring(0,datos.nombre.length-4);
-    let nombreF = 'data/' + datos.usuario + "/out/" + nombre + ".pdf";
+    let nombre = datos.nombre.substring(0,datos.nombre.length-4) + ".pdf";
+    let nombreF = 'data/' + datos.usuario + "/out/" + nombre;
 
     // comprobar archivo de salida
     if(fs.existsSync(nombreF)){
+        fs.readdir('data/' + datos.usuario + '/out', (err, files) => {
+            if (err) {
+                console.log(err);
+            }
+        
+            files.forEach(file => {
+                const eliminar = path.join('data/' + datos.usuario + '/out/', file);
+        
+                if (file !== nombre)
+                    fs.unlinkSync(eliminar);
+            });
+        });
+
         console.log("Archivo creado con éxito.");
         return true;
     }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc mocha test/tests.js",
-    "int-test": "nyc mocha test/integration.test.js --exit",
+    "int-test": "nyc mocha test/integration.test.js",
     "unit-test": "nyc mocha test/texCompiler.test.js --exit",
     "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "start": "pm2-runtime start ecosystem.config.js --env production"

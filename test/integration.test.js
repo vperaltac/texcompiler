@@ -172,4 +172,8 @@ describe('Tests de integración', function(){
                 });
         });
     });
+
+    setTimeout(function() {
+        process.exit(1);
+    }, 3000);
 });

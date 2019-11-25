@@ -10,7 +10,7 @@ const texCompiler = require('./texCompiler');
 
 // Nombre de la cola de RabbitMQ
 const queue = 'compiler_queue';
-const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';
+const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost:5672';
 
 // Recibe un mensaje a través de la cola ´queue´ para realizar el trabajo de compilación del archivo dado
 // El mensaje debe contener el nombre del archivo fuente a compilar.

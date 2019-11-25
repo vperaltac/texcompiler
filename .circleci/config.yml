@@ -11,9 +11,8 @@ jobs:
       - run: sudo ./scripts/texlive_install.sh
       - run: npm install
       - run: sudo npm install -g grunt-cli 
-      - run: sudo npm install -g pm2
       - run: grunt doc
-      - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt start; grunt int-test; grunt stop
+      - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt int-test
       - run: npm run report-coverage
       - codecov/upload:
             file: coverage.lcov

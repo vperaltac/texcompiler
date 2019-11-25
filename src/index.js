@@ -1,11 +1,11 @@
-// La conexión con el servidor RabbitMQ se ha basado en el tutorial que proponen en su web
-// titulado: RPC. Link: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+// La conexión con el servidor RabbitMQ se ha basado en Work Queues.
+// Para más información puedes visitar los tutoriales oficiales de RabbitMQ
+// Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
 
 const express        = require('express');
 const fileUpload     = require('express-fileupload');
-const uniqueFilename = require('unique-filename');
 const amqp           = require('amqplib/callback_api');
-const worker         = require('./worker');
+const files          = require('./files');
 const app            = express();
 
 // Nombre de la cola de RabbitMQ
@@ -31,40 +31,172 @@ app.use(fileUpload());
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 404 Not Found
  */
-app.get('/status',(req,res) =>{
+app.get('/status',(req,res) => {
     res.status(200).json({status: 'OK'})
 });
 
 /**
- * @api {post} /compilar Compila un archivo en formato TEX a un documento PDF
- * @apiName postCompilar
- * @apiGroup main
+ * @api {get} /tex/:nombre/:usuario 
+ * @apiName getTexFile
+ * @apiGroup Subida y bajada de archivos
+ * 
+ * @apiParam {String} nombre Nombre del archivo
+ * @apiParam {String} usuario Nombre de usuario
  *
- * @apiSuccess {File} documento PDF resultado de la compilación
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
+ * @apiSuccess {File} archivo TEX
+ */
+app.get('/tex/:nombre/:usuario',(req,res) => {
+    let path = files.getTexPath(req.params.nombre,req.params.usuario);
+
+    if(path === false)
+        res.send("Archivo no encontrado.");
+    else
+        res.download(path);
+});
+
+/**
+ * @api {get} /listar-tex/:usuario
+ * @apiName listarTex
+ * @apiGroup listado de archivos en el servidor
+ * 
+ * @apiParam {String} usuario Nombre de usuario
  *
+ * @apiSuccess {json} archivos tex del usuario dado en el servidor.
+ */
+app.get('/listar-tex/:usuario',(req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,true,false);
+
+    res.send(listado);
+});
+
+/**
+ * @api {get} /listar-pdf/:usuario
+ * @apiName listarPDF
+ * @apiGroup listado de archivos en el servidor
+ * 
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {json} archivos PDF del usuario dado en el servidor.
+ */
+app.get('/listar-pdf/:usuario', (req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,false,true);
+
+    res.send(listado);
+});
+
+/**
+ * @api {get} /listar/:usuario
+ * @apiName listar
+ * @apiGroup listado de archivos en el servidor
+ * 
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {json} todos los archivos del usuario dado en el servidor.
+ */
+app.get('/listar/:usuario', (req,res) => {
+    let listado = files.listarArchivos(req.params.usuario,true,true);
+    
+    res.send(listado);
+});
+
+/**
+ * @api {get} /listar/:usuario
+ * @apiName listarTodos
+ * @apiGroup listado de archivos en el servidor
+ *
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {json} todos los archivos de todos los usuarios en el servidor.
+ */
+app.get('/listar', (req,res) => {
+    let todos = files.listarTodos();
+
+    res.send(todos);
+});
+
+/**
+ * @api {get} /pdf/:nombre/:usuario
+ * @apiName getPDF
+ * @apiGroup Main
+ * 
+ * @apiParam {String} nombre Nombre del archivo
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {File} documento PDF solicitado
+ */
+app.get('/pdf/:nombre/:usuario', (req,res) => {
+    let path = 'data/' + req.params.usuario + '/out/' + req.params.nombre + '.pdf';
+    res.download(path);
+});
+
+/**
+ * @api {delete} /tex/:nombre/:usuario
+ * @apiName eliminarTex
+ * @apiGroup eliminar Archivos
+ * 
+ * @apiParam {String} nombre Nombre del archivo
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {String} mensaje confirmando que el archivo ha sido eliminado.
+ */
+app.delete('/tex/:nombre/:usuario', (req,res) => {
+    files.eliminarTex(req.params.usuario,req.params.nombre);
+
+    res.send("Archivo eliminado.");
+});
+
+/**
+ * @api {delete} /tex/:nombre/:usuario
+ * @apiName eliminarPDF
+ * @apiGroup eliminar Archivos
+ * 
+ * @apiParam {String} nombre Nombre del archivo
+ * @apiParam {String} usuario Nombre de usuario
+ *
+ * @apiSuccess {String} mensaje confirmando que el archivo ha sido eliminado.
+ */
+app.delete('/pdf/:nombre/:usuario', (req,res) => {
+    files.eliminarPDF(req.params.usuario,req.params.nombre);
+
+    res.status(200).send("Archivo eliminado.");
+});
+
+/**
+ * @api {post} /tex/:usuario Sube un archivo en formato TEX y envía la petición de compilar
+ * @apiName postTex
+ * @apiGroup Main
+ *
+ * @apiSuccess {String} indica que el archivo se subió correctamente y la compilación comenzará en breve
+ * 
  * @apiError FileNotFound No se encontró el archivo fuente.
  * @apiError WrongName Nombre incorrecto.
  * @apiErrorExample {String} Error-Response:
  *     HTTP/1.1 400 Bad Request
  *      String indicando error
  */
-
-app.post('/compilar',(req,res) =>{
+app.post('/tex/:usuario', (req,res) => {
     if(!req.files)
         return res.status(400).send('No se encontró el archivo fuente.');
-
+    
     if(!req.files.documento)
-        return res.status(400).send("Nombre incorrecto.");
+        return res.status(400).send('Nombre incorrecto.');
 
     let documento = req.files.documento;
-    let destino = uniqueFilename('doc') + ".tex";
+    let nombre = req.files.documento.name;
+    let destino = 'data/' + req.params.usuario + "/src/" + nombre;
 
-    documento.mv(destino, function(err) {
-        if (err)
+    var datos = [{
+        nombre: nombre,
+        usuario: req.params.usuario,
+        fuente: destino
+    }];
+
+    files.comprobarDirectorio(req.params.usuario);
+
+    documento.mv(destino, function(err){
+        if(err)
             return res.status(500).send(err);
-
+        
         amqp.connect('amqp://localhost', function(error0, connection) {
             if (error0) 
                 throw error0;
@@ -73,55 +205,21 @@ app.post('/compilar',(req,res) =>{
                 if (error1)
                     throw error1;
                 
-                // El primer argumento es un String vacío para que genere un nombre aleatorio para la cola
-                // De esta forma cada cliente tiene su propia "callback queue"
-                channel.assertQueue('', {
-                    exclusive: true
-                }, function(error2, q) {
-                    if (error2) {
-                        throw error2;
-                    }
-
-                    // este ID asegura que el "worker" sabrá a que cliente debe devolver la petición
-                    var correlationId = generateUuid();
-                    console.log("Enviando petición de compilar...");
-        
-                    // si se recibe un mensaje con el id generado
-                    // esa es la respuesta del servidor, por tanto devolvemos el archivo 
-                    // generado por la API REST
-                    channel.consume(q.queue, function(msg) {
-                        if (msg.properties.correlationId === correlationId){
-                            res.download(msg.content.toString());
-                        }
-                    }, {
-                        noAck: true
-                    });
-        
-                    // envío por la cola `queue` del nombre de archivo a compilar
-                    channel.sendToQueue(queue,
-                        Buffer.from(destino), {
-                            correlationId: correlationId,
-                            replyTo: q.queue
-                        });
+                console.log("Enviando petición de compilar...");
+                channel.assertQueue(queue, {
+                    durable: true
                 });
+
+                // envío por la cola `queue` del nombre de archivo a compilar
+                channel.sendToQueue(queue, Buffer.from(JSON.stringify(datos)), {
+                    persistent: true
+                });
+
+                res.status(200).send("Archivo subido. El PDF se generará en breve.");
             });
         });
     });
 });
 
-function generateUuid() {
-    return Math.random().toString() +
-        Math.random().toString() +
-        Math.random().toString();
-}
-
-// TODO: al ser la creación del canal de mensajería de naturaleza asíncrona
-// creo que cabe la posibilidad de que Express inicie el servicio
-// antes de que amqp haya creado su conexión y por tanto que una petición
-// pueda fallar. Esto requiere reorganizar el código de worker.js para
-// que trabaje con promesas, algo similar a Texcompiler.js
-// y así dar la opción de poder esperar a que se ejecute correctamente. 
-worker();
-app.listen(PORT, () => console.log(`Servidor iniciado en puerto: ${PORT}`))
-
+app.listen(PORT, () => console.log(`Servidor iniciado en puerto: ${PORT}`));
 module.exports = app;

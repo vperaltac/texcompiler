@@ -14,7 +14,22 @@ module.exports = function(grunt) {
         }
     },
 
-    clean: ['doc/*.aux','doc/*.log','doc/*.gz','doc/*.pdf','doc/*.fdb*','doc/*.fls'],
+    clean:{
+      nuevo: ['data/nuevo'],
+      out: ['data/test_user/out/ejemplo*', '!data/test_user/out/*.pdf'],
+      src: ['data/test_user/src/ejemplo*', '!data/test_user/src/*.tex'],
+    },
+
+    copy: {
+      src: {
+        src: 'data/test_user/src/ejemplo.tex',
+        dest: 'data/test_delete/src/ejemplo.tex',
+      },
+      out: {
+        src: 'data/test_user/out/ejemplo.pdf',
+        dest: 'data/test_delete/out/ejemplo.pdf',
+      }
+    },
 
     run: {
       npm_test: {
@@ -39,9 +54,14 @@ module.exports = function(grunt) {
         args: ['run','report-coverage']
       },
 
-      pm2_start:{
+      pm2_start_index:{
         cmd: 'pm2',
         args: ['start','src/index.js','--name','texCompiler']
+      },
+
+      pm2_start_worker:{
+        cmd: 'pm2',
+        args: ['start','src/worker.js','--name','worker','-i','4']
       },
 
       pm2_reload:{
@@ -54,9 +74,14 @@ module.exports = function(grunt) {
         args: ['reload','texCompiler']
       },
 
-      pm2_stop:{
+      pm2_stop_index:{
         cmd: 'pm2',
         args: ['stop','texCompiler']
+      },
+
+      pm2_stop_workers:{
+        cmd: 'pm2',
+        args: ['stop','worker']
       }
     }
   });
@@ -77,6 +102,8 @@ module.exports = function(grunt) {
   // Carga el plugin de grunt para eliminar archivos
   grunt.loadNpmTasks('grunt-contrib-clean');
 
+  grunt.loadNpmTasks('grunt-contrib-copy');
+
   // Carga el plugin para ejecutar comandos de la terminal
   grunt.loadNpmTasks('grunt-run');
 
@@ -87,16 +114,18 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test',['run:npm_unit_test','clean'])
 
   // Tarea para ejecutar los tests de integración
-  grunt.registerTask('int-test',['run:npm_int_test','clean'])
+  grunt.registerTask('int-test',['copy','run:npm_int_test','clean'])
 
   // Tarea por defecto: genera documentacion, ejecuta tests y limpia archivos generados
   grunt.registerTask('doc',['docco']);
 
   // Tarea para lanzar el servicio con pm2
-  grunt.registerTask('start',['run:pm2_start']);
+  grunt.registerTask('start',['run:pm2_start_index','run:pm2_start_worker']);
+
+  grunt.registerTask('start-worker',['run:pm2_start_worker']);
 
   // Tarea para parar el servicio con pm2
-  grunt.registerTask('stop',['run:pm2_stop']);
+  grunt.registerTask('stop',['run:pm2_stop_index','run:pm2_stop_workers']);
 
   // Tarea para recargar el servicio con pm2
   grunt.registerTask('reload',['run:pm2_reload']);

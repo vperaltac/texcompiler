@@ -28,27 +28,57 @@ describe('Tests unitarios para TexCompiler', function(){
     })
 
     it('Debería informar de que el archivo tiene una extensión errónea',function(){
-        texCompiler('ejemplo.tar',false);
+        var datos = {
+            nombre: 'ejemplo.tar',
+            usuario: 'test_user',
+            fuente: 'data/test_user/src/ejemplo.tar'
+        };
+
+        texCompiler(datos,false);
         expect(console.log.calledWith('Formato incorrecto.')).to.be.true;
     })
 
     it('Debería informar de que recibe un archivo que no existe',function(){
-        texCompiler('archivo_fantasma.tex',false);
+        var datos = {
+            nombre: 'archivo_fantasma.tex',
+            usuario: 'test_user',
+            fuente: 'data/test_user/src/archivo_fantasma.tex'
+        };
+
+        texCompiler(datos,false);
         expect(console.log.calledWith('Archivo no encontrado.')).to.be.true;
     })
 
-    it('Debería confirmar que la ejecución ha sido correcta.', async() => {
-        const ret = await texCompiler('doc/ejemplo.tex',false);
+    it('Debería confirmar que la ejecución ha sido correcta.', async() => {    
+        var datos = {
+            nombre: 'ejemplo.tex',
+            usuario: 'test_user',
+            fuente: 'data/test_user/src/ejemplo.tex'
+        };
+
+        const ret = await texCompiler(datos,false);
         expect(ret).to.equal(true);
         expect(console.log.calledWith('Archivo creado con éxito.')).to.be.true;
     })
 
     it('Deberia lanzar una excepción si hubo un error en compilación.',async() => {
-        expect(await texCompiler('doc/ejemplo_error.tex',true)).to.throw;
+        var datos = {
+            nombre: 'ejemplo.tex',
+            usuario: 'test_user',
+            fuente: 'data/test_user/src/ejemplo.tex'
+        };
+
+        expect(await texCompiler(datos,true)).to.throw;
     })
 
     it('Debería mostrar la salida de pdflatex si así se le indica.', async() => {
-        const ret = await texCompiler('doc/ejemplo.tex',true);
+        var datos = {
+            'nombre': 'ejemplo.tex',
+            'usuario': 'test_user',
+            'fuente': 'data/test_user/src/ejemplo.tex'
+        };
+
+        const ret = await texCompiler(datos,true);
         expect(ret).to.equal(true);
         expect(console.log.calledWithMatch('This is pdfTeX')).to.be.true;
     })

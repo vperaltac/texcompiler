@@ -7,9 +7,10 @@ const exec = util.promisify(require('child_process').exec);
 // Entrada de la función:
 //  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
-async function compilar(archivo,tex_output){
+async function compilar(archivo,usuario,tex_output){
     try{
-        const {stdout} = await exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc ' + archivo);
+        const {stdout} = await exec('pdflatex -synctex=1 -interaction=nonstopmode -output-directory data/' 
+                                    + usuario + '/out ' + archivo);
     
         if(tex_output)
             console.log(stdout);
@@ -26,32 +27,32 @@ async function compilar(archivo,tex_output){
 // Entrada de la función:
 //  * archivo: nombre del archivo, por ahora se supone que el archivo se encuentra en el directorio /doc
 //  * tex_output: true para mostrar la salida que devuelve `pdflatex`. false para no mostrarla.
-async function texCompiler(archivo,tex_output){
+async function texCompiler(datos,tex_output){ 
     // comprobar formato del archivo
-    if(!archivo.endsWith('.tex')){
+    if(!datos.fuente.endsWith('.tex')){
         console.log("Formato incorrecto.");
         return false;
     }
 
     // comprobar que archivo existe
-    if (!fs.existsSync(archivo)){
+    if (!fs.existsSync(datos.fuente)){
         console.log("Archivo no encontrado.");
         return false;
     }
  
     // compilar archivo
     try{
-        await compilar(archivo,tex_output);
+        await compilar(datos.fuente,datos.usuario,tex_output);
     }
     catch(error){
         throw error;
     }
 
-    let nombre = archivo.substring(0,archivo.length-4);
-    let salida = nombre + '.pdf';
+    let nombre = datos.nombre.substring(0,datos.nombre.length-4);
+    let nombreF = 'data/' + datos.usuario + "/out/" + nombre + ".pdf";
 
     // comprobar archivo de salida
-    if(fs.existsSync(salida)){
+    if(fs.existsSync(nombreF)){
         console.log("Archivo creado con éxito.");
         return true;
     }

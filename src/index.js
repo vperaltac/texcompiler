@@ -1,7 +1,3 @@
-// La conexión con el servidor RabbitMQ se ha basado en Work Queues.
-// Para más información puedes visitar los tutoriales oficiales de RabbitMQ
-// Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
-
 const express    = require('express');
 const fileUpload = require('express-fileupload');
 const files      = require('./files');
@@ -20,14 +16,6 @@ app.use(fileUpload());
  * @apiGroup test
  *
  * @apiSuccess {json} Status: OK
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "status": "OK"
- *     }
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 404 Not Found
  */
 app.get('/status',(req,res) => {
     res.status(200).json({status: 'OK'})
@@ -168,9 +156,6 @@ app.delete('/pdf/:nombre/:usuario', (req,res) => {
  * 
  * @apiError FileNotFound No se encontró el archivo fuente.
  * @apiError WrongName Nombre incorrecto.
- * @apiErrorExample {String} Error-Response:
- *     HTTP/1.1 400 Bad Request
- *      String indicando error
  */
 app.post('/tex/:usuario', (req,res) => {
     if(!req.files)

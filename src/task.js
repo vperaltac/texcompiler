@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+// La conexión con el servidor RabbitMQ se ha basado en Work Queues.
+// Para más información puedes visitar los tutoriales oficiales de RabbitMQ
+// Link: https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
+
 const amqp  = require('amqplib/callback_api');
 const queue = 'compiler_queue'; // Nombre de la cola de RabbitMQ
 const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';

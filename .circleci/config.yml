@@ -12,7 +12,7 @@ jobs:
       - run: npm install
       - run: sudo npm install -g grunt-cli 
       - run: grunt doc
-      - run: grunt start_worker
+      - run: grunt start-worker
       - run: PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH; grunt int-test
       - run: npm run report-coverage
       - codecov/upload:

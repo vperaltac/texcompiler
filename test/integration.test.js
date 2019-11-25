@@ -3,7 +3,6 @@ const chai    = require('chai');
 const request = require('supertest');
 const expect  = chai.expect;
 const worker  = require('../src/worker');
-worker();
 
 describe('Tests de integración', function(){
     describe('GET', function(){

@@ -55,12 +55,12 @@ module.exports = function(grunt) {
       },
 
       pm2_start_index:{
-        cmd: 'pm2',
+        cmd: 'pm2-runtime',
         args: ['start','src/index.js','--name','texCompiler']
       },
 
       pm2_start_worker:{
-        cmd: 'pm2',
+        cmd: 'pm2-runtime',
         args: ['start','src/worker.js','--name','worker','-i','4']
       },
 

@@ -10,10 +10,11 @@ const texCompiler = require('./texCompiler');
 
 // Nombre de la cola de RabbitMQ
 const queue = 'compiler_queue';
+const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';
 
 // Recibe un mensaje a través de la cola ´queue´ para realizar el trabajo de compilación del archivo dado
 // El mensaje debe contener el nombre del archivo fuente a compilar.
-amqp.connect('amqp://localhost', function(error0, connection) {
+amqp.connect(RABBIT_URL, function(error0, connection) {
     if (error0)
         throw error0;
 
@@ -35,7 +36,7 @@ amqp.connect('amqp://localhost', function(error0, connection) {
             console.log("mensaje recibido.");
 
             let datos = JSON.parse(msg.content.toString());
-            texCompiler(datos[0],false)
+            texCompiler(datos[0],true)
             .then(r => {
                 channel.ack(msg);
             })

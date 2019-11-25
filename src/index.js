@@ -12,6 +12,7 @@ const app            = express();
 const queue = 'compiler_queue';
 
 const PORT = process.env.PORT || 5000;
+const RABBIT_URL = process.env.CLOUDAMQP_URL || 'amqp://localhost';
 
 app.use(express.json());
 app.use(fileUpload());
@@ -197,7 +198,7 @@ app.post('/tex/:usuario', (req,res) => {
         if(err)
             return res.status(500).send(err);
         
-        amqp.connect('amqp://localhost', function(error0, connection) {
+        amqp.connect(RABBIT_URL, function(error0, connection) {
             if (error0) 
                 throw error0;
 

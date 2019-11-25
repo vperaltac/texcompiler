@@ -117,9 +117,6 @@ module.exports = function(grunt) {
   // Tarea para lanzar el servicio con pm2
   grunt.registerTask('start',['run:pm2_start']);
 
-  // Tarea para parar el servicio con pm2
-  grunt.registerTask('stop',['run:pm2_stop_index','run:pm2_stop_workers']);
-
   // Tarea para recargar el servicio con pm2
   grunt.registerTask('reload',['run:pm2_reload']);
 

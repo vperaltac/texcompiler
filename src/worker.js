@@ -50,5 +50,4 @@ function worker(){
     });
 }
 
-worker();
 module.exports = worker

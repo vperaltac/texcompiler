@@ -54,14 +54,9 @@ module.exports = function(grunt) {
         args: ['run','report-coverage']
       },
 
-      pm2_start_index:{
+      pm2_start:{
         cmd: 'pm2-runtime',
-        args: ['start','src/index.js','--name','texCompiler']
-      },
-
-      pm2_start_worker:{
-        cmd: 'pm2-runtime',
-        args: ['start','src/worker.js','--name','worker','-i','4']
+        args: ['start','ecosystem.config.js','--env', 'production']
       },
 
       pm2_reload:{
@@ -120,9 +115,7 @@ module.exports = function(grunt) {
   grunt.registerTask('doc',['docco']);
 
   // Tarea para lanzar el servicio con pm2
-  grunt.registerTask('start',['run:pm2_start_index','run:pm2_start_worker']);
-
-  grunt.registerTask('start-worker',['run:pm2_start_worker']);
+  grunt.registerTask('start',['run:pm2_start']);
 
   // Tarea para parar el servicio con pm2
   grunt.registerTask('stop',['run:pm2_stop_index','run:pm2_stop_workers']);

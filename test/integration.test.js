@@ -28,6 +28,26 @@ describe('Tests de integración', function(){
                 });
         });
 
+        it('deberia informar si no encuentra el archivo', function(done){
+            request(app)
+                .get('/tex/ejemplo_falso/test_user')
+                .end(function(err,res){
+                    expect(res.text).to.equal('Archivo no encontrado.');
+                    done();
+                });
+        });
+
+        //GET  /pdf/:nombre/:usuario
+        it('deberia devolver el archivo pdf solicitado', function(done){
+            request(app)
+                .get('/pdf/ejemplo/test_user')
+                .end(function(err,res){
+                    expect(res.statusCode).to.equal(200);
+                    expect('Content-Type','application/pdf');
+                    done();
+                });
+        });
+
         //GET /listar-tex/:usuario
         it('deberia devolver una lista de los archivos tex del usuario dado', function(done){
             request(app)

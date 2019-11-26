@@ -3,12 +3,18 @@ const fileUpload = require('express-fileupload');
 const files      = require('./files');
 const app        = express();
 const task       = require('./task');
-
+const path = require("path");
 
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(fileUpload());
+app.use(express.static('views'));
+
+//assuming app is express Object.
+app.get('/',function(req,res) {
+    res.sendFile('./views/index.html');
+});
 
 /**
  * @api {get} /status Devuelve OK si el servicio está disponible

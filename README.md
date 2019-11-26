@@ -14,7 +14,7 @@ Se pueden ver más detalles sobre la historia del proyecto en la sección de [pr
 ## Instalación
 Para instalar el proyecto basta con ejecutar:
 ```
-npm install 
+grunt install 
 ```
 
 ## Cómo lanzar la aplicación
@@ -22,22 +22,27 @@ npm install
 grunt start
 ```
 
-## Cómo parar la aplicación
-```
-grunt stop
-```
 
 ## Cómo ejecutar los tests
 Para ejecutar los tests utiliza:
 ```
 grunt test
 ```
-Las pruebas se ejecutan con `npm test` y se elimina automáticamente los archivos generados durante el proceso.
+Este comando ejecuta tanto los tests unitarios como los de integración.
 
 ## Herramienta de construcción
 ```
 buildtool: Gruntfile.js
 ```
+
+## Despliegue en Heroku
+
+```
+Despliegue: https://texcompiler.herokuapp.com/
+```
+
+## Documentación sobre PaaS
+[Despliegue en un PaaS](https://victorperalta93.github.io/IV-Proyecto/#/paas)
 
 ## Documentación adicional
 Visita la [web de documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.

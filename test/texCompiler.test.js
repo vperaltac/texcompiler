@@ -85,13 +85,13 @@ describe('Tests unitarios para TexCompiler', function(){
 
     it('Debería avisar de que la compilación dió error si faltan paquetes en TexLive.', async() => {
         var datos = {
-            'nombre': 'ejemplo.tex',
+            'nombre': 'ejemplo_error.tex',
             'usuario': 'test_user',
-            'fuente': 'data/test_user/src/bib_no_instalada.tex'
+            'fuente': 'data/test_user/src/ejemplo_error.tex'
         };
 
-        const ret = await texCompiler(datos,true);
-        expect(ret).to.equal(true);
-        expect(console.log.calledWithMatch('This is pdfTeX')).to.be.true;
+        const ret = await texCompiler(datos,false);
+        expect(ret).to.equal(false);
+        expect(console.log.calledWithMatch('Error en compilación. El PDF no ha sido generado.')).to.be.true;
     })
 })

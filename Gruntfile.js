@@ -31,7 +31,23 @@ module.exports = function(grunt) {
       }
     },
 
+    shell: {
+      options: { stdout: true },
+      create: 'heroku apps:create --region eu texcompiler',
+      cloudamqp: 'heroku addons:create cloudamqp:lemur',
+      bpnodejs: 'heroku buildpacks:set heroku/nodejs',
+      bptex: 'heroku buildpacks:add https://github.com/victorperalta93/heroku-buildpack-tex',
+      push: 'git push heroku master'
+    },
+
     run: {
+      npm_install: {
+        cmd: 'npm',
+        args: [
+          'install'
+        ]
+      },
+
       npm_test: {
         cmd: 'npm',
         args: [
@@ -124,4 +140,8 @@ module.exports = function(grunt) {
   grunt.registerTask('restart',['run:pm2_restart']);
 
   grunt.registerTask('report-coverage',['run:npm_report_coverage']);
+
+  grunt.registerTask('deploy',['shell']);
+
+  grunt.registerTask('install',['run:npm_install']);
 };

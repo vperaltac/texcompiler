@@ -20,6 +20,18 @@ module.exports = function(grunt) {
       src: ['data/test_user/src/ejemplo*', '!data/test_user/src/*.tex'],
     },
 
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'views',
+          src: ['*.css', '!*.min.css'],
+          dest: 'views',
+          ext: '.min.css'
+        }]
+      }
+    },
+
     copy: {
       src: {
         src: 'data/test_user/src/ejemplo.tex',
@@ -115,6 +127,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-copy');
 
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+
   // Carga el plugin para ejecutar comandos de la terminal
   grunt.loadNpmTasks('grunt-run');
 
@@ -144,4 +158,5 @@ module.exports = function(grunt) {
   grunt.registerTask('deploy',['shell']);
 
   grunt.registerTask('install',['run:npm_install']);
+
 };

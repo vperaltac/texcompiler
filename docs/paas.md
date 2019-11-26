@@ -65,3 +65,6 @@ existe un tipo de proceso especial llamado `release`. Cada vez que se vaya a des
 Existe otro tipo de proceso llamado `worker`, esto generará dynos extra que se pueden encargar de realizar procesamiento pesado (como compilar documentos) para el proceso principal. Suena perfecto para esta aplicación, ¿verdad? Hay que tener en cuenta que __no comparten el mismo sistema de archivos__ y por tanto tendrás que realizar un envío extra desde el proceso `web` a cada `worker` para realizar la compilación correctamente.
 
 Por tanto, me decanté por utilizar __PM2__ para lanzar 4 _workers_ en modo _cluster_. Probablemente esta solución no sea la más eficiente, pero evita el envío de ficheros entre dynos, algo que tras buscar información no encontré nada relativamente sencillo. Con respecto a este tema, puede que durante el desarrollo del proyecto siga intentando implementarlo. Si es así, actualizaré este documento una vez implementado.
+
+## A dónde ir desde aquí
+Durante el desarrollo de esta parte del proyecto se han introducido cambios significativos a la forma en la que la aplicación maneja el sistema de mensajería. También se han añadido nuevas peticiones REST y se ha modificado la forma de levantar el servicio. Para leer más sobre esto puedes leer el apartado De __RPC a Work Queues__ en el [diario de desarrollo](diario.md).

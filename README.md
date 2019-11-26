@@ -14,7 +14,7 @@ Se pueden ver más detalles sobre la historia del proyecto en la sección de [pr
 ## Instalación
 Para instalar el proyecto basta con ejecutar:
 ```
-grunt install 
+npm install
 ```
 
 ## Cómo lanzar la aplicación

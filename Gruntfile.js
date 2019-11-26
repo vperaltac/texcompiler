@@ -53,13 +53,6 @@ module.exports = function(grunt) {
     },
 
     run: {
-      npm_install: {
-        cmd: 'npm',
-        args: [
-          'install'
-        ]
-      },
-
       npm_test: {
         cmd: 'npm',
         args: [
@@ -156,7 +149,4 @@ module.exports = function(grunt) {
   grunt.registerTask('report-coverage',['run:npm_report_coverage']);
 
   grunt.registerTask('deploy',['shell']);
-
-  grunt.registerTask('install',['run:npm_install']);
-
 };

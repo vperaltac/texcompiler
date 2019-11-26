@@ -83,7 +83,7 @@ describe('Tests unitarios para TexCompiler', function(){
         expect(console.log.calledWithMatch('This is pdfTeX')).to.be.true;
     })
 
-    it('Debería avisar de que la compilación dió error si faltan paquetes en TexLive.', async() => {
+    it('Debería avisar de que la compilación dió error.', async() => {
         var datos = {
             'nombre': 'ejemplo_error.tex',
             'usuario': 'test_user',

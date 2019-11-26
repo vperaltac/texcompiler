@@ -7,6 +7,16 @@ require('../src/worker');
 
 describe('Tests de integración', function(){
     describe('GET', function(){
+        it('debería devolver la página de inicio', function(done){
+            request(app)
+                .get('/')
+                .end(function(err,res){
+                    expect(res.statusCode).to.equal(200);
+                    expect('Content-Type','text/html');
+                    done();
+                });
+        });    
+
         it('debería devolver Status: OK', function(done){
             request(app)
                 .get('/status')

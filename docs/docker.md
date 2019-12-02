@@ -110,3 +110,37 @@ Para ello hay que dirigirse a la pestaña _Builds_:
 y asignar el repositorio del proyecto:
 
 ![imagen](./imgs/dockerhub-buildconfig.png)
+
+## Despliegue del contenedor en Heroku
+[Heroku ofrece dos alternativas](https://devcenter.heroku.com/categories/deploying-with-docker) para desplegar un contenedor, para desplegar mi aplicación he elegido definir un `heroku.yml` para construir la imagen.
+
+```
+build: 
+  docker:
+    web: Dockerfile
+```
+
+Hecho esto basta con definir el _stack_ _container_ en Heroku para indicar que queremos utilizar el contenedor Docker para desplegar la aplicación
+
+```
+heroku stack:set container
+```
+
+En mi caso, como habíamos configurado el despliegue automático a Heroku una vez el repositorio de GitHub pasase los tests unitarios y de integración solo necesito hacer `git push origin master` para que el contenedor se despliegue en Heroku. Aunque una vez hecho me he dado cuenta de que de esta forma estoy perdiendo la aplicación que se desplegó anteriormente. Por tanto, he decidido conservar la misma y desplegar el contenedor en una aplicación distinta en Heroku. 
+
+>Para volver a la configuración inicial de _stack_ puedes utilizar `heroku stack:set heroku-18` (es el _stack_ por defecto a Diciembre de 2019)
+
+Aprovecharé el utilizar una aplicación nueva para definir los pasos a seguir si queremos reproducir el despliegue del contenedor.
+
+1. crear la nueva aplicación
+   ```
+    heroku apps:create --region eu texcompiler-docker
+   ```
+2. asignar el _stack_
+    ```
+    heroku stack:set container
+    ```
+3. subir a heroku
+   ```
+   git push heroku master
+   ```

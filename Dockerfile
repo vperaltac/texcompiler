@@ -13,7 +13,6 @@ RUN add-apt-repository 'http://www.rabbitmq.com/debian/'
 RUN apt-get install rabbitmq-server -y
 RUN rabbitmq-plugins enable rabbitmq_management rabbitmq_management_agent
 
-
 COPY package*.json ./
 
 # instalar dependencias

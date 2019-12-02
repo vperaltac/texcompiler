@@ -10,6 +10,7 @@
   * [Herramientas de construcción](tools_construccion.md)
   * [Tests, rutas y tareas](tests.md)
   * [Despliegue en un PaaS](paas.md)
+  * [Despliegue del contenedor](docker.md)
   * [API REST](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html)
   * [Información sobre el código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/Gruntfile.html)
 

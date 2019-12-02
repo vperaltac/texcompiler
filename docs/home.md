@@ -33,6 +33,7 @@ Las pruebas se ejecutan con `npm test` y se elimina automáticamente los archivo
 
 * [Descripción del proyecto](descripcion.md)
 * [Despliegue en un Paas](paas.md)
+* [Despliegue del contenedor](docker.md)
 * [Documentación sobre la herramienta de construcción](tools_construccion.md)
 * [Documentación sobre tests, rutas y tareas](tests.md)
 * [Documentación sobre la integración continua](integracion_continua.md)

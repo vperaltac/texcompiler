@@ -144,3 +144,27 @@ Aprovecharé el utilizar una aplicación nueva para definir los pasos a seguir s
    ```
    git push heroku master
    ```
+
+## Despliegue del contenedor en Azure
+Desplegar el contenedor en Azure ha sido bastante sencillo, algo que me ha sorprendido teniendo en cuenta lo desastroso que fue tratar de desplegar mi aplicación en Azure durante el hito anterior.
+
+Hay que comenzar creando una web app, proporcionan esa opción en _Create a resource --> Web --> Web App for Containers_.  
+A continuación se añade el _Resource Group_, el nombre de la _app_ y la región:
+
+![imagen](./imgs/az_basics.png)
+
+Después hay que indicar que la fuente de la imagen es DockerHub y dar el nombre y etiqueta de la imagen:
+
+![imagen](./imgs/azure-docker.png)
+
+Por último comprueba que todos los campos son correctos y crea la aplicación:
+
+![imagen](./imgs/azure-review.png)
+
+Con estos pasos ya hemos conseguido desplegar el contenedor en Azure, pero habría que actualizarlo manualmente cada vez que subamos una versión nueva de la imagen a DockerHub. Por suerte Azure proporciona la posibilidad de configurar un _webhook_ para realizar despliegue continuo. Para ello hay que dirigirse a la configuración del contenedor, activar el despliegue continuo y copiar el webhook:
+
+![imagen](./imgs/docker-CD.png)
+
+Después de esto hay que añadir el _webhook_ copiado en DockerHub:
+
+![imagen](./imgs/dockerhub-webhooks.png)

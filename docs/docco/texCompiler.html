@@ -25,8 +25,23 @@
                 </a>
               
                 
+                <a class="source" href="ecosystem.config.html">
+                  ecosystem.config.js
+                </a>
+              
+                
+                <a class="source" href="files.html">
+                  files.js
+                </a>
+              
+                
                 <a class="source" href="index.html">
                   index.js
+                </a>
+              
+                
+                <a class="source" href="task.html">
+                  task.js
                 </a>
               
                 
@@ -80,7 +95,8 @@
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
 <span class="hljs-keyword">const</span> util = <span class="hljs-built_in">require</span>(<span class="hljs-string">'util'</span>);
-<span class="hljs-keyword">const</span> exec = util.promisify(<span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).exec);</pre></div></div>
+<span class="hljs-keyword">const</span> exec = util.promisify(<span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).exec);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);</pre></div></div>
             
         </li>
         
@@ -101,11 +117,10 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compilar</span>(<span class="hljs-params">archivo,tex_output</span>)</span>{
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compilar</span>(<span class="hljs-params">archivo,usuario,tex_output</span>)</span>{
     <span class="hljs-keyword">try</span>{
-        <span class="hljs-keyword">const</span> {err, stdout, stderr} = <span class="hljs-keyword">await</span> exec(<span class="hljs-string">'pdflatex -synctex=1 -interaction=nonstopmode -output-directory doc '</span> + archivo);
-        <span class="hljs-keyword">if</span> (err) 
-            <span class="hljs-built_in">console</span>.error(stderr);
+        <span class="hljs-keyword">const</span> {stdout} = <span class="hljs-keyword">await</span> exec(<span class="hljs-string">'pdflatex -synctex=1 -interaction=nonstopmode -output-directory data/'</span> 
+                                    + usuario + <span class="hljs-string">'/out '</span> + archivo);
     
         <span class="hljs-keyword">if</span>(tex_output)
             <span class="hljs-built_in">console</span>.log(stdout);
@@ -136,7 +151,7 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">texCompiler</span>(<span class="hljs-params">archivo,tex_output</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">texCompiler</span>(<span class="hljs-params">datos,tex_output</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -151,7 +166,7 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!archivo.endsWith(<span class="hljs-string">'.tex'</span>)){
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!datos.fuente.endsWith(<span class="hljs-string">'.tex'</span>)){
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Formato incorrecto."</span>);
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }</pre></div></div>
@@ -169,7 +184,7 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!fs.existsSync(archivo)){
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!fs.existsSync(datos.fuente)){
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo no encontrado."</span>);
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }</pre></div></div>
@@ -187,10 +202,15 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">await</span> compilar(archivo,tex_output);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">try</span>{
+        <span class="hljs-keyword">await</span> compilar(datos.fuente,datos.usuario,tex_output);
+    }
+    <span class="hljs-keyword">catch</span>(error){
+        <span class="hljs-keyword">throw</span> error;
+    }
 
-    <span class="hljs-keyword">let</span> nombre = archivo.substring(<span class="hljs-number">0</span>,archivo.length<span class="hljs-number">-4</span>);
-    <span class="hljs-keyword">let</span> salida = nombre + <span class="hljs-string">'.pdf'</span>;</pre></div></div>
+    <span class="hljs-keyword">let</span> nombre = datos.nombre.substring(<span class="hljs-number">0</span>,datos.nombre.length<span class="hljs-number">-4</span>) + <span class="hljs-string">".pdf"</span>;
+    <span class="hljs-keyword">let</span> nombreF = <span class="hljs-string">'data/'</span> + datos.usuario + <span class="hljs-string">"/out/"</span> + nombre;</pre></div></div>
             
         </li>
         
@@ -205,16 +225,27 @@ Entrada de la función:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(fs.existsSync(salida))
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo creado con éxito."</span>);
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(fs.existsSync(<span class="hljs-string">'doc/texput.log'</span>)){
-        resultado=<span class="hljs-literal">false</span>;
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. Leer texput.log para más información"</span>);
-    }
-    <span class="hljs-keyword">else</span>
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. "</span> + salida + <span class="hljs-string">" no encontrado."</span>);
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(fs.existsSync(nombreF)){
+        fs.readdir(<span class="hljs-string">'data/'</span> + datos.usuario + <span class="hljs-string">'/out'</span>, (err, files) =&gt; {
+            <span class="hljs-keyword">if</span> (err) {
+                <span class="hljs-built_in">console</span>.log(err);
+            }
+        
+            files.forEach(<span class="hljs-function"><span class="hljs-params">file</span> =&gt;</span> {
+                <span class="hljs-keyword">const</span> eliminar = path.join(<span class="hljs-string">'data/'</span> + datos.usuario + <span class="hljs-string">'/out/'</span>, file);
+        
+                <span class="hljs-keyword">if</span> (file !== nombre)
+                    fs.unlinkSync(eliminar);
+            });
+        });
 
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Archivo creado con éxito."</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">else</span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Error en compilación. El PDF no ha sido generado."</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
 }
 
 <span class="hljs-built_in">module</span>.exports = texCompiler</pre></div></div>

@@ -25,8 +25,23 @@
                 </a>
               
                 
+                <a class="source" href="ecosystem.config.html">
+                  ecosystem.config.js
+                </a>
+              
+                
+                <a class="source" href="files.html">
+                  files.js
+                </a>
+              
+                
                 <a class="source" href="index.html">
                   index.js
+                </a>
+              
+                
+                <a class="source" href="task.html">
+                  task.js
                 </a>
               
                 
@@ -106,14 +121,43 @@
         }
     },
 
-    <span class="hljs-attr">apidoc</span>: {
-      <span class="hljs-attr">texCompiler</span>: {
-        <span class="hljs-attr">src</span>: <span class="hljs-string">"src/"</span>,
-        <span class="hljs-attr">dest</span>: <span class="hljs-string">"docs/apidoc/"</span>
+    <span class="hljs-attr">clean</span>:{
+      <span class="hljs-attr">nuevo</span>: [<span class="hljs-string">'data/nuevo'</span>],
+      <span class="hljs-attr">out</span>: [<span class="hljs-string">'data/test_user/out/ejemplo*'</span>, <span class="hljs-string">'!data/test_user/out/*.pdf'</span>],
+      <span class="hljs-attr">src</span>: [<span class="hljs-string">'data/test_user/src/ejemplo*'</span>, <span class="hljs-string">'!data/test_user/src/*.tex'</span>],
+    },
+
+    <span class="hljs-attr">cssmin</span>: {
+      <span class="hljs-attr">target</span>: {
+        <span class="hljs-attr">files</span>: [{
+          <span class="hljs-attr">expand</span>: <span class="hljs-literal">true</span>,
+          <span class="hljs-attr">cwd</span>: <span class="hljs-string">'views'</span>,
+          <span class="hljs-attr">src</span>: [<span class="hljs-string">'*.css'</span>, <span class="hljs-string">'!*.min.css'</span>],
+          <span class="hljs-attr">dest</span>: <span class="hljs-string">'views'</span>,
+          <span class="hljs-attr">ext</span>: <span class="hljs-string">'.min.css'</span>
+        }]
       }
     },
 
-    <span class="hljs-attr">clean</span>: [<span class="hljs-string">'doc/*.aux'</span>,<span class="hljs-string">'doc/*.log'</span>,<span class="hljs-string">'doc/*.gz'</span>,<span class="hljs-string">'doc/*.pdf'</span>,<span class="hljs-string">'doc/*.fdb*'</span>,<span class="hljs-string">'doc/*.fls'</span>],
+    <span class="hljs-attr">copy</span>: {
+      <span class="hljs-attr">src</span>: {
+        <span class="hljs-attr">src</span>: <span class="hljs-string">'data/test_user/src/ejemplo.tex'</span>,
+        <span class="hljs-attr">dest</span>: <span class="hljs-string">'data/test_delete/src/ejemplo.tex'</span>,
+      },
+      <span class="hljs-attr">out</span>: {
+        <span class="hljs-attr">src</span>: <span class="hljs-string">'data/test_user/out/ejemplo.pdf'</span>,
+        <span class="hljs-attr">dest</span>: <span class="hljs-string">'data/test_delete/out/ejemplo.pdf'</span>,
+      }
+    },
+
+    <span class="hljs-attr">shell</span>: {
+      <span class="hljs-attr">options</span>: { <span class="hljs-attr">stdout</span>: <span class="hljs-literal">true</span> },
+      <span class="hljs-attr">create</span>: <span class="hljs-string">'heroku apps:create --region eu texcompiler'</span>,
+      <span class="hljs-attr">cloudamqp</span>: <span class="hljs-string">'heroku addons:create cloudamqp:lemur'</span>,
+      <span class="hljs-attr">bpnodejs</span>: <span class="hljs-string">'heroku buildpacks:set heroku/nodejs'</span>,
+      <span class="hljs-attr">bptex</span>: <span class="hljs-string">'heroku buildpacks:add https://github.com/victorperalta93/heroku-buildpack-tex'</span>,
+      <span class="hljs-attr">push</span>: <span class="hljs-string">'git push heroku master'</span>
+    },
 
     <span class="hljs-attr">run</span>: {
       <span class="hljs-attr">npm_test</span>: {
@@ -139,8 +183,8 @@
       },
 
       <span class="hljs-attr">pm2_start</span>:{
-        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
-        <span class="hljs-attr">args</span>: [<span class="hljs-string">'start'</span>,<span class="hljs-string">'src/index.js'</span>,<span class="hljs-string">'--name'</span>,<span class="hljs-string">'texCompiler'</span>]
+        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2-runtime'</span>,
+        <span class="hljs-attr">args</span>: [<span class="hljs-string">'start'</span>,<span class="hljs-string">'ecosystem.config.js'</span>,<span class="hljs-string">'--env'</span>, <span class="hljs-string">'production'</span>]
       },
 
       <span class="hljs-attr">pm2_reload</span>:{
@@ -153,15 +197,20 @@
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'reload'</span>,<span class="hljs-string">'texCompiler'</span>]
       },
 
-      <span class="hljs-attr">pm2_stop</span>:{
+      <span class="hljs-attr">pm2_stop_index</span>:{
         <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
         <span class="hljs-attr">args</span>: [<span class="hljs-string">'stop'</span>,<span class="hljs-string">'texCompiler'</span>]
+      },
+
+      <span class="hljs-attr">pm2_stop_workers</span>:{
+        <span class="hljs-attr">cmd</span>: <span class="hljs-string">'pm2'</span>,
+        <span class="hljs-attr">args</span>: [<span class="hljs-string">'stop'</span>,<span class="hljs-string">'worker'</span>]
       }
     }
   });
 
   grunt.config.set(<span class="hljs-string">'apidoc'</span>, {
-    <span class="hljs-attr">texCompiler</span>: {
+    <span class="hljs-attr">tex</span>: {
       <span class="hljs-attr">src</span>: <span class="hljs-string">"src/"</span>,
       <span class="hljs-attr">dest</span>: <span class="hljs-string">"docs/apidoc/"</span>
     }
@@ -210,7 +259,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-clean'</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-clean'</span>);
+
+  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-copy'</span>);
+
+  grunt.loadNpmTasks(<span class="hljs-string">'grunt-contrib-cssmin'</span>);</pre></div></div>
             
         </li>
         
@@ -270,7 +323,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'int-test'</span>,[<span class="hljs-string">'run:npm_int_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'int-test'</span>,[<span class="hljs-string">'copy'</span>,<span class="hljs-string">'run:npm_int_test'</span>,<span class="hljs-string">'clean'</span>])</pre></div></div>
             
         </li>
         
@@ -285,9 +338,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'doc'</span>,[<span class="hljs-string">'docco'</span>]);
-
-  grunt.registerTask(<span class="hljs-string">'apidoc'</span>,[<span class="hljs-string">'apidoc:texCompiler'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'doc'</span>,[<span class="hljs-string">'docco'</span>]);</pre></div></div>
             
         </li>
         
@@ -313,11 +364,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Tarea para parar el servicio con pm2</p>
+              <p>Tarea para recargar el servicio con pm2</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'stop'</span>,[<span class="hljs-string">'run:pm2_stop'</span>]);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'reload'</span>,[<span class="hljs-string">'run:pm2_reload'</span>]);</pre></div></div>
             
         </li>
         
@@ -328,21 +379,6 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Tarea para recargar el servicio con pm2</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'reload'</span>,[<span class="hljs-string">'run:pm2_reload'</span>]);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
               <p>Tarea para reiniciar el servicio con pm2</p>
 
             </div>
@@ -350,6 +386,8 @@
             <div class="content"><div class='highlight'><pre>  grunt.registerTask(<span class="hljs-string">'restart'</span>,[<span class="hljs-string">'run:pm2_restart'</span>]);
 
   grunt.registerTask(<span class="hljs-string">'report-coverage'</span>,[<span class="hljs-string">'run:npm_report_coverage'</span>]);
+
+  grunt.registerTask(<span class="hljs-string">'deploy'</span>,[<span class="hljs-string">'shell'</span>]);
 };</pre></div></div>
             
         </li>

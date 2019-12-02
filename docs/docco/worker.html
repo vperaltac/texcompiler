@@ -25,8 +25,23 @@
                 </a>
               
                 
+                <a class="source" href="ecosystem.config.html">
+                  ecosystem.config.js
+                </a>
+              
+                
+                <a class="source" href="files.html">
+                  files.js
+                </a>
+              
+                
                 <a class="source" href="index.html">
                   index.js
+                </a>
+              
+                
+                <a class="source" href="task.html">
+                  task.js
                 </a>
               
                 
@@ -90,8 +105,9 @@
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>lado del “servidor” de RabbitMQ
-esta función se ha basado en el tutorial que proponen en la web de RabbitMQ
-titulado: RPC. Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html">https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html</a></p>
+La conexión con el servidor RabbitMQ se ha basado en Work Queues.
+Para más información puedes visitar los tutoriales oficiales de RabbitMQ
+Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html">https://www.rabbitmq.com/tutorials/tutorial-two-javascript.html</a></p>
 
             </div>
             
@@ -124,7 +140,8 @@ titulado: RPC. Link: <a href="https://www.rabbitmq.com/tutorials/tutorial-six-ja
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> queue = <span class="hljs-string">'compiler_queue'</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> queue = <span class="hljs-string">'compiler_queue'</span>;
+<span class="hljs-keyword">const</span> RABBIT_URL = process.env.CLOUDAMQP_URL || <span class="hljs-string">'amqp://localhost:5672'</span>;</pre></div></div>
             
         </li>
         
@@ -140,14 +157,13 @@ El mensaje debe contener el nombre del archivo fuente a compilar.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">worker</span>(<span class="hljs-params"></span>)</span>{
-    amqp.connect(<span class="hljs-string">'amqp://localhost'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error0, connection</span>) </span>{
-        <span class="hljs-keyword">if</span> (error0)
-            <span class="hljs-keyword">throw</span> error0;
+            <div class="content"><div class='highlight'><pre>amqp.connect(RABBIT_URL, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error0, connection</span>) </span>{
+    <span class="hljs-keyword">if</span> (error0)
+        <span class="hljs-keyword">throw</span> error0;
 
-        connection.createChannel(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error1, channel</span>) </span>{
-            <span class="hljs-keyword">if</span> (error1) 
-                <span class="hljs-keyword">throw</span> error1;</pre></div></div>
+    connection.createChannel(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error1, channel</span>) </span>{
+        <span class="hljs-keyword">if</span> (error1) 
+            <span class="hljs-keyword">throw</span> error1;</pre></div></div>
             
         </li>
         
@@ -163,9 +179,9 @@ si no existe previamente</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            channel.assertQueue(queue, {
-                <span class="hljs-attr">durable</span>: <span class="hljs-literal">false</span>
-            });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        channel.assertQueue(queue, {
+            <span class="hljs-attr">durable</span>: <span class="hljs-literal">true</span>
+        });</pre></div></div>
             
         </li>
         
@@ -181,43 +197,24 @@ hay que activar prefetch</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            channel.prefetch(<span class="hljs-number">1</span>);
+            <div class="content"><div class='highlight'><pre>        channel.prefetch(<span class="hljs-number">1</span>);
 
-            channel.consume(queue, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reply</span>(<span class="hljs-params">msg</span>)</span>{
-                <span class="hljs-keyword">let</span> fuente = msg.content.toString();
-                texCompiler(fuente,<span class="hljs-literal">false</span>)
-                .then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span>{
-                    <span class="hljs-keyword">let</span> pdf = fuente.replace(<span class="hljs-string">".tex"</span>, <span class="hljs-string">".pdf"</span>);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>el campo replyTo almacena la cola anónima generada por el cliente</p>
+        channel.consume(queue, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>)</span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"mensaje recibido."</span>);
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>                    channel.sendToQueue(msg.properties.replyTo,
-                        Buffer.from(pdf.toString()), {
-                            <span class="hljs-attr">correlationId</span>: msg.properties.correlationId
-                        });
-            
-                    channel.ack(msg);
-                })
-                .catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span>{
-                    <span class="hljs-keyword">throw</span> e;
-                });
-            });
+            <span class="hljs-keyword">let</span> datos = <span class="hljs-built_in">JSON</span>.parse(msg.content.toString());
+            texCompiler(datos[<span class="hljs-number">0</span>],<span class="hljs-literal">true</span>)
+            .then(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> {
+                channel.ack(msg);
+            })
+            .catch(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span>{
+                <span class="hljs-keyword">throw</span> e;
+            });  
+        },{
+            <span class="hljs-attr">noAck</span>: <span class="hljs-literal">false</span>
         });
     });
-}
-
-<span class="hljs-built_in">module</span>.exports = worker</pre></div></div>
+});</pre></div></div>
             
         </li>
         

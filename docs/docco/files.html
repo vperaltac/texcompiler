@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>files.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="Gruntfile.html">
+                  Gruntfile.js
+                </a>
+              
+                
+                <a class="source" href="ecosystem.config.html">
+                  ecosystem.config.js
+                </a>
+              
+                
+                <a class="source" href="files.html">
+                  files.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="task.html">
+                  task.js
+                </a>
+              
+                
+                <a class="source" href="texCompiler.html">
+                  texCompiler.js
+                </a>
+              
+                
+                <a class="source" href="worker.html">
+                  worker.js
+                </a>
+              
+                
+                <a class="source" href="integration.test.html">
+                  integration.test.js
+                </a>
+              
+                
+                <a class="source" href="tests.html">
+                  tests.js
+                </a>
+              
+                
+                <a class="source" href="texCompiler.test.html">
+                  texCompiler.test.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>files.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {
+    <span class="hljs-attr">getTexPath</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">nombre,usuario</span>) </span>{
+        <span class="hljs-keyword">let</span> path = <span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">"/src/"</span> + nombre + <span class="hljs-string">".tex"</span>;
+        <span class="hljs-keyword">const</span> existe_archivo = fs.existsSync(path);
+    
+        <span class="hljs-keyword">if</span>(existe_archivo)
+            <span class="hljs-keyword">return</span> path;
+        <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    
+    },
+
+    <span class="hljs-attr">listarTodos</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">let</span> usuarios = fs.readdirSync(<span class="hljs-string">'data'</span>);
+
+        <span class="hljs-keyword">let</span> listado = {};
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span> ; i&lt; usuarios.length; i++){
+            listado[usuarios[i]] = <span class="hljs-keyword">this</span>.listarArchivos(usuarios[i],<span class="hljs-literal">true</span>,<span class="hljs-literal">true</span>);
+        }
+
+        <span class="hljs-keyword">return</span> listado;
+    },
+
+    <span class="hljs-attr">listarArchivos</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">usuario,src,out</span>) </span>{
+        <span class="hljs-keyword">let</span> listado = {};
+
+        <span class="hljs-keyword">if</span>(src){
+            <span class="hljs-keyword">let</span> tex = fs.readdirSync(<span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">"/src/"</span>);
+            listado[<span class="hljs-string">'tex'</span>] = tex;
+        }
+
+        <span class="hljs-keyword">if</span>(out){
+            <span class="hljs-keyword">let</span> pdf = fs.readdirSync(<span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">"/out/"</span>);
+            listado[<span class="hljs-string">'pdf'</span>] = pdf;
+        }
+    
+        <span class="hljs-keyword">return</span> listado;
+    },
+
+    <span class="hljs-attr">eliminarTex</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">usuario,nombre</span>)</span>{
+        <span class="hljs-keyword">let</span> path = <span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">"/src/"</span> + nombre + <span class="hljs-string">".tex"</span>;
+
+        fs.unlinkSync(path);
+    },
+
+    <span class="hljs-attr">eliminarPDF</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">usuario,nombre</span>)</span>{
+        <span class="hljs-keyword">let</span> path = <span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">"/out/"</span> + nombre + <span class="hljs-string">".pdf"</span>;
+
+        fs.unlinkSync(path);
+    },
+    
+    <span class="hljs-attr">comprobarDirectorio</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">usuario</span>)</span>{
+        <span class="hljs-keyword">if</span> (!fs.existsSync(<span class="hljs-string">'data/'</span> + usuario)) {
+            fs.mkdirSync(<span class="hljs-string">'data/'</span> + usuario);
+            fs.mkdirSync(<span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">'/out'</span>);
+            fs.mkdirSync(<span class="hljs-string">'data/'</span> + usuario + <span class="hljs-string">'/src'</span>);
+        }
+    }
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

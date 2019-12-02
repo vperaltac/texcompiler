@@ -25,8 +25,23 @@
                 </a>
               
                 
+                <a class="source" href="ecosystem.config.html">
+                  ecosystem.config.js
+                </a>
+              
+                
+                <a class="source" href="files.html">
+                  files.js
+                </a>
+              
+                
                 <a class="source" href="index.html">
                   index.js
+                </a>
+              
+                
+                <a class="source" href="task.html">
+                  task.js
                 </a>
               
                 
@@ -83,54 +98,286 @@
 <span class="hljs-keyword">const</span> request = <span class="hljs-built_in">require</span>(<span class="hljs-string">'supertest'</span>);
 <span class="hljs-keyword">const</span> expect  = chai.expect;
 
+<span class="hljs-built_in">require</span>(<span class="hljs-string">'../src/worker'</span>);
+
 describe(<span class="hljs-string">'Tests de integración'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    it(<span class="hljs-string">'debería devolver Status: OK'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
-        request(app)
-            .get(<span class="hljs-string">'/status'</span>)
-            .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
-                expect(res.body.status).to.be.ok;
-                expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
-                done();
-            });
+    describe(<span class="hljs-string">'GET'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        it(<span class="hljs-string">'debería devolver la página de inicio'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
+                    done();
+                });
+        });    
+
+        it(<span class="hljs-string">'debería devolver Status: OK'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/status'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.body.status).to.be.ok;
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>GET  /tex/:nombre/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver el archivo tex solicitado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/tex/ejemplo/test_user'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-tex'</span>);
+                    done();
+                });
+        });
+
+        it(<span class="hljs-string">'deberia informar si no encuentra el archivo'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/tex/ejemplo_falso/test_user'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.text).to.equal(<span class="hljs-string">'Archivo no encontrado.'</span>);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>GET  /pdf/:nombre/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver el archivo pdf solicitado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/pdf/ejemplo/test_user'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/pdf'</span>);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>GET /listar-tex/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver una lista de los archivos tex del usuario dado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/listar-tex/test_user'</span>)
+                .expect(<span class="hljs-number">200</span>)
+                .expect(<span class="hljs-string">'Content-Type'</span>,/json/)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    <span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">return</span> done(err);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>GET /listar-pdf/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver una lista de los archivos PDF del usuario dado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/listar-pdf/test_user'</span>)
+                .expect(<span class="hljs-number">200</span>)
+                .expect(<span class="hljs-string">'Content-Type'</span>,/json/)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    <span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">return</span> done(err);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>GET /listar/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver una lista de todos los archivos del usuario dado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/listar/test_user'</span>)
+                .expect(<span class="hljs-number">200</span>)
+                .expect(<span class="hljs-string">'Content-Type'</span>,/json/)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    <span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">return</span> done(err);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>GET /listar</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'deberia devolver una lista de todos los archivos en el servidor'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .get(<span class="hljs-string">'/listar'</span>)
+                .expect(<span class="hljs-number">200</span>)
+                .expect(<span class="hljs-string">'Content-Type'</span>,/json/)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    <span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">return</span> done(err);
+                    done();
+                });
+        });
     });
 
-    it(<span class="hljs-string">'debería avisar si no existe archivo fuente'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
-        request(app)
-            .post(<span class="hljs-string">'/compilar'</span>)
-            .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, res</span>) </span>{
-                expect(res.statusCode).to.equal(<span class="hljs-number">400</span>);
-                expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
-                expect(res.text).to.equal(<span class="hljs-string">'No se encontró el archivo fuente.'</span>);
-                done();
-              });
+    describe(<span class="hljs-string">'POST'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        it(<span class="hljs-string">'debería avisar si no existe archivo fuente'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .post(<span class="hljs-string">'/tex/test_user'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, res</span>) </span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">400</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'No se encontró el archivo fuente.'</span>);
+                    done();
+                  });
+        });
+    
+        it(<span class="hljs-string">'debería avisar si el nombre es incorrecto'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .post(<span class="hljs-string">'/tex/test_user'</span>)
+                .set(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-www-form-urlencoded'</span>)
+                .attach(<span class="hljs-string">'nombre_incorrecto'</span>, <span class="hljs-string">'data/test_user/src/ejemplo.tex'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">400</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'Nombre incorrecto.'</span>);
+                    done();
+                });
+        });
+    
+        it(<span class="hljs-string">'debería avisar de que se envió la petición'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .post(<span class="hljs-string">'/tex/test_user'</span>)
+                .set(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-www-form-urlencoded'</span>)
+                .attach(<span class="hljs-string">'documento'</span>, <span class="hljs-string">'data/test_user/src/ejemplo.tex'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'Archivo subido. El PDF se generará en breve.'</span>);
+                    done();
+                });
+        });
+
+        it(<span class="hljs-string">'debería funcionar correctamente con un nuevo usuario'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .post(<span class="hljs-string">'/tex/nuevo'</span>)
+                .set(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-www-form-urlencoded'</span>)
+                .attach(<span class="hljs-string">'documento'</span>, <span class="hljs-string">'data/test_user/src/ejemplo.tex'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'Archivo subido. El PDF se generará en breve.'</span>);
+                    done();
+                });
+        });
     });
 
-    it(<span class="hljs-string">'debería avisar si el nombre es incorrecto'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
-        request(app)
-            .post(<span class="hljs-string">'/compilar'</span>)
-            .set(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-www-form-urlencoded'</span>)
-            .attach(<span class="hljs-string">'nombre_incorrecto'</span>, <span class="hljs-string">'doc/ejemplo.tex'</span>)
-            .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
-                expect(res.statusCode).to.equal(<span class="hljs-number">400</span>);
-                expect(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'text/html'</span>);
-                expect(res.text).to.equal(<span class="hljs-string">'Nombre incorrecto.'</span>);
-                done();
-            });
+    describe(<span class="hljs-string">'DELETE'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>DELETE /pdf/:nombre/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'debería eliminar un pdf de un usuario'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .delete(<span class="hljs-string">'/pdf/ejemplo/test_delete'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'Archivo eliminado.'</span>);
+                    done();
+                });
+        });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>DELETE /tex/:nombre/:usuario</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        it(<span class="hljs-string">'debería eliminar un pdf de un usuario'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
+            request(app)
+                .delete(<span class="hljs-string">'/tex/ejemplo/test_delete'</span>)
+                .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
+                    expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
+                    expect(res.text).to.equal(<span class="hljs-string">'Archivo eliminado.'</span>);
+                    done();
+                });
+        });
     });
 
-    it(<span class="hljs-string">'debería devolver el pdf compilado'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>)</span>{
-        request(app)
-            .post(<span class="hljs-string">'/compilar'</span>)
-            .set(<span class="hljs-string">'Content-Type'</span>,<span class="hljs-string">'application/x-www-form-urlencoded'</span>)
-            .attach(<span class="hljs-string">'documento'</span>, <span class="hljs-string">'doc/ejemplo.tex'</span>)
-            .end(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err,res</span>)</span>{
-                expect(res.statusCode).to.equal(<span class="hljs-number">200</span>);
-                expect(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'application/pdf'</span>)
-                done();
-
-                process.exit(<span class="hljs-number">0</span>);
-            });
-    });
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        process.exit(<span class="hljs-number">1</span>);
+    }, <span class="hljs-number">3000</span>);
 });</pre></div></div>
             
         </li>

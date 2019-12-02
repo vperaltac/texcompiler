@@ -1,6 +1,6 @@
 FROM node:13-buster
 
-WORKDIR /usr/src/texcompiler
+WORKDIR /app
 
 # Instalación de TexLive
 COPY scripts ./scripts/
@@ -8,12 +8,7 @@ RUN ./scripts/texlive_install.sh
 
 # Instalación de RabbitMQ
 RUN apt-get update
-RUN apt-get install software-properties-common -y
-RUN add-apt-repository 'http://www.rabbitmq.com/debian/'
-RUN apt-get install rabbitmq-server -y
-RUN rabbitmq-plugins enable rabbitmq_management rabbitmq_management_agent
-RUN mkdir -p /var/lib/rabbitmq
-RUN chown -R rabbitmq:rabbitmq /var/lib/rabbitmq/
+RUN apt install openssh-server -y
 
 COPY package*.json ./
 
@@ -28,8 +23,11 @@ COPY data ./data/
 COPY ecosystem.config.js ./
 COPY Gruntfile.js ./
 
-EXPOSE 5000
-EXPOSE 15672
+ADD ./.profile.d /app/.profile.d
 
+EXPOSE $PORT
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN chmod a+x scripts/start.sh
-CMD ./scripts/start.sh
+
+CMD bash .profile.d/heroku-exec.sh && ./scripts/start.sh

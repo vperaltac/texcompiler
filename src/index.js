@@ -9,11 +9,11 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(fileUpload());
-app.use(express.static('docs/views'));
+app.use(express.static('views'));
 
 //assuming app is express Object.
 app.get('/',function(req,res) {
-    res.sendFile('./docs/views/index.html');
+    res.sendFile('./views/index.html');
 });
 
 /**

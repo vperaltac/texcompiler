@@ -1,0 +1,44 @@
+/***********************************************************************/
+/*                          ATRIBUTOS GENERALES                        */
+
+/*Borramos los margenes predeterminados de los navegadores web*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* define cómo se calcula el ancho y alto de cada elemento */
+}
+
+h1 {
+  font-size: 40px;
+  padding: 2px;
+}
+
+/*Estilo del body por defecto*/
+body {
+  color: #222;
+  font-family: 'Roboto';
+  background-color: rgb(168, 168, 168);
+  transition: 0.5s;
+}
+/***********************************************************************/
+
+.central {
+  padding-top: 200px;
+}
+
+.lead{
+  padding-top: 20px;
+}
+
+.boton-imagenes {
+  background-color: #000000;
+  border: none;
+  color: white;
+  padding-top: 20px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}

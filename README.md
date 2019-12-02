@@ -41,13 +41,19 @@ buildtool: Gruntfile.js
 Despliegue: https://texcompiler.herokuapp.com/
 ```
 
-## Documentación sobre PaaS
-[Despliegue en un PaaS](https://victorperalta93.github.io/IV-Proyecto/#/paas)
+## DockerHub
+```
+DockerHub: https://hub.docker.com/r/victorperalta93/texcompiler
+```
+
+## Documentación sobre el despliegue del contenedor
+[Despliegue del contenedor](https://victorperalta93.github.io/IV-Proyecto/#/docker)
 
 ## Documentación adicional
-Visita la [web de documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.
+Visita la [documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.
 
 * [Descripción del proyecto](https://victorperalta93.github.io/IV-Proyecto/#/descripcion)
+* [Despliegue en un PaaS](https://victorperalta93.github.io/IV-Proyecto/#/paas)
 * [Documentación sobre la herramienta de construcción](https://victorperalta93.github.io/IV-Proyecto/#/tools_construccion)
 * [Documentación sobre tests, rutas y tareas](https://victorperalta93.github.io/IV-Proyecto/#/tests)
 * [Documentación sobre la integración continua](https://victorperalta93.github.io/IV-Proyecto/#/integracion_continua)

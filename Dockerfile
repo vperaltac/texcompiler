@@ -26,8 +26,7 @@ COPY data ./data/
 COPY ecosystem.config.js ./
 COPY Gruntfile.js ./
 
-EXPOSE 5000
-EXPOSE 15672
+EXPOSE $PORT
 
 RUN chmod a+x scripts/start.sh
 CMD ./scripts/start.sh

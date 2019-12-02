@@ -12,7 +12,8 @@ RUN apt-get install software-properties-common -y
 RUN add-apt-repository 'http://www.rabbitmq.com/debian/'
 RUN apt-get install rabbitmq-server -y
 RUN rabbitmq-plugins enable rabbitmq_management rabbitmq_management_agent
-
+RUN mkdir -p /var/lib/rabbitmq
+RUN chown -R rabbitmq:rabbitmq /var/lib/rabbitmq/
 
 COPY package*.json ./
 

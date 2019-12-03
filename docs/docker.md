@@ -233,3 +233,5 @@ NAME          TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
 kubernetes    ClusterIP      10.43.240.1    <none>         443/TCP        66m
 texcompiler   LoadBalancer   10.43.245.41   34.89.31.155   80:5000/TCP   56m
 ```
+
+Se ha seguido [este tutorial oficial de Google](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app?hl=es-419) para realizar el despliegue.

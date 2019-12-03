@@ -57,10 +57,9 @@ COPY ecosystem.config.js ./
 COPY Gruntfile.js ./
 ```
 
-Se definen los puertos en los cuales el contenedor va a escuchar una vez ejecutado. el puerto 5000 se utiliza para acceder al servicio y el puerto 15672 se utiliza para acceder a la interfaz de mantenimiento de RabbitMQ.
+Se definen el puerto en el cual el contenedor va a escuchar una vez ejecutado. En este caso se utiliza una variable de entorno debido a que el puerto utilizado en Heroku y Azure no es fijo.
 ```
-EXPOSE 5000
-EXPOSE 15672
+EXPOSE $PORT
 ```
 
 Por último se modifican los permisos de ejecución del script para lanzar el servicio y se asigna como comando principal del contenedor la ejecución de ese mismo script.
@@ -145,6 +144,8 @@ Aprovecharé el utilizar una aplicación nueva para definir los pasos a seguir s
    git push heroku master
    ```
 
+Desgraciadamente, aunque el despliegue funcionó correctamente, al arrancar la aplicación daba error con el servicio de RabbitMQ indicando fallos con el usuario rabbitmq creado por el mismo servicio. Después de indagar durante muchas horas, he descubierto que Heroku ejecuta la imagen con un usuario sin privilegios, lo que provoca que la creación del usuario del sistema rabbitmq falle durante la instalación del servidor y después no lo encuentre al levantar el servicio. No he conseguido solventar este problema y por tanto he decidido realizar y documentar el despliegue en Google Cloud Platform en este mismo documento. 
+
 ## Despliegue del contenedor en Azure
 Desplegar el contenedor en Azure ha sido bastante sencillo, algo que me ha sorprendido teniendo en cuenta lo desastroso que fue tratar de desplegar mi aplicación en Azure durante el hito anterior.
 
@@ -168,3 +169,67 @@ Con estos pasos ya hemos conseguido desplegar el contenedor en Azure, pero habr�
 Después de esto hay que añadir el _webhook_ copiado en DockerHub:
 
 ![imagen](./imgs/dockerhub-webhooks.png)
+
+## Despliegue del contenedor en Google Cloud
+Todo el despliegue para Google Cloud se ha realizado desde la linea de comandos, de este modo se puede reproducir el despliegue con facilidad.
+Antes de nada, hay que asegurarse de tener un proyecto creado (en mi caso será `infr-virtual`). Si ese no es el caso tienes más información [aquí](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+
+Hay que seguir los siguientes pasos para el despliegue:
+1. Define la variable de entorno _PROJECT_ID_: 
+   ```
+   export PROJECT_ID=infr-virtual
+   ```
+2. Construye la imagen de docker: 
+   ```
+   docker build -t gcr.io/infr-virtual/texcompiler:v1 .
+   ```
+3. Sube la imagen del contenedor
+   1. Antes de subir la imagen, debes autenticarte en el _Container Registry: 
+      ```
+      gcloud auth configure-docker
+      ```
+   2. Sube la imagen: 
+      ```
+      docker push gcr.io/infr-virtual/texcompiler:v1
+      ```
+
+> Nota: Tuve ciertos problemas para conseguir configurar la autenticación, uno de ellos fue que yo ejecuto docker con `sudo` y las órdenes de Google Cloud se ejecutan todas en modo usuario por lo que a veces daba fallos de permisos si se hacía alguna llamada a Docker. Para arreglar esto, tienes que añadir tu usuario al grupo de docker: `sudo usermod -a -G docker usuario`
+
+
+4. Crea un clúster de contenedores: en Google Cloud se utiliza [kubernetes](https://kubernetes.io/es/) para ejecutar imágenes
+   1. Asigna tu ID de proyecto: 
+      ```
+      gcloud config set project infr-virtual
+      ```
+   2. Asigna la zona de Compute Engine: 
+      ```
+      gcloud config set compute/zone europe-west2
+      ```
+    >esta zona es Londres, existía también la posibilidad de utilizar Alemania, puedes encontrar más información [aquí](https://cloud.google.com/compute/docs/regions-zones/).
+
+   3. Crea el cluster con 1 nodo:
+      ```
+      gcloud container clusters create texcluster --num-nodes=1
+      ```
+5. Una vez creado el cluster (tarda unos minutos) obtén las credenciales del mismo:
+   ```
+    gcloud container clusters get-credentials texcluster
+   ```
+6. Implementar la aplicación:
+   ```
+    kubectl create deployment texcompiler --image=gcr.io/infr-virtual/texcompiler:v1
+   ```
+7. Exponer la aplicación:
+   ```
+    kubectl expose deployment texcompiler --type=LoadBalancer --port 80 --target-port 5000
+   ```
+> Similar al uso de Docker, mapea el puerto 5000 del servicio interno al puerto 80 de la IP.
+
+Por último, para saber la IP del servicio desplegado ejecuta: `kubectl get service`:
+
+```
+$ kubectl get service
+NAME          TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
+kubernetes    ClusterIP      10.43.240.1    <none>         443/TCP        66m
+texcompiler   LoadBalancer   10.43.245.41   34.89.31.155   80:5000/TCP   56m
+```

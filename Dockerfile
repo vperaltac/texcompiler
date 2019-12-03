@@ -6,10 +6,6 @@ WORKDIR /app
 COPY scripts ./scripts/
 RUN ./scripts/texlive_install.sh
 
-# Instalación de RabbitMQ
-RUN apt-get update
-RUN apt install openssh-server -y
-
 COPY package*.json ./
 
 # instalar dependencias
@@ -23,11 +19,7 @@ COPY data ./data/
 COPY ecosystem.config.js ./
 COPY Gruntfile.js ./
 
-ADD ./.profile.d /app/.profile.d
-
 EXPOSE $PORT
 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN chmod a+x scripts/start.sh
-
-CMD bash .profile.d/heroku-exec.sh && ./scripts/start.sh
+CMD ./scripts/start.sh

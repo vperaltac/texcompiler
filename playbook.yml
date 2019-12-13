@@ -1,0 +1,57 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+      # necesario para instalar texlive
+      - name: Instalar wget
+        apt:
+          name: wget
+          state: present
+          update_cache: yes
+  
+      - name: Descargar script de repositorio de Node.js
+        get_url:
+          url: https://deb.nodesource.com/setup_13.x
+          dest: /home/vagrant/setup_13.x
+      
+      - name: Añadir repositorio de Node.js
+        shell: bash /home/vagrant/setup_13.x
+
+      - name: Instalar Node.js
+        apt:
+          name: nodejs
+
+      - name: Instalar Grunt
+        npm:
+          name: grunt-cli
+          global: yes
+
+      - name: Instalar PM2
+        npm:
+          name: pm2
+          global: yes
+
+      - name: Instalar TexLive
+        script: scripts/texlive_install_vagrant.sh
+
+      - name: Descargar esl-erlang
+        get_url:
+          url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+          owner: vagrant
+          dest: /home/vagrant/erlang-solutions_1.0_all.deb
+          
+      - name: Install esl-erlang
+        apt:
+          deb: /home/vagrant/erlang-solutions_1.0_all.deb
+
+      - name: descargar script de repositorio de RabbitMQ
+        get_url:
+          url: https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.deb.sh
+          dest: /home/vagrant/script.deb.sh
+        
+      - name: Añadir repositorio de RabbitMQ
+        shell: bash /home/vagrant/script.deb.sh
+  
+      - name: Instalar RabbitMQ
+        apt:
+          name: rabbitmq-server=3.7.23-1

@@ -1,85 +1,167 @@
-<!-- tests.md -->
-## Introducción
+<!-- provisionamiento.md -->
+# Provisionamiento de máquinas virtuales
+Para realizar el provisionamiento de la máquina virtual he utilizado [ansible](https://www.ansible.com/) y [Vagrant](https://www.vagrantup.com/).
+Vagrant utiliza `Vagrantfile` para definir la configuración de la máquina virtual:
 
-Antes de trabajar con ansible y desarrollar el provisionamiento vamos a realizar una evaluación de prestaciones de varias posibles imágenes base (`base boxes`) para elegir la más conveniente para el proyecto.
-Las máquinas a probar son las siguientes:
-  * Ubuntu 16.04 (Xenial)
-  * Ubuntu 18.04 (Bionic)
-  * Debian Jessie
+```
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
   
-Para realizar la evaluación se van a tener en cuenta los siguientes parámetros:
-  * Tamaño de la imagen
-  * Resultados de test de carga
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
 
-Para realizar los tests de carga se va a utilizar [JMeter](https://jmeter.apache.org/).
+  config.vm.network "private_network", ip: "192.168.33.10"
 
-## Tests de carga
-Como se mencionó en la introducción, para comparar las máquinas se ha hecho uso de tests de carga, para realizar los mismos he creado una pequeña API con Express que acepta varios tipos de peticiones, vamos a ver cada uno de ellos y comentarlos brevemente.
-
-### GET status
+  config.vm.provision :ansible do |ansible|
+    config.vm.network "forwarded_port", guest: 80, host: 8086
+    ansible.playbook = "playbook.yml"
+  end
+end
 ```
-app.get('/status',(req,res) => {
-    res.status(200).json({status: 'OK'})
-});
-```
-Sirve como la petición más básica, un simple JSON para confirmar que el servicio está disponible (algo que ya conocemos de fases anteriores a este proyecto).
+Con este fichero se crea una máquina virtual con sistema operativo base __Ubuntu Bionic__. Si quieres saber más sobre la elección de este SO base puedes leer [este apartado](eleccion_so.md). Se define tambien la ip de la máquina y como sistema de provisionamiento a ansible.
 
-### GET procesar
-```
-app.get('/procesar',(req,res) =>{
-    setTimeout(() => {
-        console.log("Realizando procesamiento...");
-        res.send('Procesamiento finalizado.');
-    }, 250)
-});
-```
-Esta petición sirve para simular cierta carga de trabajo en el servidor, en este caso 250 ms. Este tiempo no ha sido elegido de forma aleatoria, ya que la aplicación del proyecto tarda unos 200 ms en realizar la tarea de compilación. He querido simplificar las llamadas para los tests y no añadir RabbitMQ para acercarlos más a la realidad ya que complicaría bastante la comparación entre las máquinas.
+los principales ficheros de configuración de ansible son el `playbook` y el fichero de configuración de los _hosts_ o `inventory`. Éste último no es necesario porque Vagrant configura uno específico para nuestra imagen. Por tanto sólo es necesario definir el `playbook` de ansible, dado que es algo largo, vamos a mostrarlo orden por orden y añadir una breve descripción de ellas.
 
-### GET descargar y POST subir
-Una parte importante de mi proyecto es la subida y bajada de ficheros, por tanto he añadido 2 peticiones para realizar esto mismo:
+Es necesario instalar `wget` para la instalación de TexLive.
 ```
-app.get('/descargar', (req,res) => {
-    let pdf = 'gdocenteiv.pdf';
-    res.download(pdf);
-});
+- name: Instalar wget
+apt:
+    name: wget
+    state: present
+    update_cache: yes
+```
 
-app.post('/subir', (req,res) => {
-    if(!req.files)
-        return res.status(400).send('No se encontró el archivo fuente.');
+
+> Es importante instalar siempre desde el repositorio actualizado que provea el servicio en cuestión, dado que `apt` o `dnf` no siempre tienen las versiones más actualizadas de los servicios que necesitemos. De hecho, suele ser lo contrario y tener versiones muy antíguas.
+
+Instalación de __NodeJS__: para ello hay que actualizar el repositorio primero y después instalarlo. Cabe indicar que get_url siempre necesita que indiquemos un destino para el fichero a descargar:
+
+```
+- name: Descargar script de repositorio de Node.js
+get_url:
+    url: https://deb.nodesource.com/setup_13.x
+    dest: /home/vagrant/setup_13.x
+
+- name: Añadir repositorio de Node.js
+shell: bash /home/vagrant/setup_13.x
+
+- name: Instalar Node.js
+apt:
+    name: nodejs
+```
+
+>Node.js viene con npm integrado, por lo que no hace falta instalarlo. 
+
+Instalación de la herramienta de construcción del proyecto: __Grunt__.
+```
+- name: Instalar Grunt
+npm:
+    name: grunt-cli
+    global: yes
+```
+
+Instalación del gestor de procesos __PM2__, necesario para arrancar el servicio:
     
-    if(!req.files.documento)
-        return res.status(400).send('Nombre incorrecto.');
-
-    let documento = req.files.documento;
-    let nombre = req.files.documento.name;
-    let destino = 'data/' + nombre;
-
-    documento.mv(destino, function(err){
-        if(err)
-            return res.status(500).send(err);
-
-        res.status(200).send("Archivo subido.");
-    });
-});
+```
+- name: Instalar PM2
+npm:
+    name: pm2
+    global: yes
 ```
 
-## Configuración de JMeter
-Aunque no voy a explicar la configuración al completo de JMeter porque eso no entra en las competencias de esta asignatura, si que me gustaría mostrar los puntos clave de la configuración utilizada para realizar los tests de carga sobre las diferentes máquinas virtuales.
+Instalación de __TexLive__, he tenido que crear un script distinto para vagrant debido a que la provisión de ansible se realiza desde un directorio diferente que el resto de sistemas que utilizan este script:
+```
+- name: Instalar TexLive
+script: scripts/texlive_install_vagrant.sh
+```
 
-La configuración utilizada es la siguiente:
-* Threads (clientes): 4
-* Loop Count: 100
+Instalación de `esl-erlang`, es una dependencia de RabbitMQ:
+```
+- name: Descargar esl-erlang
+get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+    owner: vagrant
+    dest: /home/vagrant/erlang-solutions_1.0_all.deb
+    
+- name: Install esl-erlang
+apt:
+    deb: /home/vagrant/erlang-solutions_1.0_all.deb
+```
 
-Por tanto, se harán 400 peticiones de cada tipo descrito en el apartado anterior. Una vez realizadas las peticiones se generan resultados en diferentes tablas y gráficos, los cuales mostraremos en los siguientes apartados. Si tienes curiosidad por ver la pinta que tienen los tests una vez configurados en JMeter los muestro en la siguiente imagen:
+>Nota: aunque es posible utilizar curl para algunas tareas como la anterior, al utilizarlo ansible daba un mensaje de _warning_ indicando que era mejor utilizar `get_url` o `url`. Por tanto todo este tipo de tareas utilizan `get_url`.
 
-![imagen](./imgs/jmeter.png)
+Instalación de RabbitMQ, de nuevo asegurando instalar su versión más reciente y evitar la versión de `apt`:
 
-## Resultados
-A continuación se mostrarán los gráficos resultado de los tests realizados a las 3 máquinas virtuales, dicho grafo muestra los ms medios, máximo y mínimo de cada petición.
+```
+- name: descargar script de repositorio de RabbitMQ
+get_url:
+    url: https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.deb.sh
+    dest: /home/vagrant/script.deb.sh
 
-### Ubuntu bionic
+- name: Añadir repositorio de RabbitMQ
+shell: bash /home/vagrant/script.deb.sh
 
-![imagen](./imgs/bionic.png)
+- name: Instalar RabbitMQ
+apt:
+    name: rabbitmq-server=3.7.23-1
+```
+
+La ejecución del provisionamiento debería mostrar una salida similar a la siguiente:
+
+```
+==> default: Running provisioner: ansible...
+Vagrant has automatically selected the compatibility mode '2.0'
+according to the Ansible version installed (2.9.1).
+
+Alternatively, the compatibility mode can be specified in your Vagrantfile:
+https://www.vagrantup.com/docs/provisioning/ansible_common.html#compatibility_mode
+
+    default: Running ansible-playbook...
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [default]
+
+TASK [Instalar wget] ***********************************************************
+ok: [default]
+
+TASK [Descargar script de repositorio de Node.js] ******************************
+changed: [default]
+
+TASK [Añadir repositorio de Node.js] *******************************************
+changed: [default]
+
+TASK [Instalar Node.js] ********************************************************
+changed: [default]
+
+TASK [Instalar Grunt] **********************************************************
+changed: [default]
+
+TASK [Instalar PM2] ************************************************************
+changed: [default]
+
+TASK [Instalar TexLive] ********************************************************
+changed: [default]
+
+TASK [Descargar esl-erlang] ****************************************************
+changed: [default]
+
+TASK [Install esl-erlang] ******************************************************
+changed: [default]
+
+TASK [descargar script de repositorio de RabbitMQ] *****************************
+changed: [default]
+
+TASK [Añadir repositorio de RabbitMQ] ******************************************
+changed: [default]
+
+TASK [Instalar RabbitMQ] *******************************************************
+changed: [default]
+
+PLAY RECAP *********************************************************************
+default                    : ok=13   changed=11   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
 
 ### Debian Jessie
 

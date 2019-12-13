@@ -163,41 +163,52 @@ PLAY RECAP *********************************************************************
 default                    : ok=13   changed=11   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-### Debian Jessie
+## Gestor de tareas
 
-![imagen](./imgs/debian.png)
+Como viene siendo costumbre en el proyecto, estas órdenes se pueden ejecutar desde la herramienta construcción Grunt:
 
-### Ubuntu Xenial
+```
+grunt vagrant-up
+```
+El provisionamiento se ejecutará directamente al terminar la instalación del sistema operativo base.
 
-![imagen](./imgs/debian.png)
+Si quieres lanzar el provisionamiento en cualquier momento, puedes utilizar:
+```
+grunt provision
+```
 
-La siguiente tabla muestra una comparación entre los tiempos __medios__ por cada petición:
+Por último tambien es posible parar la máquina:
+```
+grunt vagrant-halt
+```
 
-|               | status | procesar | descargar | subir |
-|:-------------:|:------:|:--------:|:---------:|:-----:|
-| Ubuntu Xenial |    2   |    258   |     37    |   29  |
-| Ubuntu Bionic |    2   |    260   |     39    |   30  |
-| Debian Jessie |    2   |    265   |     29    |   25  |
+Se han añadido las siguientes líneas al `Gruntfile` para proveer los comandos anteriores:
+```
+    ...
+      vagrant_up:{
+        cmd: 'vagrant',
+        args: ['up']
+      },
 
-La siguiente tabla muestra una comparación entre los tiempos __mínimos__ por cada petición:
+      vagrant_halt:{
+        cmd: 'vagrant',
+        args: ['halt']
+      },
 
-|               | status | procesar | descargar | subir |
-|:-------------:|:------:|:--------:|:---------:|:-----:|
-| Ubuntu Xenial |    0   |    250   |     7     |   11  |
-| Ubuntu Bionic |    0   |    250   |     7     |   10  |
-| Debian Jessie |    0   |    250   |     4     |   7   |
+      provision:{
+        cmd: 'vagrant',
+        args: ['provision']
+      },
+    ...
 
-La siguiente tabla muestra una comparación entre los tiempos __máximos__ por cada petición:
+  grunt.registerTask('vagrant-up',['run:vagrant_up']);
 
-|               | status | procesar | descargar | subir |
-|:-------------:|:------:|:--------:|:---------:|:-----:|
-| Ubuntu Xenial |   48   |    526   |     97    |   87  |
-| Ubuntu Bionic |   25   |    407   |     94    |   61  |
-| Debian Jessie |   41   |   1067   |    143    |   69  |
+  grunt.registerTask('vagrant-halt',['run:vagrant_halt']);
 
-Estos datos muestran que la media de las peticiones en las diferentes máquinas es muy similar pero en sus valores máximos es donde se encuentran las mayores diferencias, dando Debian un máximo de 1067 ms para la petición procesar cuando Ubuntu Bionic tiene como máximo menos de la mitad: 407 ms.
+  grunt.registerTask('provision',['run:provision']);
+```
 
-Por último queda comparar el tamaño de las imágenes (o boxes en este caso) de las máquinas virtuales. Dado que he utilizado Vagrant para crear dichas máquinas, voy a aprovecharlo también para generar _boxes_ de cada máquina y comparar su tamaño.
+## Publicación de la imagen en Vagrant Cloud
 ```
 vagrant package id-box
 ```

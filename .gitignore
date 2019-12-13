@@ -133,3 +133,7 @@ public
 npm-debug.log
 .DS_Store
 /*.env
+
+# Evitar que se suba la VM de Vagrant
+.vagrant
+*.box

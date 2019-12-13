@@ -75,6 +75,21 @@ module.exports = function(grunt) {
         args: ['run','report-coverage']
       },
 
+      vagrant_up:{
+        cmd: 'vagrant',
+        args: ['up']
+      },
+
+      vagrant_halt:{
+        cmd: 'vagrant',
+        args: ['halt']
+      },
+
+      provision:{
+        cmd: 'vagrant',
+        args: ['provision']
+      },
+
       pm2_start:{
         cmd: 'pm2-runtime',
         args: ['start','ecosystem.config.js','--env', 'production']
@@ -149,4 +164,10 @@ module.exports = function(grunt) {
   grunt.registerTask('report-coverage',['run:npm_report_coverage']);
 
   grunt.registerTask('deploy',['shell']);
+
+  grunt.registerTask('vagrant-up',['run:vagrant_up']);
+
+  grunt.registerTask('vagrant-halt',['run:vagrant_halt']);
+
+  grunt.registerTask('provision',['run:provision']);
 };

@@ -6,7 +6,7 @@ Vagrant utiliza `Vagrantfile` para definir la configuración de la máquina virt
 ```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-  
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
 
@@ -61,7 +61,7 @@ npm:
 ```
 
 Instalación del gestor de procesos __PM2__, necesario para arrancar el servicio:
-    
+
 ```
 - name: Instalar PM2
 npm:
@@ -209,15 +209,16 @@ Se han añadido las siguientes líneas al `Gruntfile` para proveer los comandos 
 ```
 
 ## Publicación de la imagen en Vagrant Cloud
-```
-vagrant package id-box
-```
+Para subir la imagen a [Vagrant Cloud](https://app.vagrantup.com/) hay que seguir los siguientes pasos:
+1. crea la _caja_ de tu máquina virtual:
+    ```
+    vagrant package
+    ```
+2. Crea la _caja_ en la web:
+   
+    ![imagen](./imgs/vagrantcloud.png)
+3. Añade se proveedor (virtualbox en este caso) y sube el fichero .box generado en el paso 1
 
-Los tamaños de las _cajas_ generadas son los siguientes:
+4. Por último, no olvides marcar la versión como release para que esté disponible
 
-| Ubuntu Xenial | Ubuntu Bionic | Debian Jessie |
-|:-------------:|:-------------:|---------------|
-|    600.7 MB   |    490.2 MB   | 655.7 MB      |
-
-## Conclusiones
-Con respecto a los tiempos de respuesta en las peticiones, dado que las medias son muy similares me decanto más por tener en cuenta el máximo de cada máquina, si ese es el caso el claro ganador sería Ubuntu Bionic. Además, con respecto al tamaño de las _cajas_ generadas el claro vencedor es también Ubuntu Bionic y por tanto será la máquina a utilizar para realizar el provisionamiento.
+Puedes ver la VM de este proyecto en [su url de Vagrant Cloud](https://app.vagrantup.com/victorperalta93/boxes/texcompiler).

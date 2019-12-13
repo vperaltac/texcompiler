@@ -11,6 +11,7 @@
   * [Tests, rutas y tareas](tests.md)
   * [Despliegue en un PaaS](paas.md)
   * [Despliegue del contenedor](docker.md)
+  * [Evaluación de prestaciones](eleccion_so.md)
   * [Provisionamiento de máquinas virtuales](provisionamiento.md)
   * [API REST](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html)
   * [Información sobre el código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/Gruntfile.html)

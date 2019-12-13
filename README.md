@@ -51,8 +51,14 @@ Contenedor: https://texcompiler-docker.azurewebsites.net
 DockerHub: https://hub.docker.com/r/victorperalta93/texcompiler
 ```
 
-## Documentación sobre el despliegue del contenedor
-[Despliegue del contenedor](https://victorperalta93.github.io/IV-Proyecto/#/docker)
+## Provisionamiento
+```
+provision: provision/playbook.yml
+```
+
+## Documentación sobre el provisionamiento de máquinas virtuales
+* [Evaluación de prestaciones](https://victorperalta93.github.io/IV-Proyecto/#/eleccion_so)
+* [Provisionamiento de máquinas virtuales](https://victorperalta93.github.io/IV-Proyecto/#/provisionamiento)
 
 ## Documentación adicional
 Visita la [documentación](https://victorperalta93.github.io/IV-Proyecto) para ver toda la información sobre el proyecto.
@@ -63,6 +69,7 @@ Visita la [documentación](https://victorperalta93.github.io/IV-Proyecto) para v
 * [Documentación sobre tests, rutas y tareas](https://victorperalta93.github.io/IV-Proyecto/#/tests)
 * [Documentación sobre la integración continua](https://victorperalta93.github.io/IV-Proyecto/#/integracion_continua)
 * [Documentación sobre bibliotecas y herramientas utilizadas](https://victorperalta93.github.io/IV-Proyecto/#/bibtools)
+* [Despliegue del contenedor](https://victorperalta93.github.io/IV-Proyecto/#/docker)
 * [Documentación de API REST](https://victorperalta93.github.io/IV-Proyecto/apidoc/index.html)
 * [Documentación del código implementado](https://victorperalta93.github.io/IV-Proyecto/docco/texCompiler.html)
 * [Diario de desarrollo](https://victorperalta93.github.io/IV-Proyecto/#/diario)

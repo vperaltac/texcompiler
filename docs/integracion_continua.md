@@ -9,7 +9,7 @@ Para aprovechar que este proyecto tiene configurado dos sistemas de integración
 Para saber más sobre los tests de este proyecto puedes leer [éste articulo](tests.md).
 
 ## Integración continua con Travis CI
-Utilizar Travis CI para nuestro proyecto es fácil y rápido, basta con crear una cuenta en [su web](https://travis-ci.org) y activarlo en el repositorio deseado. Este proceso fue realizado en el [ejercicio 10 del tema 2](https://github.com/victorperalta93/IV-Ejercicios/blob/master/tema2.md).  
+Utilizar Travis CI para nuestro proyecto es fácil y rápido, basta con crear una cuenta en [su web](https://travis-ci.org) y activarlo en el repositorio deseado. Este proceso fue realizado en el [ejercicio 10 del tema 2](https://github.com/vperaltac/IV-Ejercicios/blob/master/tema2.md).  
 La configuración de Travis se define en un archivo `.travis.yml`. Mi archivo de configuración es el siguiente:
 
 ```

@@ -83,13 +83,13 @@ Se encarga de activar el servicio del servidor de RabbitMQ, actualizar el PATH p
 Una vez definido el Dockerfile se puede construir la imagen
 
 ```
-sudo docker image build -t victorperalta93/texcompiler .
+sudo docker image build -t vperaltac/texcompiler .
 ```
 
 Por último se puede arrancar el contenedor
 
 ```
-sudo docker run -it -p 80:5000 -p 15672:15672 victorperalta93/texcompiler
+sudo docker run -it -p 80:5000 -p 15672:15672 vperaltac/texcompiler
 ```
 
 Esto arrancará el contenedor y mapeara su puerto 5000 al puerto 80 del _host_ y su puerto 15672 al mismo del _host_.
@@ -98,7 +98,7 @@ Esto arrancará el contenedor y mapeara su puerto 5000 al puerto 80 del _host_ y
 Una vez generada la imagen del contenedor, es posible subirla a [DockerHub](https://hub.docker.com/) y así proveer del servicio del proyecto en forma de contenedor a todo el que quiera utilizarlo, también será la base para desplegar el contenedor en Heroku y Azure.  
 Para hacer esto es tan simple como ejecutar:
 ```
-sudo docker push victorperalta93/texcompiler
+sudo docker push vperaltac/texcompiler
 ```
 Una vez subido el contenedor, es posible configurarlo para automatizar su construcción cada vez que se actualiza el repositorio del proyecto en GitHub.
 

@@ -221,4 +221,4 @@ Para subir la imagen a [Vagrant Cloud](https://app.vagrantup.com/) hay que segui
 
 4. Por último, no olvides marcar la versión como release para que esté disponible
 
-Puedes ver la VM de este proyecto en [su url de Vagrant Cloud](https://app.vagrantup.com/victorperalta93/boxes/texcompiler).
+Puedes ver la VM de este proyecto en [su url de Vagrant Cloud](https://app.vagrantup.com/vperaltac/boxes/texcompiler).

@@ -13,7 +13,7 @@ Todo esto nos deja con Heroku, que no solo es de código abierto, si no que ofre
 * crea la aplicación indicando región europa, si no especificas la región se creará automáticamente en US y migrar la aplicación a Europa no es trivial (si te ha ocurrido puedes ver como hacerlo [aquí](https://devcenter.heroku.com/articles/app-migration)). A continuación de la región indica el nombre de la aplicación: `heroku apps:create --region eu texcompiler`.
 * añade el _add-on_ __cloudamqp__, dicho servicio provee RabbitMQ a nuestra aplicación: `heroku addons:create cloudamqp:lemur`. lemur es el plan elegido, gratis y con las características más que suficientes para el propósito de este proyecto.
 * añade el _buildpack_ de nodejs: `heroku buildpacks:set heroku/nodejs`. Dicho _buildpack_ automatiza la construcción de la aplicación.
-* añade el _buildpack_ para instalar TexLive en la aplicación (más sobre este tema a continuación): `heroku buildpacks:add https://github.com/victorperalta93/heroku-buildpack-tex`.
+* añade el _buildpack_ para instalar TexLive en la aplicación (más sobre este tema a continuación): `heroku buildpacks:add https://github.com/vperaltac/heroku-buildpack-tex`.
 * sube los cambios al repositorio de heroku para comenzar el despliegue: `git push heroku master`
 
 Todo este proceso se ha automátizado en una tarea en Grunt:
@@ -24,7 +24,7 @@ shell: {
     create: 'heroku apps:create --region eu texcompiler',
     cloudamqp: 'heroku addons:create cloudamqp:lemur',
     bpnodejs: 'heroku buildpacks:set heroku/nodejs',
-    bptex: 'heroku buildpacks:add https://github.com/victorperalta93/heroku-buildpack-tex',
+    bptex: 'heroku buildpacks:add https://github.com/vperaltac/heroku-buildpack-tex',
     push: 'git push heroku master'
 },
 ```

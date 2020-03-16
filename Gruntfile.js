@@ -48,7 +48,7 @@ module.exports = function(grunt) {
       create: 'heroku apps:create --region eu texcompiler',
       cloudamqp: 'heroku addons:create cloudamqp:lemur',
       bpnodejs: 'heroku buildpacks:set heroku/nodejs',
-      bptex: 'heroku buildpacks:add https://github.com/victorperalta93/heroku-buildpack-tex',
+      bptex: 'heroku buildpacks:add https://github.com/vperaltac/heroku-buildpack-tex',
       push: 'git push heroku master'
     },
 

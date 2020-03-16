@@ -11,4 +11,4 @@ module.exports = {
     instances   : 4,
     exec_mode   : "cluster"
   },]
-}
+} 

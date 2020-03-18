@@ -6,4 +6,4 @@ install:
   - docker images
 
 script: 
-  - docker run -t -v  $TRAVIS_BUILD_DIR:/test vperaltac/node-texlive:latest
+  - docker run -t -v  $TRAVIS_BUILD_DIR:/test vperaltac/node-texlive:latest 

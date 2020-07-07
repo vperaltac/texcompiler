@@ -4,7 +4,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # TexCompiler
-Proyecto para la asignatura Infraestructura Virtual (19-20).
+Compilador de LaTeX en línea basado en TexLive.
 
 ## Descripción
 

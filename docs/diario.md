@@ -74,4 +74,4 @@ Por tanto decidí replantear el modelo de comunicación de la aplicación y util
 
 Y lo más importante de todo, aprovecha mejor la naturaleza asíncrona de RabbitMQ, permitiendo realizar la petición de compilar y no tener esperando al cliente.
 
-Para ver la lista de peticiones en el sistema puedes consultar la [documentación de la API REST](https://vperaltac.github.io/IV-Proyecto/apidoc/index.html).
+Para ver la lista de peticiones en el sistema puedes consultar la [documentación de la API REST](https://vperaltac.github.io/texcompiler/apidoc/index.html).

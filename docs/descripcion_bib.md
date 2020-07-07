@@ -1,7 +1,7 @@
 <!-- descripcion_bib.md -->
 
 ## Descripción de la biblioteca desarrollada
-La biblioteca desarrollada es [texCompiler.js](https://github.com/vperaltac/IV-Proyecto/blob/master/src/texCompiler.js).  
+La biblioteca desarrollada es [texCompiler.js](https://github.com/vperaltac/texcompiler/blob/master/src/texCompiler.js).  
 Recibe los siguientes parámetros:
 * `archivo`: archivo con extensión .tex para compilar. Debe estar en el directorio `doc`.
 * `tex_output`: 

@@ -39,7 +39,7 @@ A continuación añado una justificación de cada biblioteca utilizada.
 
 ## Docco
 He utilizado Docco para generar la documentación del código en formato HTML de forma automática. Ésta biblioteca genera documentación a partir de los comentarios que encuentre en los archivos del proyecto.
-Se puede ver [aquí](https://vperaltac.github.io/IV-Proyecto/docco/texCompiler.html).
+Se puede ver [aquí](https://vperaltac.github.io/texcompiler/docco/texCompiler.html).
 
 ## nodemon
 Arranca la aplicación de Express y reinicia el servicio cada vez que se realiza alguna modificación al código del proyecto. Hace el desarrollo inicial de la aplicación muy cómodo. Cuando la aplicación empiece a ser más compleja, PM2 puede ser una solución más completa.
@@ -52,7 +52,7 @@ Biblioteca que utiliza el estándar [AMQP](https://es.wikipedia.org/wiki/Advance
 
 ## apidoc
 
-Genera documentación sobre una API REST implementada, tiene su sintaxis propia similar a doxygen. Muy útil para ahorrar tiempo en documentación. Se puede ver el resultado de esta operación [aquí](https://vperaltac.github.io/IV-Proyecto/apidoc/index.html).
+Genera documentación sobre una API REST implementada, tiene su sintaxis propia similar a doxygen. Muy útil para ahorrar tiempo en documentación. Se puede ver el resultado de esta operación [aquí](https://vperaltac.github.io/texcompiler/apidoc/index.html).
 
 # Herramientas de Test utilizadas
 ## Chai

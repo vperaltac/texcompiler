@@ -13,8 +13,8 @@
   * [Despliegue del contenedor](docker.md)
   * [Evaluación de prestaciones](eleccion_so.md)
   * [Provisionamiento de máquinas virtuales](provisionamiento.md)
-  * [API REST](https://vperaltac.github.io/IV-Proyecto/apidoc/index.html)
-  * [Información sobre el código implementado](https://vperaltac.github.io/IV-Proyecto/docco/Gruntfile.html)
+  * [API REST](https://vperaltac.github.io/texcompiler/apidoc/index.html)
+  * [Información sobre el código implementado](https://vperaltac.github.io/texcompiler/docco/Gruntfile.html)
 
 * Otra información
   * [Diario de desarrollo](diario.md)

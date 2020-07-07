@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vperaltac/IV-Proyecto.git"
+    "url": "git+https://github.com/vperaltac/texcompiler.git"
   },
   "author": "Victor Peralta",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/vperaltac/IV-Proyecto/issues"
+    "url": "https://github.com/vperaltac/texcompiler/issues"
   },
-  "homepage": "https://github.com/vperaltac/IV-Proyecto#readme",
+  "homepage": "https://github.com/vperaltac/texcompiler#readme",
   "dependencies": {
     "amqplib": "^0.5.5",
     "core-util-is": "^1.0.2",

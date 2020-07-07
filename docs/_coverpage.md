@@ -4,5 +4,5 @@
 
 > Compila tus archivos de LaTeX en un instante!
 
-[GitHub](https://github.com/vperaltac/IV-Proyecto)
+[GitHub](https://github.com/vperaltac/texcompiler)
 [Guía Rapida](#TexCompiler)

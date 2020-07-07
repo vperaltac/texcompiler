@@ -6,7 +6,7 @@ Proyecto para la asignatura Infraestructura Virtual (19-20).
 ## Descripción
 
 Microservicio para compilar documentos LaTeX (.tex) y proveer el PDF generado para un editor de LaTeX en línea. Se implementará utilizando comunicación basada en eventos.
-Se pueden ver más detalles sobre la historia del proyecto en la sección de [proyectos](https://github.com/vperaltac/IV-Proyecto/projects/1) de github. Se actualizará debidamente cada vez que el cliente se ponga en contacto conmigo.
+Se pueden ver más detalles sobre la historia del proyecto en la sección de [proyectos](https://github.com/vperaltac/texcompiler/projects/1) de github. Se actualizará debidamente cada vez que el cliente se ponga en contacto conmigo.
 
 ## Motivación
 
@@ -41,7 +41,7 @@ A lo largo del desarrollo del proyecto puede que, una vez empiece a utilizar las
 ## Desarrollo del proyecto
 Inicialmente iba a desarrollar el microservicio en PHP debido a que es el lenguaje que utilicé para desarrollar el back-end de otra asignatura y me siento relativamente familiarizado. Durante otro curso desarrollé una pequeña aplicación con node.js y MongoDB y lo disfruté muchísimo. He decidido realizar el microservicio con node.js. Aunque conlleve un periodo de aprendizaje y dedicar más horas a contenido no evaluable de la asignatura, me motiva más y creo que eso es importante.
 
-Este apartado trata de conectar los objetivos desde el punto de vista de la infraestructura virtual con los objetivos para desarrollar el microservicio. Para ver los objetivos del proyecto están declarados como [Milestones](https://github.com/vperaltac/IV-Proyecto/milestones).
+Este apartado trata de conectar los objetivos desde el punto de vista de la infraestructura virtual con los objetivos para desarrollar el microservicio. Para ver los objetivos del proyecto están declarados como [Milestones](https://github.com/vperaltac/texcompiler/milestones).
 
 ### Paso 1: Desarrollo basado en pruebas
 El desarrollo basado en pruebas invierte completamente el desarrollo de la aplicación con respecto a otras asignaturas, por tanto es importante comenzar el desarrollo del microservicio poniéndolo en práctica para familiarizarse con el mismo.

@@ -1,9 +1,22 @@
-language:
-  - minimal
+script: 'true'
+
+before_install:
+    - sudo ./scripts/texlive_install.sh
+    - PATH=/usr/local/texlive/2019/bin/x86_64-linux:$PATH; export PATH
+language: node_js
+node_js: 
+    - "lts/*"
+    - "node"
 
 install:
-  - docker pull vperaltac/node-texlive:latest
-  - docker images
+    - npm install -g codecov
+    - npm ci
+    - grunt doc
 
-script: 
-  - docker run -t -v  $TRAVIS_BUILD_DIR:/test vperaltac/node-texlive:latest 
+after_success:
+    - grunt unit-test
+    - npm run report-coverage
+    - codecov
+
+directories:
+    - "node_modules"

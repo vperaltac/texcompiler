@@ -9,15 +9,13 @@ node_js:
     - "node"
 
 install:
+    - npm install -g npx
     - npm install -g codecov
     - npm ci
     - grunt doc
 
 after_success:
-    - mkdir .nyc_output
-    - grunt unit-test
-    - npm run report-coverage
-    - codecov
+    - npx nyc --reporter=lcov npm test && npx codecov
 
 directories:
     - "node_modules"

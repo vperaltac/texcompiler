@@ -46,6 +46,7 @@
     "mocha": "^7.1.0",
     "mocha-sinon": "^2.1.0",
     "nodemon": "^2.0.2",
+    "npx": "^10.2.2",
     "sinon": "^9.0.1",
     "sinon-chai": "^3.5.0",
     "supertest": "^4.0.2"

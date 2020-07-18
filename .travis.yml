@@ -9,7 +9,6 @@ node_js:
     - "node"
 
 install:
-    - npm install -g npx
     - npm install -g codecov
     - npm ci
     - grunt doc

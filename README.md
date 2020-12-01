@@ -73,3 +73,5 @@ Visita la [documentación](https://vperaltac.github.io/texcompiler) para ver tod
 * [Documentación de API REST](https://vperaltac.github.io/texcompiler/apidoc/index.html)
 * [Documentación del código implementado](https://vperaltac.github.io/texcompiler/docco/texCompiler.html)
 * [Diario de desarrollo](https://vperaltac.github.io/texcompiler/#/diario)
+
+

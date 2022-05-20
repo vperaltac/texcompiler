@@ -38,7 +38,7 @@
     "pm2": "^5.1.2"
   },
   "devDependencies": {
-    "apidoc": "^0.20.1",
+    "apidoc": "^0.51.1",
     "chai": "^4.3.4",
     "docco": "^0.8.1",
     "grunt-contrib-cssmin": "^3.0.0",

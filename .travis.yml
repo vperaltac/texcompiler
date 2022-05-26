@@ -1,3 +1,4 @@
+dist: focal
 script: 'true'
 
 before_install:

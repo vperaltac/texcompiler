@@ -23,7 +23,7 @@
   "dependencies": {
     "amqplib": "^0.8.0",
     "core-util-is": "^1.0.3",
-    "docsify-cli": "^4.4.2",
+    "docsify-cli": "^4.4.4",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "grunt": "^1.4.1",

@@ -33,7 +33,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-docco": "^0.5.0",
     "grunt-run": "^0.8.1",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "nyc": "^15.0.0",
     "pm2": "^5.1.2"
   },
